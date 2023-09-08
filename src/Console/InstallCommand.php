@@ -25,8 +25,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
     protected $signature = 'laravel-theme:install {stack : The development stack that should be installed (quasar,vuetify, api)}
                                                   {--dark : Indicate that dark mode support should be installed}
                                                   {--lang : Make Arabic the default language}
-                                                  {--pinia : Indicates if pinia support should be installed}
-                                                  {--persistedstate : Indicates if pinia-plugin-persistedstate support should be installed}
                                                   {--composer=global : Absolute path to the Composer binary which should be used to install packages}';
 
     /**
@@ -61,6 +59,18 @@ class InstallCommand extends Command implements PromptsForMissingInput
         $this->installMiddlewareAfter('SubstituteBindings::class', '\Moawiaab\Role\Http\Middleware\AuthGates::class');
 
         if ($this->argument('stack') === 'vuetify' || $this->argument('stack') === 'quasar') {
+            $this->runCommands(['php artisan ui:auth']);
+            $this->updateNodePackages(function ($packages) {
+                return [
+                    "@types/node" => "^20.4.7",
+                    "@vitejs/plugin-vue" => "^4.2.0",
+                    "@vue/tsconfig" => "^0.4.0",
+                    "typescript" => "^5.1.6",
+                    "vue-tsc" => "^1.8.8",
+                    'sass' => "^1.66.1"
+                ] + $packages;
+            });
+
             $this->updateNodePackages(function ($packages) {
                 return [
                     "pinia" => "^2.1.6",
@@ -68,13 +78,15 @@ class InstallCommand extends Command implements PromptsForMissingInput
                     "vue-chartjs" => "^5.2.0",
                     "nanoid" => "^4.0.2",
                     "chart.js" => "^4.3.3",
-                    "@types/node" => "^20.4.7",
-                    "@vitejs/plugin-vue" => "^4.2.0",
-                    "@vue/tsconfig" => "^0.4.0",
-                    "typescript" => "^5.1.6",
-                    "vue-tsc" => "^1.8.8"
+                    "lodash" => "^4.17.21"
                 ] + $packages;
-            });
+            }, false);
+
+
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/tsconfig.config.json', resource_path('tsconfig.config.json'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/tsconfig.json', resource_path('tsconfig.json'));
+
+            (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Requests', app_path('Http/Requests'));
         }
         // Install Stack...
         if ($this->argument('stack') === 'vuetify') {
@@ -96,14 +108,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
     protected function installVuetifyStack()
     {
         // Terms Of Service / Privacy Policy...
-
-        if (!$this->option('dark')) {
-            $this->removeDarkClasses((new Finder)
-                    ->in(resource_path('js'))
-                    ->name('*.vue')
-                    ->notPath('Pages/Welcome.vue')
-            );
-        }
 
         $this->line('');
         $this->components->info('vuetify theme installed successfully.');
@@ -144,7 +148,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
             return [
                 "@quasar/extras" => "^1.16.6",
                 "quasar" => "^2.12.5",
-                'sass' => "^1.66.1",
                 "vue-i18n" => "^9.3.0-beta.25"
             ] + $packages;
         }, false);

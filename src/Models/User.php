@@ -2,30 +2,37 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
-use DateTimeInterface;
+use \DateTimeInterface;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
-use Moawiaab\Role\Models\Account;
-use Moawiaab\Role\Models\Role;
-use Moawiaab\Role\Support\HasAdvancedFilter;
+use Moawiaab\LaravelTheme\Models\Account;
+use Moawiaab\LaravelTheme\Models\Role;
+use Moawiaab\LaravelTheme\Support\HasAdvancedFilter;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens;
-    use HasFactory;
-    use HasProfilePhoto;
-    use Notifiable;
-    use TwoFactorAuthenticatable;
     use HasAdvancedFilter;
     use SoftDeletes;
+    use Notifiable;
+    use HasFactory;
+    use HasApiTokens;
+    use InteractsWithMedia;
 
+    public $table = 'users';
+
+    protected $hidden = [
+        'remember_token',
+        'password',
+    ];
 
     protected $dates = [
         'email_verified_at',
@@ -50,46 +57,26 @@ class User extends Authenticatable
         'phone',
     ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
+        'email_verified_at',
         'password',
         'remember_token',
-        'two_factor_recovery_codes',
-        'two_factor_secret',
+        'phone',
+        'account_id',
+        'profile_photo_path',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'role_id'
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
 
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array<int, string>
-     */
-    protected $appends = [
-        'profile_photo_url',
-    ];
+    public function locker()
+    {
+        return $this->hasOne(PrivateLocker::class);
+    }
 
     public function resolveRouteBinding($value, $field = null)
     {
@@ -106,12 +93,30 @@ class User extends Authenticatable
         });
     }
 
+    public function getEmailVerifiedAtAttribute($value)
+    {
+        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('project.datetime_format')) : null;
+    }
 
-    public function role() {
+    // public function setEmailVerifiedAtAttribute($value)
+    // {
+    //     $this->attributes['email_verified_at'] = $value ? Carbon::createFromFormat(config('project.datetime_format'), $value)->format('Y-m-d H:i:s') : null;
+    // }
+
+    public function setPasswordAttribute($input)
+    {
+        if ($input) {
+            $this->attributes['password'] = Hash::needsRehash($input) ? Hash::make($input) : $input;
+        }
+    }
+
+    public function role() : BelongsTo
+    {
         return $this->belongsTo(Role::class);
     }
 
-    public function account() {
+    public function account()
+    {
         return $this->belongsTo(Account::class);
     }
 
@@ -119,4 +124,35 @@ class User extends Authenticatable
     {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $thumbnailWidth  = 50;
+        $thumbnailHeight = 50;
+
+        $thumbnailPreviewWidth  = 120;
+        $thumbnailPreviewHeight = 120;
+
+        $this->addMediaConversion('thumbnail')
+            ->width($thumbnailWidth)
+            ->height($thumbnailHeight)
+            ->fit('crop', $thumbnailWidth, $thumbnailHeight);
+        $this->addMediaConversion('preview_thumbnail')
+            ->width($thumbnailPreviewWidth)
+            ->height($thumbnailPreviewHeight)
+            ->fit('crop', $thumbnailPreviewWidth, $thumbnailPreviewHeight);
+    }
+
+    public function getPhotosAttribute()
+    {
+        return $this->getMedia('userPhoto')->map(function ($item) {
+            $media = [];
+            $media['url'] = $item->getUrl();
+            $media['thumbnail'] = $item->getUrl('thumbnail');
+            $media['preview_thumbnail'] = $item->getUrl('preview_thumbnail');
+
+            return $media;
+        });
+    }
+
 }

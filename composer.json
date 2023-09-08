@@ -16,6 +16,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "laravel/breeze": "^1.23"
+        "laravel/ui": "^4.2",
+        "spatie/laravel-medialibrary": "^10.12"
     }
 }

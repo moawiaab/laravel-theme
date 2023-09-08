@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\LoginApiController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Api', 'middleware' => ['auth:sanctum']], function () {
@@ -118,6 +118,3 @@ Route::group(['namespace' => 'Api', 'middleware' => ['auth:sanctum']], function 
     Route::get('/reports', 'ReportsApiController@index');
     Route::get('/reports-show', 'ReportsApiController@show');
 });
-
-Route::post('/login', [LoginApiController::class, 'login']);
-Route::post('/register', [LoginApiController::class, 'store']);
