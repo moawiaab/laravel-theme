@@ -1,0 +1,19 @@
+{
+    "name": "moawiaab/laravel-theme",
+    "description": "Install Laravel breeze themes for Vue",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Moawiaab\\LaravelTheme\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "moawia abudallah",
+            "email": "moawiaab@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
