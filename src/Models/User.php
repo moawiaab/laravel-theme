@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 use Moawiaab\LaravelTheme\Models\Account;
+use Moawiaab\LaravelTheme\Models\PrivateLocker;
 use Moawiaab\LaravelTheme\Models\Role;
 use Moawiaab\LaravelTheme\Support\HasAdvancedFilter;
 use Spatie\MediaLibrary\HasMedia;

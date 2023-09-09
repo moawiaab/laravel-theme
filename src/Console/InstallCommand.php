@@ -56,10 +56,10 @@ class InstallCommand extends Command implements PromptsForMissingInput
         // }
 
         // set Middleware classes
-        $this->installMiddlewareAfter('SubstituteBindings::class', '\Moawiaab\Role\Http\Middleware\AuthGates::class');
+        $this->installMiddlewareAfter('SubstituteBindings::class', '\Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class');
 
         if ($this->argument('stack') === 'vuetify' || $this->argument('stack') === 'quasar') {
-            $this->runCommands(['php artisan ui:auth']);
+            $this->runCommands(['php artisan ui vue --auth']);
             $this->updateNodePackages(function ($packages) {
                 return [
                     "@types/node" => "^20.4.7",
@@ -78,7 +78,8 @@ class InstallCommand extends Command implements PromptsForMissingInput
                     "vue-chartjs" => "^5.2.0",
                     "nanoid" => "^4.0.2",
                     "chart.js" => "^4.3.3",
-                    "lodash" => "^4.17.21"
+                    "lodash" => "^4.17.21",
+                    "vue-router" => "^4.2.4"
                 ] + $packages;
             }, false);
 
@@ -87,6 +88,8 @@ class InstallCommand extends Command implements PromptsForMissingInput
             (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/tsconfig.json', resource_path('tsconfig.json'));
 
             (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Requests', app_path('Http/Requests'));
+
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/quasar/resources/views', resource_path('views'));
         }
         // Install Stack...
         if ($this->argument('stack') === 'vuetify') {
@@ -134,7 +137,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         copy(__DIR__ . '/../../stubs/quasar/vite.config.js', base_path('vite.config.js'));
         (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/quasar/resources/sass', resource_path('sass'));
         (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/quasar/resources/js', resource_path('js'));
-        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/quasar/resources/views', resource_path('views'));
+        
 
         
         $this->updateNodePackages(function ($packages) {
