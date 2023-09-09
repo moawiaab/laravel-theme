@@ -90,10 +90,10 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
             (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Requests', app_path('Http/Requests'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Controllers/Api', app_path('Http/Controllers/Api'));
-            (new Filesystem)->copyDirectory(__DIR__ . '/../Providers/RouteServiceProvider.php', app_path('Providers/RouteServiceProvider.php'));
-
+            
             (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/quasar/resources/views', resource_path('views'));
-
+            
+            copy(__DIR__ . '/../Providers/RouteServiceProvider.php', app_path('Providers/RouteServiceProvider.php'));
             copy(__DIR__ . '/../../routes/api.php', base_path('routes/api.php'));
             copy(__DIR__ . '/../../routes/web.php', base_path('routes/web.php'));
         }
