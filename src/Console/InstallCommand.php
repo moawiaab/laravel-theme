@@ -25,6 +25,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
     protected $signature = 'laravel-theme:install {stack : The development stack that should be installed (quasar,vuetify, api)}
                                                   {--dark : Indicate that dark mode support  be installed}
                                                   {--locker : Indicate that Treasury management mode support support be installed}
+                                                  {--expanse : Indicate that expanse management mode support support be installed}
                                                   {--client : Indicate that client management mode support  be installed}
                                                   {--supplier : Indicate that supplier management mode support  be installed}
                                                   {--product : Indicate that product management mode support  be installed}
