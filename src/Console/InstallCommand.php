@@ -90,8 +90,9 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
             (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Requests', app_path('Http/Requests'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Controllers/Api', app_path('Http/Controllers/Api'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../Providers/RouteServiceProvider.php', app_path('Providers/RouteServiceProvider.php'));
 
-            copy(__DIR__ . '/../Providers/RouteServiceProvider.php', app_path('Providers/RouteServiceProvider.php'));
+            
 
             (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/quasar/resources/views', resource_path('views'));
         }
@@ -172,7 +173,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         } elseif (file_exists(base_path('yarn.lock'))) {
             $this->runCommands(['yarn install', 'yarn run build']);
         } else {
-            $this->runCommands(['npm install', 'npm run build']);
+            $this->runCommands(['npm install --force', 'npm run build']);
         }
 
 
