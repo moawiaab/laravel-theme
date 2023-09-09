@@ -39,8 +39,6 @@ class LaravelThemeServiceProvider extends ServiceProvider
         ], 'role-migrations');
 
         copy(__DIR__ . '/Models/User.php', app_path('Models/User.php'));
-        copy(__DIR__ . '/../routes/api.php', base_path('routes/api.php'));
-        // copy(__DIR__ . '/../routes/web.php', base_path('routes/web.php'));
         copy(__DIR__ . '/../database/seeders/DatabaseSeeder.php', database_path('seeders/DatabaseSeeder.php'));
 
         
