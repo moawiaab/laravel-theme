@@ -32,7 +32,7 @@ import '@quasar/extras/animate/fadeOut.css'
 // Import Quasar css
 import 'quasar/src/css/index.sass'
 // import 'animate.css';
-import '../css/app.css'
+// import '../css/app.css'
 
 import "../sass/custom.scss"
 

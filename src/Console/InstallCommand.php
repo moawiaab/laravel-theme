@@ -100,80 +100,82 @@ class InstallCommand extends Command implements PromptsForMissingInput
         }
 
 
+
         if ($this->option('locker')) {
             if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
-                $this->replaceInFile('//locker', '" "', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '', database_path('seeders/PermissionSeeder.php'));
             } else {
-                $this->replaceInFile('//locker', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
             }
-            $this->replaceInFile('//locker', '" "', base_path('routes/api.php'));
+            $this->replaceInFile('//locker', '', base_path('routes/api.php'));
         }
 
         if ($this->option('expanse')) {
             if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
-                $this->replaceInFile('//expanse', '" "', database_path('seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//locker', '" "', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//expanse', '', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '', database_path('seeders/PermissionSeeder.php'));
             } else {
-                $this->replaceInFile('//expanse', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//locker', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//expanse', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
             }
-            $this->replaceInFile('//expanse', '" "', base_path('routes/api.php'));
-            $this->replaceInFile('//locker', '" "', base_path('routes/api.php'));
+            $this->replaceInFile('//expanse', '', base_path('routes/api.php'));
+            $this->replaceInFile('//locker', '', base_path('routes/api.php'));
         }
 
         if ($this->option('client')) {
             if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
-                $this->replaceInFile('//client', '" "', database_path('seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//locker', '" "', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//client', '', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '', database_path('seeders/PermissionSeeder.php'));
             } else {
-                $this->replaceInFile('//client', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//locker', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//client', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
             }
-            $this->replaceInFile('//client', '" "', base_path('routes/api.php'));
-            $this->replaceInFile('//locker', '" "', base_path('routes/api.php'));
+            $this->replaceInFile('//client', '', base_path('routes/api.php'));
+            $this->replaceInFile('//locker', '', base_path('routes/api.php'));
         }
 
         if ($this->option('supplier')) {
             if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
-                $this->replaceInFile('//supplier', '" "', database_path('seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//locker', '" "', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//supplier', '', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '', database_path('seeders/PermissionSeeder.php'));
             } else {
-                $this->replaceInFile('//supplier', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//locker', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//supplier', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
             }
-            $this->replaceInFile('//supplier', '" "', base_path('routes/api.php'));
-            $this->replaceInFile('//locker', '" "', base_path('routes/api.php'));
+            $this->replaceInFile('//supplier', '', base_path('routes/api.php'));
+            $this->replaceInFile('//locker', '', base_path('routes/api.php'));
         }
 
         if ($this->option('product')) {
             if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
-                $this->replaceInFile('//client', '" "', database_path('seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//supplier', '" "', database_path('seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//locker', '" "', database_path('seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//product', '" "', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//client', '', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//supplier', '', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//product', '', database_path('seeders/PermissionSeeder.php'));
             } else {
-                $this->replaceInFile('//client', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//supplier', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//locker', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//product', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//client', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//supplier', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//product', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
             }
-            $this->replaceInFile('//client', '" "', base_path('routes/api.php'));
-            $this->replaceInFile('//locker', '" "', base_path('routes/api.php'));
-            $this->replaceInFile('//supplier', '" "', base_path('routes/api.php'));
-            $this->replaceInFile('//product', '" "', base_path('routes/api.php'));
+            $this->replaceInFile('//client', '', base_path('routes/api.php'));
+            $this->replaceInFile('//locker', '', base_path('routes/api.php'));
+            $this->replaceInFile('//supplier', '', base_path('routes/api.php'));
+            $this->replaceInFile('//product', '', base_path('routes/api.php'));
         }
 
-        // Install Stack...
-        if ($this->argument('stack') === 'vuetify') {
-            if (!$this->installVuetifyStack()) {
-                return 1;
-            }
-        } elseif ($this->argument('stack') === 'quasar') {
-            if (!$this->installQuasarStack()) {
-                return 1;
-            }
-        }
 
+
+                // Install Stack...
+                if ($this->argument('stack') === 'vuetify') {
+                    if (!$this->installVuetifyStack()) {
+                        return 1;
+                    }
+                } elseif ($this->argument('stack') === 'quasar') {
+                    if (!$this->installQuasarStack()) {
+                        return 1;
+                    }
+                }
         // if (
         //     !$this->option('locker')
         //     && !$this->option('client')
