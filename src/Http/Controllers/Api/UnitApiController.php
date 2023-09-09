@@ -3,19 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\UnitRequest;
-use App\Http\Resources\Admin\AbilityResource;
-use App\Http\Resources\Admin\PermissionResource;
-use App\Http\Resources\CategoryResource;
-use App\Http\Resources\ProductsResource;
-use App\Models\Category;
-use App\Models\Unit;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request as FacadesRequest;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\AbilityResource;
+use Moawiaab\LaravelTheme\Http\Resources\CategoryResource;
+use Moawiaab\LaravelTheme\Http\Resources\ProductsResource;
+use Moawiaab\LaravelTheme\Models\Category;
+use Moawiaab\LaravelTheme\Models\Unit;
 
 class UnitApiController extends Controller
 {

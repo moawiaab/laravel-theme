@@ -5,12 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBudgetNameRequest;
 use App\Http\Requests\UpdateBudgetNameRequest;
-use App\Http\Resources\BudgetNameResource;
-use App\Models\BudgetName;
-
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
+use Moawiaab\LaravelTheme\Http\Resources\BudgetNameResource;
+use Moawiaab\LaravelTheme\Models\BudgetName;
 
 class BudgetNameApiController extends Controller
 {

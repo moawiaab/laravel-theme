@@ -3,27 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DriverRequest;
 use App\Http\Requests\StoresRequest;
-use App\Http\Requests\WeightRequest;
-use App\Http\Resources\ProductsResource;
-use App\Http\Resources\ProductStoreResource;
-use App\Http\Resources\StoreItemResource;
-use App\Http\Resources\StoresResource;
-use App\Models\Dirver;
-use App\Models\ItemOrderWard;
-use App\Models\OrderItem;
-use App\Models\Product;
-use App\Models\ProductStore;
-use App\Models\Store;
-use App\Models\StoreProduct;
-use App\Models\SupplierOrderItem;
-use App\Models\Weight;
-use App\Models\WeightItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request as FacadesRequest;
+use Moawiaab\LaravelTheme\Http\Resources\ProductStoreResource;
+use Moawiaab\LaravelTheme\Http\Resources\StoreItemResource;
+use Moawiaab\LaravelTheme\Http\Resources\StoresResource;
+use Moawiaab\LaravelTheme\Models\OrderItem;
+use Moawiaab\LaravelTheme\Models\Product;
+use Moawiaab\LaravelTheme\Models\ProductStore;
+use Moawiaab\LaravelTheme\Models\Store;
+use Moawiaab\LaravelTheme\Models\SupplierOrderItem;
 
 class StoreApiController extends Controller
 {

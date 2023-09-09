@@ -5,17 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AmountRequest;
 use App\Http\Requests\SupplierRequest;
-use App\Http\Resources\Admin\AmountResources;
-use App\Http\Resources\SupplierResource;
-use App\Models\Check;
-use App\Models\FinancialSupplier;
-use App\Models\Supplier;
-use App\Services\LockerService;
-use Exception;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\AmountResources;
+use Moawiaab\LaravelTheme\Http\Resources\SupplierResource;
+use Moawiaab\LaravelTheme\Models\Check;
+use Moawiaab\LaravelTheme\Models\FinancialSupplier;
+use Moawiaab\LaravelTheme\Models\Supplier;
+use Moawiaab\LaravelTheme\Services\LockerService;
 
 class SupplierApiController extends Controller
 {

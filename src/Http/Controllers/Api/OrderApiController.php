@@ -4,24 +4,22 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSuppOrderRequest;
-use App\Http\Resources\Admin\BackOrderResource;
-use App\Http\Resources\Admin\ProductClientOrderResource;
-use App\Http\Resources\Admin\ProductOrderResource;
-use App\Http\Resources\OrdersResource;
-use App\Models\Back;
-use App\Models\Client;
-use App\Models\FinancialClient;
-use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\PrivateLocker;
-use App\Models\Product;
-use App\Models\Store;
-use App\Models\StoreProduct;
-use App\Services\LockerService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Request as FacadesRequest;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\BackOrderResource;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\ProductClientOrderResource;
+use Moawiaab\LaravelTheme\Http\Resources\OrdersResource;
+use Moawiaab\LaravelTheme\Models\Back;
+use Moawiaab\LaravelTheme\Models\Client;
+use Moawiaab\LaravelTheme\Models\FinancialClient;
+use Moawiaab\LaravelTheme\Models\Order;
+use Moawiaab\LaravelTheme\Models\OrderItem;
+use Moawiaab\LaravelTheme\Models\PrivateLocker;
+use Moawiaab\LaravelTheme\Models\Store;
+use Moawiaab\LaravelTheme\Models\StoreProduct;
+use Moawiaab\LaravelTheme\Services\LockerService;
 
 class OrderApiController extends Controller
 {

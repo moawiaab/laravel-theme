@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBudgetRequest;
 use App\Http\Requests\UpdateBudgetRequest;
-use App\Http\Resources\BudgetResource;
-use App\Models\Budget;
-use App\Models\BudgetName;
-use App\Models\Stage;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
+use Moawiaab\LaravelTheme\Http\Resources\BudgetResource;
+use Moawiaab\LaravelTheme\Models\Budget;
+use Moawiaab\LaravelTheme\Models\BudgetName;
+use Moawiaab\LaravelTheme\Models\Stage;
 
 class BudgetApiController extends Controller
 {

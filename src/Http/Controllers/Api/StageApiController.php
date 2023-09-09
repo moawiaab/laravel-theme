@@ -5,14 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStageRequest;
 use App\Http\Requests\UpdateStageRequest;
-use App\Http\Resources\Admin\StageResource;
-use App\Models\Account;
-use App\Models\Shop;
-use App\Models\Stage;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\StageResource;
+use Moawiaab\LaravelTheme\Models\Account;
+use Moawiaab\LaravelTheme\Models\Stage;
 
 class StageApiController extends Controller
 {

@@ -5,17 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePrivateLockerRequest;
 use App\Http\Requests\UpdatePrivateLockerRequest;
-use App\Http\Resources\Admin\AmountResources;
-use App\Http\Resources\Admin\Lists\OpenDaysResources;
-use App\Http\Resources\Admin\OpenDaysResources as AdminOpenDaysResources;
-use App\Http\Resources\Admin\PrivateLockerResource;
-use App\Models\OpenDay;
-use App\Models\PrivateLocker;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\PrivateLockerResource;
+use Moawiaab\LaravelTheme\Models\OpenDay;
+use Moawiaab\LaravelTheme\Models\PrivateLocker;
 
 class PrivateLockerApiController extends Controller
 {

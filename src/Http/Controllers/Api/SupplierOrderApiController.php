@@ -4,20 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSuppOrderRequest;
-use App\Http\Resources\Admin\ProductOrderResource;
-use App\Http\Resources\ProductsResource;
-use App\Http\Resources\SupplierOrdersResource;
-use App\Models\Client;
-use App\Models\Product;
-use App\Models\Store;
-use App\Models\StoreProduct;
-use App\Models\Supplier;
-use App\Models\SupplierOrder;
-use App\Models\SupplierOrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request as FacadesRequest;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\ProductOrderResource;
+use Moawiaab\LaravelTheme\Http\Resources\SupplierOrdersResource;
+use Moawiaab\LaravelTheme\Models\Client;
+use Moawiaab\LaravelTheme\Models\Product;
+use Moawiaab\LaravelTheme\Models\Store;
+use Moawiaab\LaravelTheme\Models\StoreProduct;
+use Moawiaab\LaravelTheme\Models\Supplier;
+use Moawiaab\LaravelTheme\Models\SupplierOrder;
+use Moawiaab\LaravelTheme\Models\SupplierOrderItem;
 
 class SupplierOrderApiController extends Controller
 {

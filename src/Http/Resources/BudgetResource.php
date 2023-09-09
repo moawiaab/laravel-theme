@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace Moawiaab\LaravelTheme\Http\Resources;
 
 use App\Http\Resources\Admin\ExpanseResource;
 use Illuminate\Http\Request;

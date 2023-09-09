@@ -3,13 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreCheckRequest;
-use App\Http\Requests\UpdateCheckRequest;
-use App\Http\Resources\Admin\AbilityResource;
-use App\Http\Resources\Admin\CheckResource;
-use App\Models\Check;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Request;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\CheckResource;
+use Moawiaab\LaravelTheme\Models\Check;
 
 class CheckApiController extends Controller
 {

@@ -2,6 +2,7 @@
 
 namespace Moawiaab\LaravelTheme\Models;
 
+use App\Models\User;
 use \DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

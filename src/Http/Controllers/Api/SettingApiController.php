@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SettingsRequest;
-use App\Http\Resources\Admin\AbilityResource;
-use App\Http\Resources\Admin\SettingsResource;
-use App\Models\Setting;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\SettingsResource;
+use Moawiaab\LaravelTheme\Models\Setting;
 
 class SettingApiController extends Controller
 {

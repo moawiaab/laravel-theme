@@ -2,7 +2,7 @@ export const Users = [
     { name: "name", required: true, label: "g.user_name", align: "left", field: "name", format: (val: any) => `${val}`, sortable: true, },
     { name: "email", align: "left", label: "g.email", field: "email", sortable: true, },
     { name: "phone", label: "g.phone_number", field: "phone", sortable: true, align: "left", },
-    { name: "role", label: "input.all.role", field: "role", align: "left", },
+    { name: "role", label: "input.role.name", field: "role", align: "left", },
     { name: "account", label: "input.account.name", field: "account", align: "left" },
     { name: "created_at", label: "g.created_at", field: "created_at", align: "left" },
     { name: "options", label: "g.options", field: "options" }

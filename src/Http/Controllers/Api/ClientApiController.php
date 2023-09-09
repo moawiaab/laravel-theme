@@ -5,19 +5,17 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AmountRequest;
 use App\Http\Requests\ClientRequest;
-use App\Http\Resources\Admin\AmountResources;
-use App\Http\Resources\ClientResource;
-use App\Http\Resources\OrdersResource;
-use App\Models\Check;
-use App\Models\Client;
-use App\Models\FinancialClient;
-use App\Models\Order;
-use App\Services\LockerService;
 use Exception;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\AmountResources;
+use Moawiaab\LaravelTheme\Http\Resources\ClientResource;
+use Moawiaab\LaravelTheme\Models\Check;
+use Moawiaab\LaravelTheme\Models\Client;
+use Moawiaab\LaravelTheme\Models\FinancialClient;
+use Moawiaab\LaravelTheme\Services\LockerService;
 
 class ClientApiController extends Controller
 {

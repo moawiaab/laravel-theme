@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
-use App\Http\Resources\Admin\PermissionResource;
-use App\Http\Resources\ProductsResource;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Unit;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request as FacadesRequest;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\PermissionResource;
+use Moawiaab\LaravelTheme\Http\Resources\ProductsResource;
+use Moawiaab\LaravelTheme\Models\Category;
+use Moawiaab\LaravelTheme\Models\Product;
+use Moawiaab\LaravelTheme\Models\Unit;
 
 class ProductApiController extends Controller
 {

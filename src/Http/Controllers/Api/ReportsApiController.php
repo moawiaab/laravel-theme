@@ -3,25 +3,23 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Admin\AmountResources;
-use App\Http\Resources\Admin\BackOrderResource;
-use App\Http\Resources\Admin\ExpanseItemsResources;
-use App\Http\Resources\ItemResource;
-use App\Http\Resources\OrdersResource;
-use App\Http\Resources\ProductStoreShowResource;
-use App\Models\Account;
-use App\Models\Back;
-use App\Models\Client;
-use App\Models\Expanse;
-use App\Models\FinancialClient;
-use App\Models\FinancialSupplier;
-use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\Product;
-use App\Models\ProductStore;
-use App\Models\Supplier;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\AmountResources;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\BackOrderResource;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\ExpanseItemsResources;
+use Moawiaab\LaravelTheme\Http\Resources\ItemResource;
+use Moawiaab\LaravelTheme\Http\Resources\OrdersResource;
+use Moawiaab\LaravelTheme\Http\Resources\ProductStoreShowResource;
+use Moawiaab\LaravelTheme\Models\Account;
+use Moawiaab\LaravelTheme\Models\Back;
+use Moawiaab\LaravelTheme\Models\Client;
+use Moawiaab\LaravelTheme\Models\Expanse;
+use Moawiaab\LaravelTheme\Models\FinancialClient;
+use Moawiaab\LaravelTheme\Models\FinancialSupplier;
+use Moawiaab\LaravelTheme\Models\Order;
+use Moawiaab\LaravelTheme\Models\OrderItem;
+use Moawiaab\LaravelTheme\Models\ProductStore;
+use Moawiaab\LaravelTheme\Models\Supplier;
 
 class ReportsApiController extends Controller
 {

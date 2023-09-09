@@ -40,6 +40,7 @@ export default {
             admin: 'مدير الفرع',
             beneficiary: 'المستفيد ',
             role_count: 'عدد الصلاحيات',
+            user_count: 'عدد المستخدمين',
         },
         expanse: {
             title: 'قائمة المصروفات',

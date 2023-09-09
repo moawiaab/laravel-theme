@@ -23,7 +23,11 @@ class InstallCommand extends Command implements PromptsForMissingInput
      * @var string
      */
     protected $signature = 'laravel-theme:install {stack : The development stack that should be installed (quasar,vuetify, api)}
-                                                  {--dark : Indicate that dark mode support should be installed}
+                                                  {--dark : Indicate that dark mode support  be installed}
+                                                  {--locker : Indicate that Treasury management mode support support be installed}
+                                                  {--client : Indicate that client management mode support  be installed}
+                                                  {--supplier : Indicate that supplier management mode support  be installed}
+                                                  {--product : Indicate that product management mode support  be installed}
                                                   {--lang : Make Arabic the default language}
                                                   {--composer=global : Absolute path to the Composer binary which should be used to install packages}';
 
@@ -46,14 +50,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
             return 1;
         }
-
-        // Publish...
-        // $this->callSilent('vendor:publish', ['--tag' => 'jetstream-config', '--force' => true]);
-
-        // if (file_exists(resource_path('views/welcome.blade.php'))) {
-        //     $this->replaceInFile('/home', '/dashboard', resource_path('views/welcome.blade.php'));
-        //     $this->replaceInFile('Home', 'Dashboard', resource_path('views/welcome.blade.php'));
-        // }
 
         // set Middleware classes
         $this->installMiddlewareAfter('SubstituteBindings::class', '\Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class');
@@ -85,22 +81,87 @@ class InstallCommand extends Command implements PromptsForMissingInput
             }, false);
 
 
-            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/tsconfig.config.json', resource_path('tsconfig.config.json'));
-            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/tsconfig.json', resource_path('tsconfig.json'));
+            (new Filesystem)->copy(__DIR__ . '/../../stubs/tsconfig.config.json', resource_path('tsconfig.config.json'));
+            (new Filesystem)->copy(__DIR__ . '/../../stubs/tsconfig.json', resource_path('tsconfig.json'));
 
             (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Requests', app_path('Http/Requests'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Controllers/Api', app_path('Http/Controllers/Api'));
-            
+
             (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/quasar/resources/views', resource_path('views'));
-            
+
             copy(__DIR__ . '/../Providers/RouteServiceProvider.php', app_path('Providers/RouteServiceProvider.php'));
             copy(__DIR__ . '/../../routes/api.php', base_path('routes/api.php'));
             copy(__DIR__ . '/../../routes/web.php', base_path('routes/web.php'));
 
 
-        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/public/img', base_path('public/img'));
-        (new Filesystem)->copy(__DIR__ . '/../../stubs/public/Khalid-Art-Bold.ttf', base_path('public/Khalid-Art-Bold.ttf'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/public/img', base_path('public/img'));
+            (new Filesystem)->copy(__DIR__ . '/../../stubs/public/Khalid-Art-Bold.ttf', base_path('public/Khalid-Art-Bold.ttf'));
         }
+
+
+        if ($this->option('locker')) {
+            if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
+                $this->replaceInFile('//locker', '" "', database_path('seeders/PermissionSeeder.php'));
+            } else {
+                $this->replaceInFile('//locker', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+            }
+            $this->replaceInFile('//locker', '" "', base_path('routes/api.php'));
+        }
+
+        if ($this->option('expanse')) {
+            if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
+                $this->replaceInFile('//expanse', '" "', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '" "', database_path('seeders/PermissionSeeder.php'));
+            } else {
+                $this->replaceInFile('//expanse', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+            }
+            $this->replaceInFile('//expanse', '" "', base_path('routes/api.php'));
+            $this->replaceInFile('//locker', '" "', base_path('routes/api.php'));
+        }
+
+        if ($this->option('client')) {
+            if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
+                $this->replaceInFile('//client', '" "', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '" "', database_path('seeders/PermissionSeeder.php'));
+            } else {
+                $this->replaceInFile('//client', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+            }
+            $this->replaceInFile('//client', '" "', base_path('routes/api.php'));
+            $this->replaceInFile('//locker', '" "', base_path('routes/api.php'));
+        }
+
+        if ($this->option('supplier')) {
+            if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
+                $this->replaceInFile('//supplier', '" "', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '" "', database_path('seeders/PermissionSeeder.php'));
+            } else {
+                $this->replaceInFile('//supplier', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+            }
+            $this->replaceInFile('//supplier', '" "', base_path('routes/api.php'));
+            $this->replaceInFile('//locker', '" "', base_path('routes/api.php'));
+        }
+
+        if ($this->option('product')) {
+            if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
+                $this->replaceInFile('//client', '" "', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//supplier', '" "', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '" "', database_path('seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//product', '" "', database_path('seeders/PermissionSeeder.php'));
+            } else {
+                $this->replaceInFile('//client', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//supplier', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//locker', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+                $this->replaceInFile('//product', '" "', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+            }
+            $this->replaceInFile('//client', '" "', base_path('routes/api.php'));
+            $this->replaceInFile('//locker', '" "', base_path('routes/api.php'));
+            $this->replaceInFile('//supplier', '" "', base_path('routes/api.php'));
+            $this->replaceInFile('//product', '" "', base_path('routes/api.php'));
+        }
+
         // Install Stack...
         if ($this->argument('stack') === 'vuetify') {
             if (!$this->installVuetifyStack()) {
@@ -109,6 +170,74 @@ class InstallCommand extends Command implements PromptsForMissingInput
         } elseif ($this->argument('stack') === 'quasar') {
             if (!$this->installQuasarStack()) {
                 return 1;
+            }
+        }
+
+        if (
+            !$this->option('locker')
+            && !$this->option('client')
+            && !$this->option('supplier')
+            && !$this->option('product')
+            && !$this->option('expanse')
+        ) {
+            unlink(app_path('Http/Controllers/Api/ClientApiController.php'));
+            unlink(app_path('Http/Controllers/Api/BudgetApiController.php'));
+            unlink(app_path('Http/Controllers/Api/BudgetNameApiController.php'));
+            unlink(app_path('Http/Controllers/Api/CategoryApiController.php'));
+            unlink(app_path('Http/Controllers/Api/CheckApiController.php'));
+            unlink(app_path('Http/Controllers/Api/ExpanseApiController.php'));
+            unlink(app_path('Http/Controllers/Api/OrderApiController.php'));
+            unlink(app_path('Http/Controllers/Api/PrivateLockerApiController.php'));
+            unlink(app_path('Http/Controllers/Api/ProductApiController.php'));
+            unlink(app_path('Http/Controllers/Api/PublicTreasuryApiController.php'));
+            unlink(app_path('Http/Controllers/Api/ReportsApiController.php'));
+            unlink(app_path('Http/Controllers/Api/StageApiController.php'));
+            unlink(app_path('Http/Controllers/Api/StoreApiController.php'));
+            unlink(app_path('Http/Controllers/Api/SupplierApiController.php'));
+            unlink(app_path('Http/Controllers/Api/SupplierOrderApiController.php'));
+            unlink(app_path('Http/Controllers/Api/UnitApiController.php'));
+        } else {
+            if (!$this->option('expanse')) {
+                if (file_exists(app_path('Http/Controllers/Api/ExpanseApiController.php'))) {
+                    unlink(app_path('Http/Controllers/Api/ExpanseApiController.php'));
+                }
+                if (file_exists(app_path('Http/Controllers/Api/BudgetApiController.php'))) {
+                    unlink(app_path('Http/Controllers/Api/BudgetApiController.php'));
+                }
+                if (file_exists(app_path('Http/Controllers/Api/BudgetNameApiController.php'))) {
+                    unlink(app_path('Http/Controllers/Api/BudgetNameApiController.php'));
+                }
+            }
+            if (!$this->option('client') && !$this->option('product')) {
+                if (file_exists(app_path('Http/Controllers/Api/ClientApiController.php'))) {
+                    unlink(app_path('Http/Controllers/Api/ClientApiController.php'));
+                }
+            }
+            if (!$this->option('supplier') && !$this->option('product')) {
+                if (file_exists(app_path('Http/Controllers/Api/SupplierApiController.php'))) {
+                    unlink(app_path('Http/Controllers/Api/SupplierApiController.php'));
+                }
+            }
+            if (!$this->option('product')) {
+                if (file_exists(app_path('Http/Controllers/Api/CategoryApiController.php'))) {
+                    unlink(app_path('Http/Controllers/Api/CategoryApiController.php'));
+                }
+                if (file_exists(app_path('Http/Controllers/Api/OrderApiController.php'))) {
+                    unlink(app_path('Http/Controllers/Api/OrderApiController.php'));
+                }
+                if (file_exists(app_path('Http/Controllers/Api/ProductApiController.php'))) {
+                    unlink(app_path('Http/Controllers/Api/ProductApiController.php'));
+                }
+
+                if (file_exists(app_path('Http/Controllers/Api/StoreApiController.php'))) {
+                    unlink(app_path('Http/Controllers/Api/StoreApiController.php'));
+                }
+                if (file_exists(app_path('Http/Controllers/Api/UnitApiController.php'))) {
+                    unlink(app_path('Http/Controllers/Api/UnitApiController.php'));
+                }
+                if (file_exists(app_path('Http/Controllers/Api/SupplierOrderApiController.php'))) {
+                    unlink(app_path('Http/Controllers/Api/SupplierOrderApiController.php'));
+                }
             }
         }
     }
@@ -147,7 +276,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         copy(__DIR__ . '/../../stubs/quasar/vite.config.js', base_path('vite.config.js'));
         (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/quasar/resources/sass', resource_path('sass'));
         (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/quasar/resources/js', resource_path('js'));
-        
+
         $this->updateNodePackages(function ($packages) {
             return [
                 "@quasar/vite-plugin" => "^1.4.1",
@@ -168,8 +297,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
             $this->replaceInFile('"en-US";', '"ar";', resource_path('js/app.ts'));
             $this->replaceInFile('rtl: false', 'rtl: true', resource_path('js/app.js'));
         }
-
-
 
         if (file_exists(base_path('pnpm-lock.yaml'))) {
             $this->runCommands(['pnpm install', 'pnpm run build']);
@@ -301,8 +428,11 @@ class InstallCommand extends Command implements PromptsForMissingInput
         collect(multiselect(
             label: 'Would you like any optional features?',
             options: collect([
-                'pinia' => 'pinia store',
-                'persistedstate' => 'pinia plugin persistedstate',
+                'locker' => 'Treasury management',
+                'expanse' => 'Expenses and budget',
+                'client' => 'Customer management',
+                'supplier' => 'Supplier management',
+                'product' => 'Product management',
             ])->when(
                 $input->getArgument('stack') === 'vuetify',
                 fn ($options) => $options->put('dark', 'Dark mode')

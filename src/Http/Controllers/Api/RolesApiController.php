@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
-use App\Http\Resources\Admin\RoleResource;
-use App\Models\Permission;
-use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request as FacadesRequest;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\RoleResource;
+use Moawiaab\LaravelTheme\Models\Permission;
+use Moawiaab\LaravelTheme\Models\Role;
 
 class RolesApiController extends Controller
 {

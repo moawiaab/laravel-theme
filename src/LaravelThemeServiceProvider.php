@@ -75,6 +75,7 @@ class LaravelThemeServiceProvider extends ServiceProvider
         $kernel = $this->app->make(Kernel::class);
 
         $kernel->appendMiddlewareToGroup('web', AuthGates::class);
+        $kernel->appendMiddlewareToGroup('api', AuthGates::class);
         $kernel->appendToMiddlewarePriority(AuthGates::class);
 
         // if (class_exists(HandleInertiaRequests::class)) {
