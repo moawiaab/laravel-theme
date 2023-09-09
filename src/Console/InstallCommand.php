@@ -142,6 +142,9 @@ class InstallCommand extends Command implements PromptsForMissingInput
         copy(__DIR__ . '/../../stubs/quasar/vite.config.js', base_path('vite.config.js'));
         (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/quasar/resources/sass', resource_path('sass'));
         (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/quasar/resources/js', resource_path('js'));
+
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/public/img', base_path('public/img'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/public/Khalid-Art-Bold.ttf', base_path('public/Khalid-Art-Bold.ttf'));
         
 
         
