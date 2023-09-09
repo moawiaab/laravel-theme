@@ -14,6 +14,13 @@
             "email": "moawiaab@gmail.com"
         }
     ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Moawiaab\\LaravelTheme\\LaravelThemeServiceProvider"
+            ]
+        }
+    },
     "minimum-stability": "dev",
     "require": {
         "laravel/ui": "^4.2",
