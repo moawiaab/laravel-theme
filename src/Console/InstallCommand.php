@@ -173,73 +173,73 @@ class InstallCommand extends Command implements PromptsForMissingInput
             }
         }
 
-        if (
-            !$this->option('locker')
-            && !$this->option('client')
-            && !$this->option('supplier')
-            && !$this->option('product')
-            && !$this->option('expanse')
-        ) {
-            unlink(app_path('Http/Controllers/Api/ClientApiController.php'));
-            unlink(app_path('Http/Controllers/Api/BudgetApiController.php'));
-            unlink(app_path('Http/Controllers/Api/BudgetNameApiController.php'));
-            unlink(app_path('Http/Controllers/Api/CategoryApiController.php'));
-            unlink(app_path('Http/Controllers/Api/CheckApiController.php'));
-            unlink(app_path('Http/Controllers/Api/ExpanseApiController.php'));
-            unlink(app_path('Http/Controllers/Api/OrderApiController.php'));
-            unlink(app_path('Http/Controllers/Api/PrivateLockerApiController.php'));
-            unlink(app_path('Http/Controllers/Api/ProductApiController.php'));
-            unlink(app_path('Http/Controllers/Api/PublicTreasuryApiController.php'));
-            unlink(app_path('Http/Controllers/Api/ReportsApiController.php'));
-            unlink(app_path('Http/Controllers/Api/StageApiController.php'));
-            unlink(app_path('Http/Controllers/Api/StoreApiController.php'));
-            unlink(app_path('Http/Controllers/Api/SupplierApiController.php'));
-            unlink(app_path('Http/Controllers/Api/SupplierOrderApiController.php'));
-            unlink(app_path('Http/Controllers/Api/UnitApiController.php'));
-        } else {
-            if (!$this->option('expanse')) {
-                if (file_exists(app_path('Http/Controllers/Api/ExpanseApiController.php'))) {
-                    unlink(app_path('Http/Controllers/Api/ExpanseApiController.php'));
-                }
-                if (file_exists(app_path('Http/Controllers/Api/BudgetApiController.php'))) {
-                    unlink(app_path('Http/Controllers/Api/BudgetApiController.php'));
-                }
-                if (file_exists(app_path('Http/Controllers/Api/BudgetNameApiController.php'))) {
-                    unlink(app_path('Http/Controllers/Api/BudgetNameApiController.php'));
-                }
-            }
-            if (!$this->option('client') && !$this->option('product')) {
-                if (file_exists(app_path('Http/Controllers/Api/ClientApiController.php'))) {
-                    unlink(app_path('Http/Controllers/Api/ClientApiController.php'));
-                }
-            }
-            if (!$this->option('supplier') && !$this->option('product')) {
-                if (file_exists(app_path('Http/Controllers/Api/SupplierApiController.php'))) {
-                    unlink(app_path('Http/Controllers/Api/SupplierApiController.php'));
-                }
-            }
-            if (!$this->option('product')) {
-                if (file_exists(app_path('Http/Controllers/Api/CategoryApiController.php'))) {
-                    unlink(app_path('Http/Controllers/Api/CategoryApiController.php'));
-                }
-                if (file_exists(app_path('Http/Controllers/Api/OrderApiController.php'))) {
-                    unlink(app_path('Http/Controllers/Api/OrderApiController.php'));
-                }
-                if (file_exists(app_path('Http/Controllers/Api/ProductApiController.php'))) {
-                    unlink(app_path('Http/Controllers/Api/ProductApiController.php'));
-                }
+        // if (
+        //     !$this->option('locker')
+        //     && !$this->option('client')
+        //     && !$this->option('supplier')
+        //     && !$this->option('product')
+        //     && !$this->option('expanse')
+        // ) {
+        //     unlink(app_path('Http/Controllers/Api/ClientApiController.php'));
+        //     unlink(app_path('Http/Controllers/Api/BudgetApiController.php'));
+        //     unlink(app_path('Http/Controllers/Api/BudgetNameApiController.php'));
+        //     unlink(app_path('Http/Controllers/Api/CategoryApiController.php'));
+        //     unlink(app_path('Http/Controllers/Api/CheckApiController.php'));
+        //     unlink(app_path('Http/Controllers/Api/ExpanseApiController.php'));
+        //     unlink(app_path('Http/Controllers/Api/OrderApiController.php'));
+        //     unlink(app_path('Http/Controllers/Api/PrivateLockerApiController.php'));
+        //     unlink(app_path('Http/Controllers/Api/ProductApiController.php'));
+        //     unlink(app_path('Http/Controllers/Api/PublicTreasuryApiController.php'));
+        //     unlink(app_path('Http/Controllers/Api/ReportsApiController.php'));
+        //     unlink(app_path('Http/Controllers/Api/StageApiController.php'));
+        //     unlink(app_path('Http/Controllers/Api/StoreApiController.php'));
+        //     unlink(app_path('Http/Controllers/Api/SupplierApiController.php'));
+        //     unlink(app_path('Http/Controllers/Api/SupplierOrderApiController.php'));
+        //     unlink(app_path('Http/Controllers/Api/UnitApiController.php'));
+        // } else {
+        //     if (!$this->option('expanse')) {
+        //         if (file_exists(app_path('Http/Controllers/Api/ExpanseApiController.php'))) {
+        //             unlink(app_path('Http/Controllers/Api/ExpanseApiController.php'));
+        //         }
+        //         if (file_exists(app_path('Http/Controllers/Api/BudgetApiController.php'))) {
+        //             unlink(app_path('Http/Controllers/Api/BudgetApiController.php'));
+        //         }
+        //         if (file_exists(app_path('Http/Controllers/Api/BudgetNameApiController.php'))) {
+        //             unlink(app_path('Http/Controllers/Api/BudgetNameApiController.php'));
+        //         }
+        //     }
+        //     if (!$this->option('client') && !$this->option('product')) {
+        //         if (file_exists(app_path('Http/Controllers/Api/ClientApiController.php'))) {
+        //             unlink(app_path('Http/Controllers/Api/ClientApiController.php'));
+        //         }
+        //     }
+        //     if (!$this->option('supplier') && !$this->option('product')) {
+        //         if (file_exists(app_path('Http/Controllers/Api/SupplierApiController.php'))) {
+        //             unlink(app_path('Http/Controllers/Api/SupplierApiController.php'));
+        //         }
+        //     }
+        //     if (!$this->option('product')) {
+        //         if (file_exists(app_path('Http/Controllers/Api/CategoryApiController.php'))) {
+        //             unlink(app_path('Http/Controllers/Api/CategoryApiController.php'));
+        //         }
+        //         if (file_exists(app_path('Http/Controllers/Api/OrderApiController.php'))) {
+        //             unlink(app_path('Http/Controllers/Api/OrderApiController.php'));
+        //         }
+        //         if (file_exists(app_path('Http/Controllers/Api/ProductApiController.php'))) {
+        //             unlink(app_path('Http/Controllers/Api/ProductApiController.php'));
+        //         }
 
-                if (file_exists(app_path('Http/Controllers/Api/StoreApiController.php'))) {
-                    unlink(app_path('Http/Controllers/Api/StoreApiController.php'));
-                }
-                if (file_exists(app_path('Http/Controllers/Api/UnitApiController.php'))) {
-                    unlink(app_path('Http/Controllers/Api/UnitApiController.php'));
-                }
-                if (file_exists(app_path('Http/Controllers/Api/SupplierOrderApiController.php'))) {
-                    unlink(app_path('Http/Controllers/Api/SupplierOrderApiController.php'));
-                }
-            }
-        }
+        //         if (file_exists(app_path('Http/Controllers/Api/StoreApiController.php'))) {
+        //             unlink(app_path('Http/Controllers/Api/StoreApiController.php'));
+        //         }
+        //         if (file_exists(app_path('Http/Controllers/Api/UnitApiController.php'))) {
+        //             unlink(app_path('Http/Controllers/Api/UnitApiController.php'));
+        //         }
+        //         if (file_exists(app_path('Http/Controllers/Api/SupplierOrderApiController.php'))) {
+        //             unlink(app_path('Http/Controllers/Api/SupplierOrderApiController.php'));
+        //         }
+        //     }
+        // }
     }
 
     /**
