@@ -67,6 +67,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
                     "@vue/tsconfig" => "^0.4.0",
                     "typescript" => "^5.1.6",
                     "vue-tsc" => "^1.8.8",
+                    "autoprefixer" => "^10.4.12",
                     'sass' => "^1.66.1"
                 ] + $packages;
             });
@@ -88,6 +89,9 @@ class InstallCommand extends Command implements PromptsForMissingInput
             (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/tsconfig.json', resource_path('tsconfig.json'));
 
             (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Requests', app_path('Http/Requests'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Controllers/Api', app_path('Http/Controllers/Api'));
+
+            copy(__DIR__ . '/../Http/Providers/RouteServiceProvider.php', app_path('Http/Providers/RouteServiceProvider.php'));
 
             (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/quasar/resources/views', resource_path('views'));
         }
