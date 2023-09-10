@@ -12,7 +12,7 @@
                     class="form-control"
                     type="search"
                     name="search"
-                    placeholder="ابحث هنا"
+                    :placeholder="$t('g.search')"
                     :value="query.s"
                     @input="debounceSearch($event.target.value)"
                     @focus="focus = true"

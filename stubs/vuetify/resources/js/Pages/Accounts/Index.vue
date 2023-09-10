@@ -21,12 +21,12 @@ const model = useSinglePage();
 pages.$reset();
 pages.setup("accounts");
 const headers: import("vue3-easy-data-table").Header[] = [
-  { text: "اسم الفرع", value: "name", width: 200, sortable: true },
-  { text: "تفاصيل الفرع", value: "details", width: 200 },
-  { text: "رقم الهاتف", value: "phone", sortable: true },
-  { text: "عدد المستخدمين", value: "user", sortable: true },
-  { text: "عدد الصلاحيات", value: "role" },
-  { text: "تاريخ الإنشاء", value: "created_at", sortable: true }, //
+  { text: 'input.account.name', value: "name", width: 200, sortable: true },
+  { text: "g.details", value: "details", width: 200 },
+  { text: "g.phone_number", value: "phone", sortable: true },
+  { text: "input.account.user_count", value: "user", sortable: true },
+  { text: "input.account.role_count", value: "role" },
+  { text: "g.created_at", value: "created_at", sortable: true }, //
 //   { text: "إعدادات", value: "operation", width: 150 },
 ];
 </script>

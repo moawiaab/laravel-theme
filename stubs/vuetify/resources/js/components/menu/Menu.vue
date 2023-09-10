@@ -11,7 +11,7 @@
                 <template v-slot:activator="{ props }">
                     <v-list-item
                         v-bind="props"
-                        :title="item.text"
+                        :title="$t(item.text)"
                         :prepend-icon="item.icon"
                     ></v-list-item>
                 </template>
@@ -20,7 +20,7 @@
                     v-for="(i, id) in item.children"
                     :key="id"
                     :value="i.text"
-                    :title="i.text"
+                    :title="$t(i.text)"
                     :prepend-icon="i.icon"
                     :to="i.url"
                     active-color="primary"
@@ -29,7 +29,7 @@
             <template v-else>
                 <v-list-item
                     :prepend-icon="item.icon"
-                    :title="item.text"
+                    :title="$t(item.text)"
                     :key="item.url"
                     :to="item.url"
                     active-color="primary"
@@ -60,9 +60,6 @@ export default {
 
 <style lang="scss">
 .v-list-item__prepend {
-    .v-icon {
-        margin-inline-end: 10px !important;
-        // margin-left: 10px !important;
-    }
+    display: contents;
 }
 </style>

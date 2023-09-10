@@ -70,7 +70,7 @@
           </router-link>
         </v-navigation-drawer>
 
-        <v-navigation-drawer v-model="settings.drawer" width="240">
+        <v-navigation-drawer v-model="settings.drawer" >
           <!-- <v-row justify="end" v-if="settings.window < 1280">
                     <v-app-bar-nav-icon @click="settings.drawer = false" v-cloak>
                         <v-icon icon="mdi-close" />
@@ -78,7 +78,7 @@
                 </v-row> -->
 
           <v-list color="main-side">
-            <v-list-subheader title="القائمةالجانبية"></v-list-subheader>
+            <v-list-subheader :title="$t('item.side')"></v-list-subheader>
             <recursive-menu />
           </v-list>
         </v-navigation-drawer>

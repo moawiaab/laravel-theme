@@ -276,6 +276,8 @@ export default {
         },
     },
     g: {
+        reset_data : 'Data Reset',
+        advanced_search : 'advanced search',
         type: 'Status',
         details: 'Details',
         options: 'Options',
@@ -615,8 +617,10 @@ export default {
         ok: 'Execute',
         d: 'Confirm deletion',
         back: 'Back',
+        delete : 'Delete data',
         delete1: 'Do you want to move the data to the trash',
         delete2: 'Do you want to permanently delete it from the archive?',
+        delete_all : 'Do you want to delete all selected data?',
         t3: 'Do you really want to receive this amount (the amount will be add to the public safe)',
         t4: 'Receipt Product ',
         t5: 'Do you really want to receive this product (the Quantity will be add to the store)',
@@ -625,6 +629,7 @@ export default {
 
     },
     item: {
+        side : 'Side menu',
         account: 'Accounts',
         expanse: 'Expanses',
         client: 'Clients',
@@ -676,5 +681,9 @@ export default {
         with: 'With Deleted',
         new: 'Only New',
         end: "Completed Only"
+    },
+    col : {
+        show : 'Columns displayed',
+        not_show : 'Columns not shown'
     }
 };
