@@ -1,0 +1,102 @@
+@import "custom-table.scss";
+@import "splitpanes/dist/splitpanes.css";
+@import "vue3-easy-data-table/dist/style.css";
+
+
+font, .v-card-title.text-center, .v-card-title.text-h5 {
+    font-family: myFirstFont !important;
+  }
+
+  .splitpanes.splitpanes--vertical.default-theme {
+    background-color: #f2f2f2;
+  }
+
+.page-loader-wrapper {
+    z-index: 99999999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    .loader {
+        margin: 0 auto;
+        width: 70px;
+        height: 50px;
+        text-align: center;
+        font-size: 10px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translateY(-50%) translateX(-50%);
+
+        >div {
+            height: 100%;
+            width: 8px;
+            display: inline-block;
+            margin-left: 2px;
+            -webkit-animation: delay 0.9s infinite ease-in-out;
+            animation: delay 0.9s infinite ease-in-out;
+        }
+
+        .bar1 {
+            background-color: #fc3c5f;
+        }
+
+        .bar2 {
+            background-color: #993cfc;
+            -webkit-animation-delay: -0.8s;
+            animation-delay: -0.8s;
+        }
+
+        .bar3 {
+            background-color: #3ca9fc;
+            -webkit-animation-delay: -0.7s;
+            animation-delay: -0.7s;
+        }
+
+        .bar4 {
+            background-color: #3cfc5f;
+            -webkit-animation-delay: -0.6s;
+            animation-delay: -0.6s;
+        }
+
+        .bar5 {
+            background-color: #fcdf3c;
+            -webkit-animation-delay: -0.5s;
+            animation-delay: -0.5s;
+        }
+    }
+
+
+    @-webkit-keyframes delay {
+
+        0%,
+        40%,
+        100% {
+            -webkit-transform: scaleY(0.05)
+        }
+
+        20% {
+            -webkit-transform: scaleY(1.0)
+        }
+    }
+
+    @keyframes delay {
+
+        0%,
+        40%,
+        100% {
+            transform: scaleY(0.05);
+            -webkit-transform: scaleY(0.05);
+        }
+
+        20% {
+            transform: scaleY(1.0);
+            -webkit-transform: scaleY(1.0);
+        }
+    }
+}

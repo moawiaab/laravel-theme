@@ -1,0 +1,53 @@
+// Body
+
+body,
+html,
+:root {
+    direction: initial;
+    text-orientation: initial;
+    writing-mode: initial;
+
+    table {
+        color: #222 !important;
+    }
+
+
+}
+
+
+.rtl .text-right {
+    text-align: right !important;
+}
+
+.rtl .text-left {
+    text-align: left !important;
+}
+
+.new-item {
+    position: absolute;
+    display: inline-flex;
+    top: 10px;
+    left: 24px;
+}
+
+.form-control {
+    font-size: 15px !important;
+    color: #3f4750 !important;
+}
+
+.swal2-popup.swal2-modal.swal2-icon-error.swal2-show,
+.swal2-popup.swal2-modal.swal2-icon-question.swal2-show {
+    border-top-left-radius: 120px;
+    border-bottom-right-radius: 120px;
+    border-top: 10px solid #47d7ed9a;
+    border-right: 10px solid #2196a880;
+}
+
+.modal-fullscreen .modal-dialog {
+    max-width: 98% !important;
+}
+
+.multiselect-tag {
+    background: var(--ms-tag-bg, #10b981);
+    padding-right: 8px !important;
+}

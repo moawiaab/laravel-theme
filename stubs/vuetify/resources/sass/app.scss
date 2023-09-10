@@ -1,0 +1,11 @@
+$brand-primary: #9c27b0;
+$bootstrap-blue: #2196f3;
+
+@import 'variables';
+
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+@import 'main';
+
+// @import "dropzone";
+@import "custom-table";

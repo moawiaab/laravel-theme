@@ -166,16 +166,16 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
 
 
-                // Install Stack...
-                if ($this->argument('stack') === 'vuetify') {
-                    if (!$this->installVuetifyStack()) {
-                        return 1;
-                    }
-                } elseif ($this->argument('stack') === 'quasar') {
-                    if (!$this->installQuasarStack()) {
-                        return 1;
-                    }
-                }
+        // Install Stack...
+        if ($this->argument('stack') === 'vuetify') {
+            if (!$this->installVuetifyStack()) {
+                return 1;
+            }
+        } elseif ($this->argument('stack') === 'quasar') {
+            if (!$this->installQuasarStack()) {
+                return 1;
+            }
+        }
         // if (
         //     !$this->option('locker')
         //     && !$this->option('client')
@@ -252,7 +252,52 @@ class InstallCommand extends Command implements PromptsForMissingInput
      */
     protected function installVuetifyStack()
     {
-        // Terms Of Service / Privacy Policy...
+        if (file_exists(base_path('postcss.config.js'))) {
+            unlink(base_path('postcss.config.js'));
+        }
+
+        if (file_exists(base_path('vite.config.js'))) {
+            unlink(base_path('vite.config.js'));
+        }
+
+        if (file_exists(base_path('postcss.config.cjs'))) {
+            unlink(base_path('postcss.config.cjs'));
+        }
+        copy(__DIR__ . '/../../stubs/vuetify/vite.config.js', base_path('vite.config.js'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/vuetify/resources/sass', resource_path('sass'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/vuetify/resources/js', resource_path('js'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/vuetify/resources/css', resource_path('css'));
+
+        $this->updateNodePackages(function ($packages) {
+            return [
+                "vite-plugin-vuetify" => "^1.0.2",
+                "vuetify" => "^3.3.15",
+                "vue3-easy-data-table"  => "^1.5.47",
+                "@mdi/font" => "^7.2.96",
+                "@casl/ability" => "^6.5.0",
+                "splitpanes" => "^3.1.5",
+                "@casl/vue" => "^2.2.1",
+                "xlsx" => "^0.18.5",
+                "vue-fullscreen" => "^2.6.1",
+                "vue-i18n" => "^9.3.0-beta.25",
+                "@vueuse/components" => "^10.4.1",
+                "@vueuse/core" => "^10.4.1"
+            ] + $packages;
+        }, false);
+
+
+        // if ($this->option('lang')) {
+        //     $this->replaceInFile('"en-US";', '"ar";', resource_path('js/app.ts'));
+        //     $this->replaceInFile('rtl: false', 'rtl: true', resource_path('js/app.js'));
+        // }
+
+        if (file_exists(base_path('pnpm-lock.yaml'))) {
+            $this->runCommands(['pnpm install', 'pnpm run build']);
+        } elseif (file_exists(base_path('yarn.lock'))) {
+            $this->runCommands(['yarn install', 'yarn run build']);
+        } else {
+            $this->runCommands(['npm install --force', 'npm run build']);
+        }
 
         $this->line('');
         $this->components->info('vuetify theme installed successfully.');
@@ -451,4 +496,18 @@ class InstallCommand extends Command implements PromptsForMissingInput
         //     default: 'default',
         // ) === 'Pest');
     }
+
+    // public static function delTree($dir) {
+
+    //     $files = array_diff(scandir($dir), array('.','..'));
+     
+    //      foreach ($files as $file) {
+     
+    //        (is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file");
+     
+    //      }
+     
+    //      return rmdir($dir);
+     
+    //    }
 }
