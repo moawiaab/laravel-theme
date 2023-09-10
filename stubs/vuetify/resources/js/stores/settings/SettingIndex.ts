@@ -8,6 +8,7 @@ export const useSetting = defineStore("index-Setting", {
         menu: true,
         showClose: false,
         window: window.innerWidth,
+        local : 'en'
     }),
     getters: {
         getTheme: (state) => state.theme,

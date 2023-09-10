@@ -1,7 +1,8 @@
 <template>
   <div class="">
     <v-app id="" :theme="settings.getTheme" class="fullscreen-wrapper">
-      <v-layout ref="app" v-resize="settings.onResize">
+      <div class="" style="display : none">{{$vuetify.locale.current = settings.local}}</div>
+      <v-layout ref="app" v-resize="settings.onResize" >
         <v-system-bar>
           <v-btn
             variant="text"
@@ -9,8 +10,6 @@
               !settings.menu ? 'mdi-menu-open' : 'mdi-menu-right-outline'
             "
             @click="settings.setMenu"
-            width="20"
-            class="px-1"
           >
           </v-btn>
 
@@ -22,15 +21,18 @@
                 : 'mdi-weather-night'
             "
             @click="settings.setTheme"
-            width="20"
-            class="px-1"
           >
           </v-btn>
-
           <v-btn variant="text" :prepend-icon="wifi" />
-          <v-icon>wifi</v-icon>
+          <!-- <v-icon>wifi</v-icon> -->
 
           <v-icon v-fullscreen.teleport="options" :icon="fullscreen"></v-icon>
+
+          <v-btn
+            variant="text"
+            prepend-icon="mdi mdi-translate"
+            @click="settings.local == 'ar' ? settings.local = 'en' : settings.local = 'ar'"
+          />
 
           <v-spacer></v-spacer>
           <v-btn variant="text" prepend-icon="mdi-clock-outline">
@@ -40,6 +42,7 @@
             {{ formatDate(now, "YYYY-MM-DD") }}
           </v-btn>
         </v-system-bar>
+
         <v-navigation-drawer
           v-model="settings.menu"
           class="pt-5"
@@ -66,6 +69,7 @@
             }}</v-tooltip>
           </router-link>
         </v-navigation-drawer>
+
         <v-navigation-drawer v-model="settings.drawer" width="240">
           <!-- <v-row justify="end" v-if="settings.window < 1280">
                     <v-app-bar-nav-icon @click="settings.drawer = false" v-cloak>
