@@ -10,7 +10,7 @@
     <style>
         @font-face {
             font-family: myFirstFont;
-            src: url({{ asset('Khalid-Art-Bold.ttf') }});
+            src: url({{ asset('assets/fonts/Khalid-Art-Bold.ttf') }});
         }
 
         body {

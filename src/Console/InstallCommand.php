@@ -88,15 +88,15 @@ class InstallCommand extends Command implements PromptsForMissingInput
             (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Requests', app_path('Http/Requests'));
             (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Controllers/Api', app_path('Http/Controllers/Api'));
 
-            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/quasar/resources/views', resource_path('views'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/views', resource_path('views'));
 
             copy(__DIR__ . '/../Providers/RouteServiceProvider.php', app_path('Providers/RouteServiceProvider.php'));
             copy(__DIR__ . '/../../routes/api.php', base_path('routes/api.php'));
             copy(__DIR__ . '/../../routes/web.php', base_path('routes/web.php'));
 
 
-            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/public/img', base_path('public/img'));
-            (new Filesystem)->copy(__DIR__ . '/../../stubs/public/Khalid-Art-Bold.ttf', base_path('public/Khalid-Art-Bold.ttf'));
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/public', base_path('public'));
+            // (new Filesystem)->copy(__DIR__ . '/../../stubs/public/Khalid-Art-Bold.ttf', base_path('public/Khalid-Art-Bold.ttf'));
         }
 
 
