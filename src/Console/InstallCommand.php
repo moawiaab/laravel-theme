@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
+use Illuminate\Support\Arr;
 
 use function Laravel\Prompts\multiselect;
 use function Laravel\Prompts\select;
@@ -53,31 +53,36 @@ class InstallCommand extends Command implements PromptsForMissingInput
         }
 
         // set Middleware classes
-        $this->installMiddlewareAfter('SubstituteBindings::class', '\Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class');
+        $this->installMiddleware(['\Moawiaab\QTheme\Http\Middleware\AuthGates::class']);
+        $this->installMiddleware([
+            '\Moawiaab\QTheme\Http\Middleware\AuthGates::class',
+            '\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class'
+        ], 'api');
 
         if ($this->argument('stack') === 'vuetify' || $this->argument('stack') === 'quasar') {
-            $this->runCommands(['php artisan ui vue --auth']);
+            $this->runCommands(['php artisan ui vue --auth', 'php artisan install:api', 'artisan config:publish cors']);
             $this->updateNodePackages(function ($packages) {
                 return [
-                    "@types/node" => "^20.4.7",
+                    "@types/node" => "^20.12.12",
                     "@vitejs/plugin-vue" => "^4.2.0",
-                    "@vue/tsconfig" => "^0.4.0",
-                    "typescript" => "^5.1.6",
-                    "vue-tsc" => "^1.8.8",
-                    "autoprefixer" => "^10.4.12",
+                    "@vue/tsconfig" => "^0.5.1",
+                    "typescript" => "^5.4.5",
+                    "vue-tsc" => "^2.0.19",
+                    "autoprefixer" => "^10.4.19",
                     'sass' => "^1.66.1"
                 ] + $packages;
             });
 
             $this->updateNodePackages(function ($packages) {
                 return [
-                    "pinia" => "^2.1.6",
-                    "pinia-plugin-persistedstate" => "^3.2.0",
-                    "vue-chartjs" => "^5.2.0",
-                    "nanoid" => "^4.0.2",
-                    "chart.js" => "^4.3.3",
+                    "pinia" => "^2.1.7",
+                    "pinia-plugin-persistedstate" => "^3.2.1",
+                    "vue-chartjs" => "^5.3.1",
+                    "nanoid" => "^5.0.7",
+                    "chart.js" => "^4.4.3",
                     "lodash" => "^4.17.21",
-                    "vue-router" => "^4.2.4"
+                    "vue-router" => "^4.3.2",
+                    "vue-i18n" => "^9.13.1"
                 ] + $packages;
             }, false);
 
@@ -90,7 +95,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
             (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/views', resource_path('views'));
 
-            copy(__DIR__ . '/../Providers/RouteServiceProvider.php', app_path('Providers/RouteServiceProvider.php'));
+            // copy(__DIR__ . '/../Providers/RouteServiceProvider.php', app_path('Providers/RouteServiceProvider.php'));
             copy(__DIR__ . '/../../routes/api.php', base_path('routes/api.php'));
             copy(__DIR__ . '/../../routes/web.php', base_path('routes/web.php'));
 
@@ -279,7 +284,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
                 "@casl/vue" => "^2.2.1",
                 "xlsx" => "^0.18.5",
                 "vue-fullscreen" => "^2.6.1",
-                "vue-i18n" => "^9.3.0-beta.25",
                 "@vueuse/components" => "^10.4.1",
                 "@vueuse/core" => "^10.4.1"
             ] + $packages;
@@ -327,16 +331,15 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
         $this->updateNodePackages(function ($packages) {
             return [
-                "@quasar/vite-plugin" => "^1.4.1",
-                "postcss-rtlcss" => "^4.0.7"
+                "@quasar/vite-plugin" => "^1.7.0",
+                "postcss-rtlcss" => "^5.2.0"
             ] + $packages;
         });
 
         $this->updateNodePackages(function ($packages) {
             return [
-                "@quasar/extras" => "^1.16.6",
-                "quasar" => "^2.12.5",
-                "vue-i18n" => "^9.3.0-beta.25"
+                "@quasar/extras" => "^1.16.11",
+                "quasar" => "^2.16.4",
             ] + $packages;
         }, false);
 
@@ -427,28 +430,28 @@ class InstallCommand extends Command implements PromptsForMissingInput
         });
     }
 
-    protected function installMiddlewareAfter($after, $name, $group = 'web')
+    protected function installMiddleware($names, $group = 'web', $modifier = 'append')
     {
-        $httpKernel = file_get_contents(app_path('Http/Kernel.php'));
+        $bootstrapApp = file_get_contents(base_path('bootstrap/app.php'));
 
-        $middlewareGroups = Str::before(Str::after($httpKernel, '$middlewareGroups = ['), '];');
-        $middlewareGroup = Str::before(Str::after($middlewareGroups, "'$group' => ["), '],');
+        $names = collect(Arr::wrap($names))
+            ->filter(fn ($name) => !Str::contains($bootstrapApp, $name))
+            ->whenNotEmpty(function ($names) use ($bootstrapApp, $group, $modifier) {
+                $names = $names->map(fn ($name) => "$name")->implode(',' . PHP_EOL . '            ');
 
-        if (!Str::contains($middlewareGroup, $name)) {
-            $modifiedMiddlewareGroup = str_replace(
-                $after . ',',
-                $after . ',' . PHP_EOL . '            ' . $name . ',',
-                $middlewareGroup,
-            );
+                $bootstrapApp = str_replace(
+                    '->withMiddleware(function (Middleware $middleware) {',
+                    '->withMiddleware(function (Middleware $middleware) {'
+                        . PHP_EOL . "        \$middleware->$group($modifier: ["
+                        . PHP_EOL . "            $names,"
+                        . PHP_EOL . '        ]);'
+                        . PHP_EOL,
+                    $bootstrapApp,
+                );
 
-            file_put_contents(app_path('Http/Kernel.php'), str_replace(
-                $middlewareGroups,
-                str_replace($middlewareGroup, $modifiedMiddlewareGroup, $middlewareGroups),
-                $httpKernel
-            ));
-        }
+                file_put_contents(base_path('bootstrap/app.php'), $bootstrapApp);
+            });
     }
-
 
     protected function promptForMissingArgumentsUsing()
     {
@@ -500,14 +503,14 @@ class InstallCommand extends Command implements PromptsForMissingInput
     // public static function delTree($dir) {
 
     //     $files = array_diff(scandir($dir), array('.','..'));
-     
+
     //      foreach ($files as $file) {
-     
+
     //        (is_dir("$dir/$file")) ? delTree("$dir/$file") : unlink("$dir/$file");
-     
+
     //      }
-     
+
     //      return rmdir($dir);
-     
+
     //    }
 }

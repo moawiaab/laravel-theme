@@ -3,7 +3,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace' => 'Api', 'middleware' => ['auth:sanctum']], function () {
+Route::group(['namespace' => 'App\Http\Controllers\Api', 'middleware' => ['auth:sanctum']], function () {
     Route::get('abilities', 'AbilitiesController@index');
     //! permission controller
     Route::resource('permissions', 'PermissionsApiController');
