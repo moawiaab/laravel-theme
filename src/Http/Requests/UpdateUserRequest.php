@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Moawiaab\LaravelTheme\Http\Requests;
 
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;

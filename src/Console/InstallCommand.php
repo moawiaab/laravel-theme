@@ -53,9 +53,9 @@ class InstallCommand extends Command implements PromptsForMissingInput
         }
 
         // set Middleware classes
-        $this->installMiddleware(['\Moawiaab\QTheme\Http\Middleware\AuthGates::class']);
+        $this->installMiddleware(['\Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class']);
         $this->installMiddleware([
-            '\Moawiaab\QTheme\Http\Middleware\AuthGates::class',
+            '\Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class',
             '\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class'
         ], 'api');
 
@@ -90,8 +90,8 @@ class InstallCommand extends Command implements PromptsForMissingInput
             (new Filesystem)->copy(__DIR__ . '/../../stubs/tsconfig.config.json', resource_path('tsconfig.config.json'));
             (new Filesystem)->copy(__DIR__ . '/../../stubs/tsconfig.json', resource_path('tsconfig.json'));
 
-            (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Requests', app_path('Http/Requests'));
-            (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Controllers/Api', app_path('Http/Controllers/Api'));
+            // (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Requests', app_path('Http/Requests'));
+            // (new Filesystem)->copyDirectory(__DIR__ . '/../Http/Controllers/Api', app_path('Http/Controllers/Api'));
 
             (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/views', resource_path('views'));
 

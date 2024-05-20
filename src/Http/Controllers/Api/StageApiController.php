@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreStageRequest;
-use App\Http\Requests\UpdateStageRequest;
+use Moawiaab\LaravelTheme\Http\Requests\StoreStageRequest;
+use Moawiaab\LaravelTheme\Http\Requests\UpdateStageRequest;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;

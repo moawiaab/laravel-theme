@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreBudgetNameRequest;
-use App\Http\Requests\UpdateBudgetNameRequest;
+use Moawiaab\LaravelTheme\Http\Requests\StoreBudgetNameRequest;
+use Moawiaab\LaravelTheme\Http\Requests\UpdateBudgetNameRequest;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;

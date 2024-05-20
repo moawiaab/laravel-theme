@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreRoleRequest;
-use App\Http\Requests\UpdateRoleRequest;
+use Moawiaab\LaravelTheme\Http\Requests\StoreRoleRequest;
+use Moawiaab\LaravelTheme\Http\Requests\UpdateRoleRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;

@@ -3,15 +3,19 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace' => 'App\Http\Controllers\Api', 'middleware' => ['auth:sanctum']], function () {
+Route::group(['namespace' => 'Moawiaab\LaravelTheme\Http\Controllers\Api', 'middleware' => ['auth:sanctum']], function () {
+    // Client controllers function
+    Route::resource('clients', 'ClientApiController');
+    Route::put('/clients/{client}/restore', 'ClientApiController@restore');
+    Route::put('/clients/{client}/toggle', 'ClientApiController@toggle');
+    Route::put('/clients/{client}/amount', 'ClientApiController@amount');
+    Route::get('/clients/{client}/amounts', 'ClientApiController@getAmount');
+
     Route::get('abilities', 'AbilitiesController@index');
     //! permission controller
     Route::resource('permissions', 'PermissionsApiController');
-    // Route::post('/permissions/delete-all', 'PermissionsApiController@destroyAll');
-    // Route::post('/permissions/add-all', 'PermissionsApiController@addAll');
     Route::put('/permissions/{item}/restore', 'PermissionsApiController@restore');
     Route::put('/permissions/{item}/delete-restore', 'PermissionsApiController@deleteRestore');
-    // Route::get('/permissions-export', 'PermissionsApiController@export');
 
     Route::get('/dashboard', 'DashboardApiController@index')->name('dashboard');
     // ! account controller
@@ -47,13 +51,13 @@ Route::group(['namespace' => 'App\Http\Controllers\Api', 'middleware' => ['auth:
     //expanse Route::put('/expanses/{expanse}/done', 'ExpanseApiController@done');
 
     //! public treasured controller
-    //locker Route::resource('public-treasuries', 'PublicTreasuryApiController');
-    //locker Route::get('public-treasuries/show-data/{id}', 'PublicTreasuryApiController@show');
-    //locker Route::put('public-treasuries/{item}/done', 'PublicTreasuryApiController@done');
-    //locker //! private locker controller
-    //locker Route::resource('private-lockers', 'PrivateLockerApiController');
-    //locker Route::put('/private-lockers/{privateLocker}/toggle', 'PrivateLockerApiController@toggle');
-    //locker Route::put('/private-lockers/{privateLocker}/amount', 'PrivateLockerApiController@amount');
+    Route::resource('public-treasuries', 'PublicTreasuryApiController');
+    Route::get('public-treasuries/show-data/{id}', 'PublicTreasuryApiController@show');
+    Route::put('public-treasuries/{item}/done', 'PublicTreasuryApiController@done');
+    //! private locker controller
+    Route::resource('private-lockers', 'PrivateLockerApiController');
+    Route::put('/private-lockers/{privateLocker}/toggle', 'PrivateLockerApiController@toggle');
+    Route::put('/private-lockers/{privateLocker}/amount', 'PrivateLockerApiController@amount');
 
     //! Budget Name controller
     //expanse Route::resource('budget-names', 'BudgetNameApiController');
@@ -65,14 +69,7 @@ Route::group(['namespace' => 'App\Http\Controllers\Api', 'middleware' => ['auth:
     //expanse Route::put('/budgets/{budget}/restore', 'BudgetApiController@restore');
     //expanse Route::put('/budgets/{budget}/toggle', 'BudgetApiController@toggle');
 
-    // Client controllers function
-   //client Route::resource('clients', 'ClientApiController');
-   //client // Route::post('/clients/delete-all', 'ClientApiController@destroyAll');
-   //client // Route::post('/clients/add-all', 'ClientApiController@addAll');
-   //client Route::put('/clients/{client}/restore', 'ClientApiController@restore');
-   //client Route::put('/clients/{client}/toggle', 'ClientApiController@toggle');
-   //client Route::put('/clients/{client}/amount', 'ClientApiController@amount');
-   //client Route::get('/clients/{client}/amounts', 'ClientApiController@getAmount');
+
 
     // Supplier controllers function
     //supplier Route::resource('suppliers', 'SupplierApiController');
@@ -111,10 +108,13 @@ Route::group(['namespace' => 'App\Http\Controllers\Api', 'middleware' => ['auth:
     //product Route::put('/orders/{order}/back-all', 'OrderApiController@backAll');
 
     //check
-    Route::get('/checks','CheckApiController@index');
+    Route::get('/checks', 'CheckApiController@index');
     Route::put('/checks/{item}/done', 'CheckApiController@done');
 
     //reports
     Route::get('/reports', 'ReportsApiController@index');
     Route::get('/reports-show', 'ReportsApiController@show');
+});
+Route::group(['namespace' => 'App\Http\Controllers\Api', 'middleware' => ['auth:sanctum']], function () {
+    //don't remove this
 });

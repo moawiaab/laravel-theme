@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryRequest;
+use Moawiaab\LaravelTheme\Http\Requests\CategoryRequest;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

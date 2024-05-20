@@ -5,9 +5,6 @@ namespace Moawiaab\LaravelTheme;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
-use Illuminate\Contracts\Http\Kernel;
-use Moawiaab\LaravelTheme\Http\Middleware\AuthGates;
-
 class LaravelThemeServiceProvider extends ServiceProvider
 {
 
@@ -39,12 +36,11 @@ class LaravelThemeServiceProvider extends ServiceProvider
         copy(__DIR__ . '/Models/User.php', app_path('Models/User.php'));
         copy(__DIR__ . '/../database/seeders/DatabaseSeeder.php', database_path('seeders/DatabaseSeeder.php'));
 
-        
+
         // copy(__DIR__.'/Http/Middleware/HandleInertiaRequests.php', app_path('Http/Middleware/HandleInertiaRequests.php'));
 
         // if (config('role.stack') === 'inertia') {
         // }
-        $this->bootInertia();
     }
 
     /**
@@ -61,24 +57,5 @@ class LaravelThemeServiceProvider extends ServiceProvider
         $this->commands([
             Console\InstallCommand::class,
         ]);
-    }
-
-    /**
-     * Boot any Inertia related services.
-     *
-     * @return void
-     */
-    protected function bootInertia()
-    {
-        $kernel = $this->app->make(Kernel::class);
-
-        $kernel->appendMiddlewareToGroup('web', AuthGates::class);
-        $kernel->appendMiddlewareToGroup('api', AuthGates::class);
-        $kernel->appendToMiddlewarePriority(AuthGates::class);
-
-        // if (class_exists(HandleInertiaRequests::class)) {
-        //     $kernel->appendToMiddlewarePriority(HandleInertiaRequests::class);
-        // }
-
     }
 }

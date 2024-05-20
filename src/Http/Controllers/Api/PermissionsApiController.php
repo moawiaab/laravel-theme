@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
 use App\Exports\PermissionExport;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePermissionRequest;
-use App\Http\Requests\UpdatePermissionRequest;
+use Moawiaab\LaravelTheme\Http\Requests\StorePermissionRequest;
+use Moawiaab\LaravelTheme\Http\Requests\UpdatePermissionRequest;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

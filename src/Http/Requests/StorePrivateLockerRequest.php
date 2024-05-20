@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Moawiaab\LaravelTheme\Http\Requests;
 
 use App\Models\PrivateLocker;
 use Illuminate\Foundation\Http\FormRequest;

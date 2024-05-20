@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UnitRequest;
+use Moawiaab\LaravelTheme\Http\Requests\UnitRequest;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

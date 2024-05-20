@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
+use Moawiaab\LaravelTheme\Http\Requests\LoginRequest;
+use Moawiaab\LaravelTheme\Http\Requests\RegisterRequest;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;

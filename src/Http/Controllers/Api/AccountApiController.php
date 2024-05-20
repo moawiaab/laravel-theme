@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AccountRequest;
-use App\Http\Requests\UpdateAccountRequest;
+use Moawiaab\LaravelTheme\Http\Requests\AccountRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
+use Moawiaab\LaravelTheme\Http\Requests\UpdateAccountRequest;
 use Moawiaab\LaravelTheme\Http\Resources\Admin\AccountResource;
 use Moawiaab\LaravelTheme\Models\Account;
 

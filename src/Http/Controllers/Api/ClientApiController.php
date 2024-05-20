@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AmountRequest;
-use App\Http\Requests\ClientRequest;
+use Moawiaab\LaravelTheme\Http\Requests\AmountRequest;
+use Moawiaab\LaravelTheme\Http\Requests\ClientRequest;
 use Exception;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Http\Response;
@@ -231,11 +231,11 @@ class ClientApiController extends Controller
             $check->details     = $request->details;
             // $check->save()
             if ($check->save()) {
-              
+
             }else{
                 return response([
                     'message' => "لم تتم كتابة الشيك بنجاح"
-                ], 422);  
+                ], 422);
             }
         }
         if ($amount->status == 1) {

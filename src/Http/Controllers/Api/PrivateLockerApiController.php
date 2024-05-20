@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePrivateLockerRequest;
-use App\Http\Requests\UpdatePrivateLockerRequest;
+use Moawiaab\LaravelTheme\Http\Requests\StorePrivateLockerRequest;
+use Moawiaab\LaravelTheme\Http\Requests\UpdatePrivateLockerRequest;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;

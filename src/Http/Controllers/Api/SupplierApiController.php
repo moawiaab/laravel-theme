@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AmountRequest;
-use App\Http\Requests\SupplierRequest;
+use Moawiaab\LaravelTheme\Http\Requests\AmountRequest;
+use Moawiaab\LaravelTheme\Http\Requests\SupplierRequest;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
@@ -222,11 +222,11 @@ class SupplierApiController extends Controller
             $check->account_id  = auth()->user()->account_id;
             $check->details     = $request->details;
             if ($check->save()) {
-              
+
             }else{
                 return response([
                     'message' => "لم تتم كتابة الشيك بنجاح"
-                ], 422);  
+                ], 422);
             }
         }
         if ($amount->status == 1) {

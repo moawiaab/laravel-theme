@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PasswordsRequest;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
+use Moawiaab\LaravelTheme\Http\Requests\PasswordsRequest;
+use Moawiaab\LaravelTheme\Http\Requests\StoreUserRequest;
+use Moawiaab\LaravelTheme\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Response;
