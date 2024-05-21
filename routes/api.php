@@ -12,6 +12,11 @@ Route::group(['namespace' => 'Moawiaab\LaravelTheme\Http\Controllers\Api', 'midd
     Route::get('/clients/{client}/amounts', 'ClientApiController@getAmount');
 
     Route::get('abilities', 'AbilitiesController@index');
+
+    Route::get('development', 'DevelopmentApiController@index');
+    Route::get('development/create', 'DevelopmentApiController@create');
+    Route::get('development/tools', 'DevelopmentApiController@tools');
+
     //! permission controller
     Route::resource('permissions', 'PermissionsApiController');
     Route::put('/permissions/{item}/restore', 'PermissionsApiController@restore');

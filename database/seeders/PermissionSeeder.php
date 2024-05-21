@@ -26,7 +26,11 @@ class PermissionSeeder extends Seeder
                 'status' => 0,
                 'title' => 'group_access',
             ],
-
+            [
+                'details' => 'development',
+                'status' => 0,
+                'title' => 'development_access',
+            ],
             [
                 'details' => 'عرض الفروع',
                 'status' => 0,

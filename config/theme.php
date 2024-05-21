@@ -2,6 +2,6 @@
 
 return [
     'stack' => 'inertia',
-    // 'middleware' => ['web'],
+    'middleware' => ['web'],
     // 'features' => [Features::accountDeletion()],
 ];

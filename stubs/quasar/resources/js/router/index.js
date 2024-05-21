@@ -16,6 +16,21 @@ const routes = [
                 component: () => import("@/Pages/Dashboard.vue"),
             },
             {
+                path: "development",
+                name: " development",
+                component: () => import("@/Pages/Development/Index.vue"),
+            },
+            {
+                path: "development-create",
+                name: " development create",
+                component: () => import("@/Pages/Development/Create.vue"),
+            },
+            {
+                path: "development-tools",
+                name: " development tools",
+                component: () => import("@/Pages/Development/Tool.vue"),
+            },
+            {
                 path: "users",
                 name: " المستخدمين",
                 component: () => import("@/Pages/Users/Index.vue"),
@@ -25,16 +40,16 @@ const routes = [
                 name: "الفروع",
                 component: () => import("@/Pages/accounts/index.vue"),
             },
-            {
-                path: "budget-names",
-                name: " اسماء الموازنة",
-                component: () => import("@/Pages/budget-names/index.vue"),
-            },
-            {
-                path: "budgets",
-                name: "الموازنة",
-                component: () => import("@/Pages/budgets/index.vue"),
-            },
+            //locker {
+            //locker     path: "budget-names",
+            //locker     name: " اسماء الموازنة",
+            //locker     component: () => import("@/Pages/FinancialManagement/budget-names/index.vue"),
+            //locker },
+            //locker {
+            //locker     path: "budgets",
+            //locker     name: "الموازنة",
+            //locker     component: () => import("@/Pages/FinancialManagement/budgets/index.vue"),
+            //locker },
 
             {
                 path: "roles",
@@ -47,132 +62,88 @@ const routes = [
                 component: () => import("@/Pages/Permissions/Index.vue"),
             },
 
-            {
-                path: "categories",
-                name: "أقسام المنتجات",
-                component: () => import("@/Pages/categories/index.vue"),
-            },
+            //product  {
+            //product      path: "categories",
+            //product      name: "أقسام المنتجات",
+            //product      component: () => import("@/Pages/ProductManagement/categories/index.vue"),
+            //product  },
 
-            {
-                path: "clients",
-                name: "العملاء",
-                component: () => import("@/Pages/clients/index.vue"),
-            },
+            //client  {
+            //client      path: "clients",
+            //client      name: "العملاء",
+            //client      component: () => import("@/Pages/clients/index.vue"),
+            //client  },
+            //client
+            //client  {
+            //client      path: "clients/:id/amounts/:name",
+            //client      name: "توردات العميل",
+            //client      component: () => import("@/Pages/clients/amountList.vue"),
+            //client  },
 
-            {
-                path: "clients/:id/amounts/:name",
-                name: "توردات العميل",
-                component: () => import("@/Pages/clients/amountList.vue"),
-            },
+            //supplier  {
+            //supplier      path: "suppliers",
+            //supplier      name: "الموردين",
+            //supplier      component: () => import("@/Pages/suppliers/index.vue"),
+            //supplier  },
+            //supplier
+            //supplier  {
+            //supplier      path: "suppliers/:id/amounts/:name",
+            //supplier      name: "توردات المورد",
+            //supplier      component: () => import("@/Pages/suppliers/amountList.vue"),
+            //supplier  },
 
-            {
-                path: "suppliers",
-                name: "الموردين",
-                component: () => import("@/Pages/suppliers/index.vue"),
-            },
+            //locker {
+            //locker     path: "public-treasuries",
+            //locker     name: "الخزنة العامة",
+            //locker     component: () => import("@/Pages/FinancialManagement/public-treasuries/index.vue"),
+            //locker },
+            //locker
+            //locker {
+            //locker     path: "private-lockers",
+            //locker     name: "الخزنة الشخصية",
+            //locker     component: () => import("@/Pages/FinancialManagement/private-lockers/index.vue"),
+            //locker },
 
-            {
-                path: "suppliers/:id/amounts/:name",
-                name: "توردات المورد",
-                component: () => import("@/Pages/suppliers/amountList.vue"),
-            },
+            //expanse  {
+            //expanse      path: "expanses",
+            //expanse      name: "المصروفات",
+            //expanse      component: () => import("@/Pages/expanses/index.vue"),
+            //expanse  },
 
-            {
-                path: "public-treasuries",
-                name: "الخزنة العامة",
-                component: () => import("@/Pages/public-treasuries/index.vue"),
-            },
+            //product {
+            //product     path: "products",
+            //product     name: "المنتجات",
+            //product     component: () => import("@/Pages/ProductManagement/products/index.vue"),
+            //product },
+            //product
+            //product {
+            //product     path: "units",
+            //product     name: "وحدات المنتجات",
+            //product     component: () => import("@/Pages/ProductManagement/units/index.vue"),
+            //product },
+            //product
+            //product {
+            //product     path: "stores",
+            //product     name: "مخازن المنتجات",
+            //product     component: () => import("@/Pages/ProductManagement/stores/index.vue"),
+            //product },
 
-            {
-                path: "private-lockers",
-                name: "الخزنة الشخصية",
-                component: () => import("@/Pages/private-lockers/index.vue"),
-            },
-
-            // {
-            //     path: "tutorials/details/:id",
-            //     name: "تفاصيل الدروس",
-            //     component: () => import("@/Pages/Tutorials/Details.vue"),
-            // },
-
-            {
-                path: "expanses",
-                name: "المصروفات",
-                component: () => import("@/Pages/expanses/index.vue"),
-            },
-
-            {
-                path: "products",
-                name: "المنتجات",
-                component: () => import("@/Pages/products/index.vue"),
-            },
-
-            {
-                path: "units",
-                name: "وحدات المنتجات",
-                component: () => import("@/Pages/units/index.vue"),
-            },
-
-            {
-                path: "stores",
-                name: "مخازن المنتجات",
-                component: () => import("@/Pages/stores/index.vue"),
-            },
-
-            {
-                path: "orders",
-                name: "فواتير المبيعات",
-                component: () => import("@/Pages/orders/index.vue"),
-            },
-            {
-                path: "orders/backs",
-                name: "المرتجعات",
-                component: () => import("@/Pages/orders/backs.vue"),
-            },
-            {
-                path: "orders/create",
-                name: " إنشاء فاتورة المبيعات",
-                component: () => import("@/Pages/orders/create.vue"),
-            },
-
-            {
-                path: "supplier-orders",
-                name: "فواتير المشتريات",
-                component: () => import("@/Pages/supplier-orders/index.vue"),
-            },
-            {
-                path: "supplier-orders/create",
-                name: "فواتير المشتريات جديدة",
-                component: () => import("@/Pages/supplier-orders/create.vue"),
-            },
-            {
-                path: "reports",
-                name: "تقارير الارباح",
-                component: () => import("@/Pages/reports/index.vue"),
-            },
-
-            {
-                path: "reports/users",
-                name: "تقارير المعاملات للمستخدمين",
-                component: () => import("@/Pages/reports/users.vue"),
-            },
-
-            {
-                path: "stages",
-                name: "الشجرة المالية",
-                component: () => import("@/Pages/stages/index.vue"),
-            },
+            //locker  {
+            //locker      path: "stages",
+            //locker      name: "الشجرة المالية",
+            //locker      component: () => import("@/Pages/FinancialManagement/stages/index.vue"),
+            //locker  },
 
             {
                 path: "settings",
                 name: "اعدادات النظام",
                 component: () => import("@/Pages/settings/index.vue"),
             },
-            {
-                path: "checks",
-                name: " الشيكات",
-                component: () => import("@/Pages/check/index.vue"),
-            },
+            //locker  {
+            //locker      path: "checks",
+            //locker      name: " الشيكات",
+            //locker      component: () => import("@/Pages/FinancialManagement/check/index.vue"),
+            //locker  },
         ],
     },
     {

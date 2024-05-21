@@ -52,6 +52,10 @@ class InstallCommand extends Command implements PromptsForMissingInput
             return 1;
         }
 
+        // Publish...
+        $this->callSilent('vendor:publish', ['--tag' => 'theme-migrations', '--force' => true]);
+
+
         // set Middleware classes
         $this->installMiddleware(['\Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class']);
         $this->installMiddleware([
