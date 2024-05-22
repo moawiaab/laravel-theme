@@ -121,5 +121,5 @@ Route::group(['namespace' => 'Moawiaab\LaravelTheme\Http\Controllers\Api', 'midd
     Route::get('/reports-show', 'ReportsApiController@show');
 });
 Route::group(['namespace' => 'App\Http\Controllers\Api', 'middleware' => ['auth:sanctum']], function () {
-    //don't remove this
+   //don`t remove this lint
 });

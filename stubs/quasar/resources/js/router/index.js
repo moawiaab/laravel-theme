@@ -144,6 +144,8 @@ const routes = [
             //locker      name: " الشيكات",
             //locker      component: () => import("@/Pages/FinancialManagement/check/index.vue"),
             //locker  },
+
+            //don`t remove this lint
         ],
     },
     {

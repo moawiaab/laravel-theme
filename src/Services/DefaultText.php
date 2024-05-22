@@ -14,8 +14,6 @@ class DefaultText
     public static $columnNames = "";
     public static $appModelList = "";
     public static $appModel = "";
-    public static $props = "";
-    public static $propsEdit = "";
 
     protected static $string = array("string", "text", "tinyText", "longText", "phone");
     public static function column($column)
@@ -40,10 +38,16 @@ class DefaultText
     public static function route($name)
     {
         return '{
-            path: "' . $name . '",
-            name: "الفروع",
-            component: () => import("@/Pages/' . $name . '/index.vue"),
+            path: "' . $name . 's",
+            name: "' . $name . 's",
+            component: () => import("@/Pages/' . ucfirst($name) . 's/Index.vue"),
         },' . "\n" . ' //don`t remove this lint';
+    }
+
+    public static function routeApi($name, $controller)
+    {
+        return "Route::resource('" . $name . "s', '" . $controller . "');
+        Route::put('/" . $name . "s/{" . $name . "}/restore', '" . $controller . "@restore');" . "\n" . ' //don`t remove this lint';
     }
 
     public static function removeRoute($name)
@@ -71,7 +75,6 @@ class DefaultText
 
     public static function items($items, $name)
     {
-        self::$propsEdit .= "'" . $name . "' : Object, " . "\n";
         foreach ($items as $item) {
             $v = 'null';
             $filed = str_replace(' ', '', trim(strtolower($item['filed'])));
@@ -116,7 +119,6 @@ class DefaultText
                 $lists = trim($item['belongsTo']);
                 $model = substr_replace($lists, '', -1);
 
-                self::$props .= "'" . $lists . "' : Object, " . "\n";
                 self::$appModelList .= "'" . $lists . "'    => \App\Models\\" . ucfirst($model) . "::get(['id', 'name'])," . "\n";
                 self::$appModel .= 'public function ' . $filed . '() : BelongsTo
                 {
@@ -144,14 +146,24 @@ class DefaultText
             self::$formInput .= $filed . ": " . $v . "," . "\n";
         }
     }
+    // <q-input
+    //                                 clearable
+    //                                 filled
+    //                                 v-model="user.entry.name"
+    //                                 :label="$t('g.user_name')"
+    //                                 lazy-rules
+    //                                 :rules="[
+    //                                     (val) => !!val || $t('v.required'),
+    //                                 ]"
+    //                             />
 
     public static function input($name, $filed, $bool, $type)
     {
         if ($bool == true) {
             $role = ' lazy-rules
             :rules="[(val) => !!val || $t(' . "'v.required'" . ')]"
-            :error-message="form.errors.' . $filed . '"
-            :error="form.errors.' . $filed . ' ? true : false"';
+            :error-message="' . $name . '.errors.' . $filed . '"
+            :error="' . $name . '.errors.' . $filed . ' ? true : false"';
         } else {
             $role = 'class="q-mb-md"';
         }
@@ -159,7 +171,7 @@ class DefaultText
         clearable
         type="' . $type . '"
         filled
-        v-model="form.' . $filed . '"
+        v-model="' . $name . '.entry.' . $filed . '"
         :label="$t(' . "'input." . $name . "." . $filed . "'" . ')"
        ' . $role . '
       />' . "\n";
@@ -167,7 +179,7 @@ class DefaultText
 
     public static function editor($filed, $name)
     {
-        return '<q-editor v-model="form.' . $filed . '" min-height="5rem"
+        return '<q-editor v-model="' . $name . '.entry.' . $filed . '" min-height="5rem"
         :placeholder="' . "'input." . $name . "." . $filed . "'" . '"/>' . "\n";
     }
 
@@ -176,8 +188,8 @@ class DefaultText
         if ($bool == true) {
             $role = ' lazy-rules
             :rules="[(val) => !!val || $t(' . "'v.required'" . ')]"
-            :error-message="form.errors.' . $filed . '"
-            :error="form.errors.' . $filed . ' ? true : false"';
+            :error-message="' . $name . '.errors.' . $filed . '"
+            :error="' . $name . '.errors.' . $filed . ' ? true : false"';
         } else {
             $role = 'class="q-mb-md"';
         }
@@ -189,7 +201,7 @@ class DefaultText
         emit-value
         map-options
         filled
-        v-model="form.' . $filed . '"
+        v-model="' . $name . '.entry.' . $filed . '"
         :label="$t(' . "'input." . $name . "." . $filed . "'" . ')"
        ' . $role . '
       />' . "\n";

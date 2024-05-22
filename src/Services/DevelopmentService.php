@@ -76,7 +76,7 @@ class DevelopmentService
                 self::setRoute(['//client'], $name);
                 FileService::replaceInFile('//component ' . $name, trim(DefaultText::removeRoute($name . '/index')),  $route);
                 FileService::replaceInFile('//component ' . $name . 'AmountList', trim(DefaultText::removeRoute($name . "amountList")), $route);
-            Artisan::call('vendor:publish --tag theme-client');
+                Artisan::call('vendor:publish --tag theme-client');
             } else {
                 if (is_dir($view)) {
                     FileService::deleteAllFiles($view);
@@ -91,7 +91,7 @@ class DevelopmentService
                 FileService::replaceInFile('//component ' . $name, trim(DefaultText::removeRoute($name . '/index')),  $route);
                 self::setRoute(['//expanse'], $name);
                 Artisan::call('vendor:publish --tag theme-expanse');
-            }else{
+            } else {
                 if (is_dir($view)) {
                     FileService::deleteAllFiles($view);
                     rmdir($view);
@@ -103,7 +103,7 @@ class DevelopmentService
             if ($type) {
                 FileService::replaceInFile('//component ' . $name, trim(DefaultText::removeRoute($name . '/index')),  $route);
                 self::setRoute(['//supplier'], $name);
-                FileService::replaceInFile('//component ' . $name . 'AmountList', trim(DefaultText::removeRoute($name . "AmountList")), $route);
+                FileService::replaceInFile('//component ' . $name . 'AmountList', trim(DefaultText::removeRoute($name . "/amountList")), $route);
                 Artisan::call('vendor:publish --tag theme-supplier');
             } else {
                 if (is_dir($view)) {
@@ -111,7 +111,7 @@ class DevelopmentService
                     rmdir($view);
                 }
                 FileService::replaceInFile(trim(DefaultText::removeRoute($name . "/index")), '//component ' . $name, $route);
-                FileService::replaceInFile(trim(DefaultText::removeRoute($name . "AmountList")), '//component ' . $name . 'AmountList', $route);
+                FileService::replaceInFile(trim(DefaultText::removeRoute($name . "/amountList")), '//component ' . $name . 'AmountList', $route);
             }
         } else if ($name == 'ProductManagement') {
             self::$pram[] = 'product';
@@ -129,7 +129,6 @@ class DevelopmentService
                 if (is_dir($view)) {
                     FileService::deleteAllFiles($view);
                     rmdir($view);
-
                 }
                 FileService::replaceInFile(DefaultText::removeRoute($name . "/products/index"), '//component' . $name . 'ProductsIndex', $route);
                 FileService::replaceInFile(DefaultText::removeRoute($name . "/units/index"), '//component' . $name . 'UnitsIndex', $route);

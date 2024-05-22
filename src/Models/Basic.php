@@ -1,48 +1,45 @@
 <?php
 
-namespace Moawiaab\LaravelTheme\Models;
+namespace App\Models;
 
-use App\Models\User;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Moawiaab\LaravelTheme\Support\HasAdvancedFilter;
 
-class Order extends Model
+class Basic extends Model
 {
     use HasFactory;
-    use HasAdvancedFilter;
     use SoftDeletes;
+    use HasAdvancedFilter;
 
-    public const TYPE_RADIO = [
-        '1' => 'مفتوح',
-        '0' => 'مغلق',
-    ];
 
-    public $orderable = [
+    protected $table = 'tablesName';
+
+    protected $orderable = [
         'id',
         'name',
-        'amount',
     ];
 
-    public $filterable = [
+    protected $filterable = [
         'id',
         'name',
-        'amount',
     ];
 
-    protected $fillable = [
-        'type',
-        'amount',
-        'details',
-        'user_id',
-        'client_id',
-        'account_id',
-        'supplier_id',
+    protected $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
+    ];
+
+    protected $fillable = [
+        'name',
+        'user_id',
+        'account_id',
+        'created_at',
+        'updated_at',
     ];
 
     public function resolveRouteBinding($value, $field = null)
@@ -60,35 +57,16 @@ class Order extends Model
         });
     }
 
-    public function toggle()
-    {
-        return $this->status;
-    }
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function items() {
-        return $this->hasMany(OrderItem::class, 'order_id');
-    }
-
-    public function getStatusLabelAttribute($value)
-    {
-        return static::TYPE_RADIO[$this->status] ?? null;
-    }
 
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
     }
 
-    public function client () {
-        return $this->belongsTo(Client::class);
+    public function user() : BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
-    public function scopeClient($query, $id)
-    {
-        return $query->where('client_id', $id)->paginate(request('limit', 20));
-    }
+    //function
 }

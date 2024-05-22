@@ -72,101 +72,101 @@ const items = [
         to: "/accounts",
         access: "account",
     },
-   //expanse  {
-   //expanse      text: "item.expanse",
-   //expanse      icon: "mdi-cash-fast",
-   //expanse      to: "/expanses",
-   //expanse      access: "expanse",
-   //expanse  },
-   //client {
-   //client     text: "item.client",
-   //client     icon: "mdi-account-supervisor-outline",
-   //client     to: "/clients",
-   //client     access: "client",
-   //client },
-   //supplier  {
-   //supplier      text: "item.supplier",
-   //supplier      icon: "mdi-home-silo",
-   //supplier      to: "/suppliers",
-   //supplier      access: "supplier",
-   //supplier  },
-   //locker  {
-   //locker      to: ["/public-treasuries", "/private-lockers", "/stages", "/expanses", '/checks'],
-   //locker      text: "item.financial_management",
-   //locker      icon: "mdi-finance",
-   //locker      access: "financial_management",
-   //locker      children: [
-   //locker          {
-   //locker              text: "item.check",
-   //locker              icon: "mdi-chart-bell-curve",
-   //locker              to: "/checks",
-   //locker              access: "order",
-   //locker          },
-   //locker          {
-   //locker              text: "item.budget",
-   //locker              icon: "mdi-chart-bell-curve",
-   //locker              to: "/budgets",
-   //locker              access: "budget",
-   //locker          },
-   //locker          {
-   //locker              text: "item.budget_name",
-   //locker              icon: "mdi-chart-bell-curve",
-   //locker              to: "/budget-names",
-   //locker              access: "budget_name",
-   //locker          },
-   //locker          {
-   //locker              to: "/public-treasuries",
-   //locker              text: "item.public_treasury",
-   //locker              access: "public_treasury",
-   //locker              icon: "mdi-door-closed-lock",
-   //locker          },
-   //locker          {
-   //locker              text: "item.private_locker",
-   //locker              to: "/private-lockers",
-   //locker              access: "private_locker",
-   //locker              icon: "mdi-lock-outline",
-   //locker          },
-   //locker          {
-   //locker              to: "/stages",
-   //locker              text: "item.stage",
-   //locker              access: "stage",
-   //locker              icon: "mdi-finance",
-   //locker          },
-   //locker      ],
-   //locker  },
-   //product  {
-   //product      to: "/stores",
-   //product      text: "item.store",
-   //product      access: "store",
-   //product      icon: "mdi-storefront-minus-outline",
-   //product  },
+     {
+         text: "item.expanse",
+         icon: "mdi-cash-fast",
+         to: "/expanses",
+         access: "expanse",
+     },
+    {
+        text: "item.client",
+        icon: "mdi-account-supervisor-outline",
+        to: "/clients",
+        access: "client",
+    },
+     {
+         text: "item.supplier",
+         icon: "mdi-home-silo",
+         to: "/suppliers",
+         access: "supplier",
+     },
+     {
+         to: ["/public-treasuries", "/private-lockers", "/stages", "/expanses", '/checks'],
+         text: "item.financial_management",
+         icon: "mdi-finance",
+         access: "financial_management",
+         children: [
+             {
+                 text: "item.check",
+                 icon: "mdi-chart-bell-curve",
+                 to: "/checks",
+                 access: "order",
+             },
+             {
+                 text: "item.budget",
+                 icon: "mdi-chart-bell-curve",
+                 to: "/budgets",
+                 access: "budget",
+             },
+             {
+                 text: "item.budget_name",
+                 icon: "mdi-chart-bell-curve",
+                 to: "/budget-names",
+                 access: "budget_name",
+             },
+             {
+                 to: "/public-treasuries",
+                 text: "item.public_treasury",
+                 access: "public_treasury",
+                 icon: "mdi-door-closed-lock",
+             },
+             {
+                 text: "item.private_locker",
+                 to: "/private-lockers",
+                 access: "private_locker",
+                 icon: "mdi-lock-outline",
+             },
+             {
+                 to: "/stages",
+                 text: "item.stage",
+                 access: "stage",
+                 icon: "mdi-finance",
+             },
+         ],
+     },
+     {
+         to: "/stores",
+         text: "item.store",
+         access: "store",
+         icon: "mdi-storefront-minus-outline",
+     },
 
-    //product {
-    //product     to: ["/categories", "/products", "/units"],
-    //product     text: "item.product_management",
-    //product     icon: "mdi-format-list-numbered-rtl",
-    //product     access: "product_management",
-    //product     children: [
-    //product         {
-    //product             text: "item.category",
-    //product             to: "/categories",
-    //product             access: "category",
-    //product             icon: "mdi-tune-vertical",
-    //product         },
-    //product         {
-    //product             to: "/products",
-    //product             text: "item.product",
-    //product             access: "product",
-    //product             icon: "mdi-format-list-checkbox",
-    //product         },
-    //product         {
-    //product             to: "/units",
-    //product             text: "item.unit",
-    //product             access: "product",
-    //product             icon: "mdi-format-list-checkbox",
-    //product         },
-    //product     ],
-    //product },
+     {
+         to: ["/categories", "/products", "/units"],
+         text: "item.product_management",
+         icon: "mdi-format-list-numbered-rtl",
+         access: "product_management",
+         children: [
+             {
+                 text: "item.category",
+                 to: "/categories",
+                 access: "category",
+                 icon: "mdi-tune-vertical",
+             },
+             {
+                 to: "/products",
+                 text: "item.product",
+                 access: "product",
+                 icon: "mdi-format-list-checkbox",
+             },
+             {
+                 to: "/units",
+                 text: "item.unit",
+                 access: "product",
+                 icon: "mdi-format-list-checkbox",
+             },
+         ],
+     },
 
     {
         text: "item.user_management",
@@ -195,6 +195,20 @@ const items = [
         ],
     },
 
-    //don`t remove this lint
+   
+{
+            text: "item.donor",
+            icon: "list",
+            to: "/donors",
+            access: "donor",
+        },
+ 
+{
+            text: "item.test",
+            icon: "list",
+            to: "/tests",
+            access: "test",
+        },
+ //don`t remove this lint
 ];
 </script>
