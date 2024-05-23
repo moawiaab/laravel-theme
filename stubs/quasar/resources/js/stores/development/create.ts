@@ -32,8 +32,6 @@ export const useDevelopmentCreate = defineStore("development-create-store", {
                             message: "تم إضافة المستخدم بنجاح",
                             type: "positive",
                         });
-                        useTables().getData();
-                        useTables().newRow = false;
                         this.loading = false;
                         resolve(response);
                     })

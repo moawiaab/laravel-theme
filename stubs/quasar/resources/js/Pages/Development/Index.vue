@@ -264,7 +264,7 @@ development.fetchData();
                                 <q-input
                                     clearable
                                     filled
-                                    v-model="development.entry.controller"
+                                    v-model="development.form.controller"
                                     label="Model Name"
                                     lazy-rules
                                     :rules="[
@@ -343,7 +343,7 @@ development.fetchData();
                                 <q-input
                                     clearable
                                     filled
-                                    v-model="development.entry.controller"
+                                    v-model="development.form.controller"
                                     label="Resource Name"
                                     lazy-rules
                                     :rules="[
@@ -363,7 +363,7 @@ development.fetchData();
                                     Resource :
                                     {{
                                         development.ucFirst(
-                                            development.entry.controller
+                                            development.form.controller
                                         )
                                     }}Resource
                                 </div>
@@ -382,7 +382,7 @@ development.fetchData();
                                 <q-input
                                     clearable
                                     filled
-                                    v-model="development.entry.controller"
+                                    v-model="development.form.controller"
                                     label="Request Name"
                                     lazy-rules
                                     :rules="[
@@ -401,7 +401,7 @@ development.fetchData();
                                     Require :
                                     {{
                                         development.ucFirst(
-                                            development.entry.controller
+                                            development.form.controller
                                         )
                                     }}Require
                                 </div>

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import { Notify } from "quasar";
-import { useTables } from "../tables";
+import { useAuth } from "../auth/index";
 
 const route = "/development";
 
@@ -85,16 +85,16 @@ export const useDevelopmentIndex = defineStore("development-store", {
                     .post(route + '/store', this.form)
                     .then((response) => {
                         Notify.create({
-                            message: "تم إضافة المستخدم بنجاح",
+                            message: "Created successfully",
                             type: "positive",
                         });
+                        useAuth().can = response.data.data;
                         this.loading = false;
                         resolve(response);
                     })
                     .catch((error) => {
-                        this.errors = error.response.data.errors || this.errors;
                         Notify.create({
-                            message: error.response.data.message,
+                            message: "Logout And Login To Change ",
                             type: "warning",
                         });
                         this.loading = false;
@@ -103,7 +103,29 @@ export const useDevelopmentIndex = defineStore("development-store", {
             });
         },
 
-        submittedData() {},
+        submittedData() {
+            this.loading = true;
+            return new Promise(async (resolve, reject) => {
+                await axios
+                    .post(route + '/storeModel', this.form)
+                    .then((response) => {
+                        Notify.create({
+                            message: "Created successfully",
+                            type: "positive",
+                        });
+                        this.loading = false;
+                        resolve(response);
+                    })
+                    .catch((error) => {
+                        Notify.create({
+                            message: "Logout And Login To Change ",
+                            type: "warning",
+                        });
+                        this.loading = false;
+                        reject(error);
+                    });
+            });
+        },
         setType(type: string) {
             this.belongsTo = false;
             if (

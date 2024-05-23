@@ -5,12 +5,15 @@ namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Moawiaab\LaravelTheme\Models\Permission;
 use Moawiaab\LaravelTheme\Models\Role;
 use Moawiaab\LaravelTheme\Services\DefaultText;
 use Moawiaab\LaravelTheme\Services\DevelopmentService;
 use Moawiaab\LaravelTheme\Services\FileService;
+use Illuminate\Http\Response;
+
 
 class DevelopmentApiController extends Controller
 {
@@ -105,7 +108,7 @@ class DevelopmentApiController extends Controller
         $name = ucfirst($smallName);
 
         $controllerName = $name . 'ApiController';
-        $controller = app_path('Http/Controllers/Api/' . $controllerName.'.php');
+        $controller = app_path('Http/Controllers/Api/' . $controllerName . '.php');
         $model = app_path('Models/' . $name . '.php');
         $resource = app_path('Http/Resources/' . $name . 'Resource.php');
         $storeR = app_path('Http/Requests/Store' . $name . 'Request.php');
@@ -158,7 +161,7 @@ class DevelopmentApiController extends Controller
             FileService::replaceInFile('$basic', '$' . $smallName, $controller);
             // FileService::replaceInFile('Basics/', $name . 's/', $controller);
             // FileService::replaceInFile('basics', $smallName . 's', $controller);
-            FileService::replaceInFile('basic_', $smallName.'_', $controller);
+            FileService::replaceInFile('basic_', $smallName . '_', $controller);
             FileService::replaceInFile('Basic', $name, $controller);
             FileService::replaceInFile('//set resource', DefaultText::$appModelList, $controller);
             // copy resources files in vue folder
@@ -186,7 +189,15 @@ class DevelopmentApiController extends Controller
             FileService::replaceInFile('basics', $smallName . "s", $migrate);
             // set filed items
             FileService::replaceInFile('$table->string("name");', DefaultText::$filedTable, $migrate);
+
+            Artisan::call('migrate');
         }
+
+        return  response([
+            'data' => auth()->user()->role->permissions
+            ->pluck('title')->toArray()
+        ], Response::HTTP_ACCEPTED);
+
         // dd($name);
     }
 
@@ -207,5 +218,56 @@ class DevelopmentApiController extends Controller
                 $role->permissions()->syncWithoutDetaching($key->id);
             }
         }
+    }
+
+    public function storeModel(Request $request)
+    {
+        // small name
+        $smallName = str_replace(' ', '', trim(strtolower($request->controller)));
+        DefaultText::items($request->items, $smallName);
+        $name = ucfirst($smallName);
+
+        $model = app_path('Models/' . $name . '.php');
+        $resource = app_path('Http/Resources/' . $name . 'Resource.php');
+        $storeR = app_path('Http/Requests/Store' . $name . 'Request.php');
+        $updateR = app_path('Http/Requests/Update' . $name . 'Request.php');
+
+        //migrations
+        $m_name = date("Y-m-d") . "_" . time() . "_" . "create_" . $smallName . "_table.php";
+        $migrate = database_path("migrations/" . $m_name);
+
+        if ($request->tab == "model") {
+            copy(__DIR__ . '/../../../Resources/database/basic.php', $migrate);
+            copy(__DIR__ . '/../../../Models/Basic.php', $model);
+
+            //replace model name
+            FileService::replaceInFile('Basic', $name, $model);
+            FileService::replaceInFile('tablesName', $smallName . "s", $model);
+            FileService::replaceInFile("'name',", DefaultText::$filedModel, $model);
+            FileService::replaceInFile("//function", DefaultText::$appModel, $model);
+
+
+            // replace table name
+            FileService::replaceInFile('basics', $smallName . "s", $migrate);
+            // set filed items
+            FileService::replaceInFile('$table->string("name");', DefaultText::$filedTable, $migrate);
+            Artisan::call('migrate');
+        } else if ($request->tab == "resource") {
+            copy(__DIR__ . '/../../Resources/BasicResource.php', $resource);
+            //replace resource name
+            FileService::replaceInFile('BasicResource', $name . "Resource", $resource);
+        } else if ($request->tab == "request") {
+            copy(__DIR__ . '/../../Requests/StoreBasicRequest.php', $storeR);
+            copy(__DIR__ . '/../../Requests/UpdateBasicRequest.php', $updateR);
+            //replace resource name
+            FileService::replaceInFile('BasicResource', $name . "Resource", $resource);
+            //replace request name
+            FileService::replaceInFile('StoreBasicRequest', 'Store' . $name . "Request", $storeR);
+            FileService::replaceInFile("'name' => [],", DefaultText::$filedRequire, $storeR);
+            FileService::replaceInFile('UpdateBasicRequest', 'Update' . $name . "Request", $updateR);
+            FileService::replaceInFile("'name' => [],", DefaultText::$filedRequire, $updateR);
+        }
+
+        return  response(null, Response::HTTP_ACCEPTED);
     }
 }

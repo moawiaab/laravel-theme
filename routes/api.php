@@ -5,17 +5,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Moawiaab\LaravelTheme\Http\Controllers\Api', 'middleware' => ['auth:sanctum']], function () {
     // Client controllers function
-    Route::resource('clients', 'ClientApiController');
-    Route::put('/clients/{client}/restore', 'ClientApiController@restore');
-    Route::put('/clients/{client}/toggle', 'ClientApiController@toggle');
-    Route::put('/clients/{client}/amount', 'ClientApiController@amount');
-    Route::get('/clients/{client}/amounts', 'ClientApiController@getAmount');
+    //client Route::resource('clients', 'ClientApiController');
+    //client Route::put('/clients/{client}/restore', 'ClientApiController@restore');
+    //client Route::put('/clients/{client}/toggle', 'ClientApiController@toggle');
+    //client Route::put('/clients/{client}/amount', 'ClientApiController@amount');
+    //client Route::get('/clients/{client}/amounts', 'ClientApiController@getAmount');
 
     Route::get('abilities', 'AbilitiesController@index');
 
-    Route::get('development', 'DevelopmentApiController@index');
-    Route::get('development/create', 'DevelopmentApiController@create');
-    Route::get('development/tools', 'DevelopmentApiController@tools');
+    Route::get('/development', 'DevelopmentApiController@index');
+    Route::get('/development-create', 'DevelopmentApiController@create');
+    Route::post('/development-create/remove', 'DevelopmentApiController@remove');
+    Route::post('/development-create/add', 'DevelopmentApiController@add');
+    Route::post('/development/store', 'DevelopmentApiController@store');
+    Route::post('/development/storeModel', 'DevelopmentApiController@storeModel');
+    Route::get('/development-tools', 'DevelopmentApiController@tools');
 
     //! permission controller
     Route::resource('permissions', 'PermissionsApiController');

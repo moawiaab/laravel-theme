@@ -59,8 +59,11 @@ class InstallCommand extends Command implements PromptsForMissingInput
         // set Middleware classes
         $this->installMiddleware(['\Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class']);
         $this->installMiddleware([
-            '\Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class',
+
             '\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class'
+        ], 'api');
+        $this->installMiddleware([
+            '\Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class',
         ], 'api');
 
         if ($this->argument('stack') === 'vuetify' || $this->argument('stack') === 'quasar') {
