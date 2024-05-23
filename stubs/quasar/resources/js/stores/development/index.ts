@@ -1,32 +1,79 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { Notify } from 'quasar';
-import { useTables } from '../tables';
+import { Notify } from "quasar";
+import { useTables } from "../tables";
 
 const route = "/development";
 
 export const useDevelopmentIndex = defineStore("development-store", {
     state: () => ({
-        entry: {},
-        lists: {
-            roles: [],
+        entry: {
+            name: null,
+            type: "text",
+            filed: "",
+            require: false,
+            num: null,
+            value: null,
+            belongsTo: null,
         },
-        splitterModel : 30,
+        form: {
+            controller: "",
+            items: [],
+            tab: "controller",
+        },
+        lists: {
+            controllers: [],
+            models: [],
+            resources: [],
+            requests: [],
+            tables: [],
+            table: "",
+        },
+        splitterModel: 30,
         loading: false,
+        belongsTo: false,
+        selectType: "",
+        options: [
+            "text",
+            "integer",
+            "decimal",
+            "tinyText",
+            "longText",
+            "tinyInteger",
+            "smallInteger",
+            "bigInteger",
+            "double",
+            "boolean",
+            "date",
+            "phone",
+            "belongsTo",
+        ],
+        columns: [
+            {
+                name: "name",
+                align: "left",
+                label: "Column Name",
+                field: "name",
+            },
+            {
+                name: "filed",
+                align: "center",
+                label: "Filed Name",
+                field: "filed",
+            },
+            { name: "type", label: "Filed Type", field: "type" },
+            { name: "value", label: "Default Value", field: "value" },
+            { name: "require", label: "Require", field: "require" },
+        ],
         errors: {
-            name: "",
-            email: "",
-            password: "",
-            br_name: "",
-            phone: "",
-            details : ""
+            controller: null,
         },
     }),
 
     actions: {
-        fetchCreateData() {
+        fetchData() {
             axios.get(`${route}`).then((response) => {
-                this.lists = response.data.meta;
+                this.lists = response.data;
             });
         },
 
@@ -35,15 +82,12 @@ export const useDevelopmentIndex = defineStore("development-store", {
             this.loading = true;
             return new Promise(async (resolve, reject) => {
                 await axios
-                    .post(route, this.entry)
+                    .post(route + '/store', this.form)
                     .then((response) => {
                         Notify.create({
                             message: "تم إضافة المستخدم بنجاح",
-                            type: 'positive',
-
-                        })
-                        useTables().getData();
-                        useTables().newRow = false
+                            type: "positive",
+                        });
                         this.loading = false;
                         resolve(response);
                     })
@@ -51,13 +95,70 @@ export const useDevelopmentIndex = defineStore("development-store", {
                         this.errors = error.response.data.errors || this.errors;
                         Notify.create({
                             message: error.response.data.message,
-                            type: 'warning',
-
-                        })
+                            type: "warning",
+                        });
                         this.loading = false;
                         reject(error);
                     });
             });
         },
-    }
+
+        submittedData() {},
+        setType(type: string) {
+            this.belongsTo = false;
+            if (
+                type == "integer" ||
+                type == "bigInteger" ||
+                type == "double" ||
+                type == "decimal" ||
+                type == "tinyInteger" ||
+                type == "smallInteger"
+            ) {
+                this.selectType = "number";
+            } else if (
+                type == "text" ||
+                type == "tinyText" ||
+                type == "longText"
+            ) {
+                this.selectType = "text";
+            } else if (type == "phone") {
+                this.selectType = "phone";
+            } else if (type == "date") {
+                this.selectType = "date";
+            } else if (type == "belongsTo") {
+                this.selectType = "belongsTo";
+                this.belongsTo = true;
+            }
+        },
+
+        ucFirst(str: string) {
+            if (!str) return str;
+            return (
+                str[0].toUpperCase() +
+                str.slice(1).split(" ").join("").trim().toLowerCase()
+            );
+        },
+
+        addItem() {
+            if (this.entry.name != null && this.entry.name.length > 1) {
+                this.form.items.push({
+                    ...this.entry,
+                    filed: this.entry.name,
+                });
+                this.entry = {
+                    name: null,
+                    type: "text",
+                    filed: "",
+                    require: false,
+                    value: null,
+                    belongsTo: null,
+                };
+            } else {
+                Notify.create({
+                    message: "Set Column Name ",
+                    type: "negative",
+                });
+            }
+        },
+    },
 });

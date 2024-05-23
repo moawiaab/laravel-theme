@@ -274,6 +274,29 @@ export default {
             out : 'Checks out',
             last : 'The result'
         },
+        
+  donor: {
+        title: "Donors List",
+        title_new: "Create New Donor",
+        title_edit: "Edit This Donor",
+        view: "View this Donor",
+        name: "Name",
+amount: "Amount",
+address: "Address",
+
+    },
+ 
+  test: {
+        title: "Tests List",
+        title_new: "Create New Test",
+        title_edit: "Edit This Test",
+        view: "View this Test",
+        name: "Name",
+age: "Age",
+phone: "Phone",
+
+    },
+ //don`t remove this lint
     },
     g: {
         type: 'Status',
@@ -652,6 +675,13 @@ export default {
         report1: "User transaction report",
         report2: " Earnings report",
         check : "Checks",
+        development : "Development Management",
+        development1 : "Development",
+        development2: "Installation",
+        development3 : "Tools",
+        donor: "List Donors",
+ test: "List Tests",
+ //don`t remove this item
     },
     w: {
         users: 'Users Count',

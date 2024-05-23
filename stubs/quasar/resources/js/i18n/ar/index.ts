@@ -270,6 +270,29 @@ export default {
             out : 'الشيكات الخارجة',
             last : 'النتيجة'
         },
+         
+  donor: {
+        title: "Donors List",
+        title_new: "Create New Donor",
+        title_edit: "Edit This Donor",
+        view: "View this Donor",
+        name: "Name",
+amount: "Amount",
+address: "Address",
+
+    },
+ 
+  test: {
+        title: "Tests List",
+        title_new: "Create New Test",
+        title_edit: "Edit This Test",
+        view: "View this Test",
+        name: "Name",
+age: "Age",
+phone: "Phone",
+
+    },
+ //don`t remove this lint
     },
     g: {
         type: 'الحالة',
@@ -645,6 +668,13 @@ export default {
         report1: "تقرير معاملات المستخدمين",
         report2: "تقرير الارباح",
         check : "الشيكات",
+        development : "Development Management",
+        development1 : "Development",
+        development2: "Installation",
+        development3 : "Tools",
+        donor: "List Donors",
+ test: "List Tests",
+ //don`t remove this item
     },
     w: {
         users: 'عدد المستخدمين',
