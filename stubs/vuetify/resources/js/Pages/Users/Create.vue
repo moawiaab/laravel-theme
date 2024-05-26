@@ -37,6 +37,13 @@
                                 color="primary"
                                 type="email"
                             />
+                            <v-textarea clearable
+                                label="رقم الهاتف"
+                                variant="solo"
+                                hint="هنا رقم الهاتف "
+                                v-model="single.entry.phone"  :rules="rules.required"
+                                :error-messages="single.errors.phone"
+                                required/>
                             <v-text-field
                                 clearable
                                 label="رقم الهاتف"

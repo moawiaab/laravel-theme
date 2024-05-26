@@ -1,49 +1,26 @@
 <template>
-    <v-btn variant="text" @click="model.showModalCreate = true"
-        >إضافة اسم موازنة</v-btn
-    >
     <v-dialog
         v-model="model.showModalCreate"
         persistent
-        max-width="500"
+        max-width="800"
         scrollable
     >
         <v-form @submit.prevent="submitForm">
             <v-card>
                 <v-card-title class="text-h5 text-primary">
-                    إضافة اسم موازنة جديد
+                    {{ $t("input.user.title_new") }}
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
-                    <v-text-field
-                        clearable
-                        label="اسم الموازنة"
-                        v-model="single.entry.name"
-                        :rules="rules.required"
-                        :error-messages="single.errors.name"
-                        required
-                        color="primary"
-                    />
-                    <v-textarea
-                        clearable
-                        label=" تفاصيل اسم الموازنة"
-                        v-model="single.entry.details"
-                        :rules="rules.required"
-                        :error-messages="single.errors.details"
-                        required
-                        color="primary"
-                    />
-
-                    <v-select
-                        v-model="single.entry.type"
-                        clearable
-                        label="نوع اسم الموازنة"
-                        :items="single.lists.type"
-                        variant="solo"
-                        item-title="name"
-                        item-value="id"
-                    >
-                    </v-select>
+                    <v-row>
+                        <v-col>
+                            inputsItem
+                        </v-col>
+                        <v-divider vertical />
+                        <v-col>
+                            set details
+                        </v-col>
+                    </v-row>
                 </v-card-text>
 
                 <v-divider />
@@ -55,7 +32,7 @@
                         variant="tonal"
                         @click="model.showModalCreate = false"
                     >
-                        إلغاء الأمر
+                       {{ $t('g.close')  }}
                     </v-btn>
                     <btn-save :loading="single.loading" />
                 </v-card-actions>
@@ -65,23 +42,23 @@
 </template>
 
 <script lang="ts">
-import { useSingleBudgetName } from "../../stores/budgetName/single";
+import { useSingleUsers } from "../../stores/users/single";
 import { useSettingAlert } from "../../stores/settings/SettingAlert";
 import { useSinglePage } from "../../stores/pages/pageSingle";
-import { watch } from "vue";
+import {  onMounted } from "@vue/runtime-core";
 
 export default {
-    name: "CreateExpanse",
+    name: "CreateUser",
     setup() {
-        const single = useSingleBudgetName();
+        const single = useSingleUsers();
         const model = useSinglePage();
-        watch(model, (e) => {
-            if (e.showModalCreate) {
+
+        onMounted(() => {
+            if (model.showModalCreate) {
                 single.$reset();
-                single.setupEntry(model.entry, model.lists);
+                single.setupEntry({}, model.lists);
             }
         });
-
         const rules = {
             required: [
                 (val: any) =>
@@ -95,7 +72,6 @@ export default {
                 single.storeData().then(() => {
                     model.showModalCreate = false;
                     single.$reset();
-                    model.entry = {};
                 });
             } else {
                 useSettingAlert().setAlert(
@@ -106,7 +82,7 @@ export default {
             }
         };
         const validation = () => {
-            return single.entry.name && single.entry.details;
+            return (validationFiled true);
         };
         return {
             model,

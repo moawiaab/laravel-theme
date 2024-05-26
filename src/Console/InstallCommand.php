@@ -11,6 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
+use Moawiaab\LaravelTheme\Services\FileService;
 
 use function Laravel\Prompts\multiselect;
 use function Laravel\Prompts\select;
@@ -67,7 +68,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         ], 'api');
 
         if ($this->argument('stack') === 'vuetify' || $this->argument('stack') === 'quasar') {
-            $this->runCommands(['php artisan ui vue --auth', 'php artisan install:api', 'artisan config:publish cors']);
+            $this->runCommands(['php artisan ui vue --auth ', 'php artisan install:api', 'artisan config:publish cors']);
             $this->updateNodePackages(function ($packages) {
                 return [
                     "@types/node" => "^20.12.12",
@@ -109,6 +110,8 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
             (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/public', base_path('public'));
             // (new Filesystem)->copy(__DIR__ . '/../../stubs/public/Khalid-Art-Bold.ttf', base_path('public/Khalid-Art-Bold.ttf'));
+            FileService::deleteAllFiles(resource_path('sass'));
+            FileService::deleteAllFiles(resource_path('js'));
         }
 
 
@@ -264,6 +267,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
      */
     protected function installVuetifyStack()
     {
+        FileService::replaceInFile('quasar', 'vuetify',  __DIR__ . '/../../config/theme.php');
         if (file_exists(base_path('postcss.config.js'))) {
             unlink(base_path('postcss.config.js'));
         }
@@ -276,23 +280,24 @@ class InstallCommand extends Command implements PromptsForMissingInput
             unlink(base_path('postcss.config.cjs'));
         }
         copy(__DIR__ . '/../../stubs/vuetify/vite.config.js', base_path('vite.config.js'));
+
         (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/vuetify/resources/sass', resource_path('sass'));
         (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/vuetify/resources/js', resource_path('js'));
         (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/vuetify/resources/css', resource_path('css'));
 
         $this->updateNodePackages(function ($packages) {
             return [
-                "vite-plugin-vuetify" => "^1.0.2",
-                "vuetify" => "^3.3.15",
+                "vite-plugin-vuetify" => "^2.0.3",
+                "vuetify" => "^3.6.7",
                 "vue3-easy-data-table"  => "^1.5.47",
-                "@mdi/font" => "^7.2.96",
-                "@casl/ability" => "^6.5.0",
+                "@mdi/font" => "^7.4.47",
+                "@casl/ability" => "^6.7.1",
                 "splitpanes" => "^3.1.5",
-                "@casl/vue" => "^2.2.1",
+                "@casl/vue" => "^2.2.2",
                 "xlsx" => "^0.18.5",
                 "vue-fullscreen" => "^2.6.1",
-                "@vueuse/components" => "^10.4.1",
-                "@vueuse/core" => "^10.4.1"
+                "@vueuse/components" => "^10.9.0",
+                "@vueuse/core" => "^10.9.0"
             ] + $packages;
         }, false);
 
@@ -324,6 +329,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
      */
     protected function installQuasarStack()
     {
+        FileService::replaceInFile('vuetify', 'quasar', __DIR__ . '/../../config/theme.php');
         if (file_exists(base_path('postcss.config.js'))) {
             unlink(base_path('postcss.config.js'));
         }

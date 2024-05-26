@@ -116,18 +116,33 @@ class DevelopmentApiController extends Controller
 
         $view = resource_path('js/Pages/' . $name . 's/');
         $store = resource_path('js/stores/' . $smallName . 's/');
-        $menu = resource_path('js/Components/menu/ListMenu.vue');
 
-        $col = resource_path('js/types/columns.ts');
-        $ar = resource_path('js/i18n/ar/index.ts');
-        $en = resource_path('js/i18n/en-US/index.ts');
 
         $api = base_path('routes/api.php');
-        $router = resource_path('js/router/index.js');
+
         $colName = $name . 'Column';
         //migrations
         $m_name = date("Y-m-d") . "_" . time() . "_" . "create_" . $smallName . "_table.php";
         $migrate = database_path("migrations/" . $m_name);
+
+        $ar = resource_path('js/i18n/ar/index.ts');
+
+        if (config('theme.stack') === 'quasar') {
+            $menu = resource_path('js/Components/menu/ListMenu.vue');
+            $col = resource_path('js/types/columns.ts');
+            $en = resource_path('js/i18n/en-US/index.ts');
+            $router = resource_path('js/router/index.js');
+        } elseif (config('theme.stack') === 'vuetify') {
+            $menu = resource_path('js/plugins/sidebar_item.js');
+            $en = resource_path('js/i18n/en/index.ts');
+            $router = resource_path('js/router/index.ts');
+            $setingPath = resource_path('js/stores/settings/');
+            $text = $smallName .'s' ."\n" . 'tableNames';
+            FileService::replaceInFile('tableNames', $smallName .'s', $setingPath. 'SettingHeaderTable.js');
+
+        } else {
+            $menu = null;
+        }
 
         copy(__DIR__ . '/../../../Resources/database/basic.php', $migrate);
 
@@ -165,16 +180,22 @@ class DevelopmentApiController extends Controller
             FileService::replaceInFile('Basic', $name, $controller);
             FileService::replaceInFile('//set resource', DefaultText::$appModelList, $controller);
             // copy resources files in vue folder
-            (new Filesystem)->copyDirectory(__DIR__ . '/../../../Resources/Basic', $view);
-            (new Filesystem)->copyDirectory(__DIR__ . '/../../../Resources/Store', $store);
+            if (config('theme.stack') === 'quasar') {
+                (new Filesystem)->copyDirectory(__DIR__ . '/../../../Resources/Basic/quasar', $view);
+                (new Filesystem)->copyDirectory(__DIR__ . '/../../../Resources/Store/quasar', $store);
+                // add column to columns.ts
+                FileService::editFile($col, DefaultText::column($colName));
+            } elseif (config('theme.stack') === 'vuetify') {
+                (new Filesystem)->copyDirectory(__DIR__ . '/../../../Resources/Basic/vuetify', $view);
+                (new Filesystem)->copyDirectory(__DIR__ . '/../../../Resources/Store/vuetify', $store);
+            }
             // views files index , create, update, show
             FileService::viewResource($smallName, $view, $store);
 
             // add route to web page
             FileService::replaceInFile('//don`t remove this lint', DefaultText::route($smallName), $router);
             FileService::replaceInFile('//don`t remove this lint', DefaultText::routeApi($smallName, $controllerName), $api);
-            // add column to columns.ts
-            FileService::editFile($col, DefaultText::column($colName));
+
             //add item to menu items
             FileService::replaceInFile('//don`t remove this lint', DefaultText::menu($smallName), $menu);
 
@@ -195,7 +216,7 @@ class DevelopmentApiController extends Controller
 
         return  response([
             'data' => auth()->user()->role->permissions
-            ->pluck('title')->toArray()
+                ->pluck('title')->toArray()
         ], Response::HTTP_ACCEPTED);
 
         // dd($name);
@@ -223,6 +244,7 @@ class DevelopmentApiController extends Controller
     public function storeModel(Request $request)
     {
         // small name
+
         $smallName = str_replace(' ', '', trim(strtolower($request->controller)));
         DefaultText::items($request->items, $smallName);
         $name = ucfirst($smallName);
@@ -259,8 +281,6 @@ class DevelopmentApiController extends Controller
         } else if ($request->tab == "request") {
             copy(__DIR__ . '/../../Requests/StoreBasicRequest.php', $storeR);
             copy(__DIR__ . '/../../Requests/UpdateBasicRequest.php', $updateR);
-            //replace resource name
-            FileService::replaceInFile('BasicResource', $name . "Resource", $resource);
             //replace request name
             FileService::replaceInFile('StoreBasicRequest', 'Store' . $name . "Request", $storeR);
             FileService::replaceInFile("'name' => [],", DefaultText::$filedRequire, $storeR);

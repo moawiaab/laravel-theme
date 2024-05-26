@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'stack' => 'inertia',
+    'stack' => 'vuetify',
     'middleware' => ['web'],
     // 'features' => [Features::accountDeletion()],
 ];

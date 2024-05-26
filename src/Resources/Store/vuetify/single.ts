@@ -6,22 +6,28 @@ import { usePageIndex } from "../pages/pageIndex";
 interface entryData {
     id: Number | null;
     name: String;
-    details: String;
-    status: Number;
-    created_at :String
+    email: String;
+    password: String;
+    phone: String;
+    role: String;
+    role_id: Number;
+    password_confirmation: String;
 }
 
-const route = "categories";
-export const useSingleCategories = defineStore("single-categories", {
+const route = "users";
+export const useSingleUsers = defineStore("single-users", {
     state: () => ({
         entry: <entryData>{},
         lists: {
-            products: [],
+            roles: [],
         },
         loading: false,
         errors: {
             name: "",
-            details: "",
+            email: "",
+            password: "",
+            role_id: "",
+            phone: "",
         },
     }),
     getters: {
@@ -35,12 +41,13 @@ export const useSingleCategories = defineStore("single-categories", {
                 await axios
                     .post(route, this.entry)
                     .then((response) => {
-                        usePageIndex().fetchIndexData();
                         useSettingAlert().setAlert(
-                            "تم إضافة القسم بنجاح",
+                            "تم إضافة المستخدم بنجاح",
                             "success",
                             true
                         );
+                        usePageIndex().fetchIndexData();
+                        this.loading = false;
                         resolve(response);
                     })
                     .catch((error) => {
@@ -50,10 +57,8 @@ export const useSingleCategories = defineStore("single-categories", {
                             "warning",
                             true
                         );
-                        reject(error);
-                    })
-                    .finally(() => {
                         this.loading = false;
+                        reject(error);
                     });
             });
         },
@@ -64,12 +69,13 @@ export const useSingleCategories = defineStore("single-categories", {
                 await axios
                     .put(`${route}/${this.entry.id}`, this.entry)
                     .then((response) => {
-                        usePageIndex().fetchIndexData();
                         useSettingAlert().setAlert(
-                            "تم تعديل القسم بنجاح",
+                            "تم تعديل المستخدم بنجاح",
                             "success",
                             true
                         );
+                        usePageIndex().fetchIndexData();
+                        this.loading = false;
                         resolve(response);
                     })
                     .catch((error) => {
@@ -79,15 +85,13 @@ export const useSingleCategories = defineStore("single-categories", {
                             "warning",
                             true
                         );
-                        reject(error);
-                    })
-                    .finally(() => {
                         this.loading = false;
+                        reject(error);
                     });
             });
         },
 
-        setupEntry(entry: any, lists: any): void {
+        setupEntry(entry: any, lists: any) {
             this.entry = entry;
             this.lists = lists;
         },

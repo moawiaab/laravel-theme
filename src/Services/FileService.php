@@ -61,31 +61,48 @@ class FileService
     public static function viewResource($name, $path, $store)
     {
         $useStoreIndex = 'use' . ucfirst($name) . 'sIndex';
-        $createItem = 'Create' . ucfirst($name);
-        $editItem = 'Edit' . ucfirst($name);
-        $showItem = 'Show' . ucfirst($name);
+        $useStoreSingle = 'use' . ucfirst($name) . 'sSingle';
+        $createName = 'Create' . ucfirst($name);
+        $editName = 'Edit' . ucfirst($name);
+        $showName = 'Show' . ucfirst($name);
         //index file
         FileService::replaceInFile('useUsersIndex', $useStoreIndex, $path . '/Index.vue');
-        FileService::replaceInFile('CreateUser', $createItem, $path . '/Index.vue');
-        FileService::replaceInFile('EditUser', $editItem, $path . '/Index.vue');
-        FileService::replaceInFile('ShowUser', $showItem, $path . '/Index.vue');
         FileService::replaceInFile('user', $name, $path . '/Index.vue');
+        FileService::replaceInFile("//don't remove the line", DefaultText::$columnNamesVuetify, $path . '/Index.vue');
+
         //create file
         FileService::replaceInFile('useUsersIndex', $useStoreIndex, $path . '/Create.vue');
+        FileService::replaceInFile('useSingleUsers', $useStoreSingle, $path . '/Create.vue');
+        FileService::replaceInFile('CreateUser', $createName, $path . '/Create.vue');
         FileService::replaceInFile('user', $name, $path . '/Create.vue');
         FileService::replaceInFile('inputsItem', DefaultText::$inputItems, $path . '/Create.vue');
+        FileService::replaceInFile('validationFiled', DefaultText::$validation, $path . '/Create.vue');
 
         //edit file
         FileService::replaceInFile('useUsersIndex', $useStoreIndex, $path . '/Edit.vue');
+        FileService::replaceInFile('useSingleUsers', $useStoreSingle, $path . '/Edit.vue');
+        FileService::replaceInFile('EditUser', $editName, $path . '/Edit.vue');
         FileService::replaceInFile('user', $name, $path . '/Edit.vue');
         FileService::replaceInFile('inputsItem', DefaultText::$inputItems, $path . '/Edit.vue');
+        FileService::replaceInFile('validationFiled', DefaultText::$validation, $path . '/Edit.vue');
         //show file
         FileService::replaceInFile('useUsersIndex', $useStoreIndex, $path . '/Show.vue');
+        FileService::replaceInFile('useSingleUsers', $useStoreSingle, $path . '/Show.vue');
         FileService::replaceInFile('user', $name, $path . '/Show.vue');
+        FileService::replaceInFile('ShowUser', $showName, $path . '/Show.vue');
 
         //store file
-        FileService::replaceInFile('useUsersIndex', $useStoreIndex, $store . '/index.ts');
-        FileService::replaceInFile('UserColumn', ucfirst($name) . 'Column', $store . '/index.ts');
-        FileService::replaceInFile('user', $name, $store . '/index.ts');
+
+        if (config('theme.stack') === 'quasar') {
+            FileService::replaceInFile('useUsersIndex', $useStoreIndex, $store . '/index.ts');
+            FileService::replaceInFile('UserColumn', ucfirst($name) . 'Column', $store . '/index.ts');
+            FileService::replaceInFile('user', $name, $store . '/index.ts');
+        } elseif (config('theme.stack') === 'vuetify') {
+            FileService::replaceInFile('useSingleUsers', $useStoreSingle, $store . '/single.ts');
+            FileService::replaceInFile('user', $name, $store . '/single.ts');
+
+            FileService::replaceInFile('useUserIndex', $useStoreIndex, $store . '/users.ts');
+            FileService::replaceInFile('user', $name, $store . '/users.ts');
+        }
     }
 }

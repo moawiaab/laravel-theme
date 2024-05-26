@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { useSingleAccounts } from "./single";
 
 const route = "accounts";
-export const useAccounts = defineStore("index-accounts", {
+export const useAccountIndex = defineStore("index-accounts", {
     state: () => ({
         accounts: [],
         total: 0,

@@ -8,16 +8,16 @@
             role="user"
         >
         </data-table>
-        <create-user />
-        <edit-user />
-        <show-user />
+        <create-page />
+        <edit-page />
+        <show-page />
     </q-page>
 </template>
 
 <script setup lang="ts">
 import { useUsersIndex } from "@/stores/users/index";
-import CreateUser from "./Create.vue";
-import EditUser from "./Edit.vue";
-import ShowUser from "./Show.vue";
+import CreatePage from "./Create.vue";
+import EditPage from "./Edit.vue";
+import ShowPage from "./Show.vue";
 const user = useUsersIndex();
 </script>

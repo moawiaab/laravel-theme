@@ -1,7 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 import { useSettingAlert } from "../settings/SettingAlert";
-import { useAccounts } from ".";
+import { useAccountIndex } from ".";
 const route = "accounts";
 export const useSingleAccounts = defineStore("single-accounts", {
     state: () => ({
@@ -35,7 +35,7 @@ export const useSingleAccounts = defineStore("single-accounts", {
     actions: {
         // send data to server in created
         storeData() {
-            const accountIndex = useAccounts();
+            const accountIndex = useAccountIndex();
             this.loading = true;
             return new Promise(async (resolve, reject) => {
                 await axios
@@ -66,7 +66,7 @@ export const useSingleAccounts = defineStore("single-accounts", {
         // send data to server in updated
         updateData() {
             this.loading = true;
-            const accountIndex = useAccounts();
+            const accountIndex = useAccountIndex();
             return new Promise(async (resolve, reject) => {
                 await axios
                     .put(`${route}/${this.entry.id}`, this.entry)

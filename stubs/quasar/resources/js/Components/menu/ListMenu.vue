@@ -193,12 +193,6 @@ const items = [
     ],
   },
 
-  {
-    text: "item.test",
-    icon: "list",
-    to: "/tests",
-    access: "test",
-  },
   //don`t remove this lint
 ];
 </script>

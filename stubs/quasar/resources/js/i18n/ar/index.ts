@@ -1,5 +1,5 @@
 export default {
-    app_title: 'برنامج المبيعات',
+    app_title: 'اسم البرنامج',
     failed: 'العملية فشلة',
     success: 'تم العملية بنجاح',
     input: {
@@ -270,7 +270,7 @@ export default {
             out : 'الشيكات الخارجة',
             last : 'النتيجة'
         },
-         
+
   donor: {
         title: "Donors List",
         title_new: "Create New Donor",
@@ -281,7 +281,7 @@ amount: "Amount",
 address: "Address",
 
     },
- 
+
   test: {
         title: "Tests List",
         title_new: "Create New Test",

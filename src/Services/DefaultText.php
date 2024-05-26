@@ -12,27 +12,40 @@ class DefaultText
     public static $inputItems = "";
     public static $formInput = "";
     public static $columnNames = "";
+    public static $columnNamesVuetify = "";
     public static $appModelList = "";
     public static $appModel = "";
+    public static $validation = "true &&";
 
     protected static $string = array("string", "text", "tinyText", "longText", "phone");
     public static function column($column)
     {
-        return "\n" . 'export const ' . $column . ' = [
+        if (config('theme.stack') === 'quasar') {
+            return "\n" . 'export const ' . $column . ' = [
             ' . self::$columnNames . '
             { name: "created_at", label: "g.created_at", field: "created_at", align: "left", sortable: true },
             { name: "options", label: "g.options", field: "options" }
             ]';
+        }
     }
 
     public static function menu($text)
     {
-        return "\n" . '{
+        if (config('theme.stack') === 'quasar') {
+            return "\n" . '{
             text: "item.' . $text . '",
             icon: "list",
             to: "/' . $text . 's",
             access: "' . $text . '",
         },' . "\n" . ' //don`t remove this lint';
+        } elseif (config('theme.stack') === 'vuetify') {
+            return "\n" . '{
+            text: "item.' . $text . '",
+            icon: "list",
+            url: "/' . $text . 's",
+            access: "' . $text . '",
+        },' . "\n" . ' //don`t remove this lint';
+        }
     }
 
     public static function route($name)
@@ -103,9 +116,9 @@ class DefaultText
             }
 
             self::$columnNames .= '{ name: "' . $filed . '", label: "input.' . $name . "." . $filed . '", align: "left", field: "' . $filed . '",';
-
+            self::$columnNamesVuetify .= '{ text: "input.' . $name . "." . $filed . '", value: "' . $filed . '"';
             if ($item['type'] == 'longText') {
-                self::$inputItems .= self::editor($filed, $name);
+                self::$inputItems .= self::editor($filed, $name, $item['require']);
                 self::$columnNames .= 'format: (val: any) =>
                 `${
                     val.replace(/(<([^>]+)>)/gi, "").length > 30
@@ -129,6 +142,7 @@ class DefaultText
             } else {
                 self::$inputItems .= self::input($name, $filed, $item['require'], $inputType);
             }
+
             $filedType = $item['type'] == "phone" ? "string" : $item['type'];
             $nullable = $item['require'] == false ? "->nullable();" : ";";
             $nullableReq = $item['require'] == false ? "nullable" : "required";
@@ -143,31 +157,25 @@ class DefaultText
             self::$langText .= $filed . ': "' . ucfirst($item['name']) . '",' . "\n";
 
             self::$columnNames .= '},' . "\n";
+            self::$columnNamesVuetify .= '},' . "\n";
             self::$formInput .= $filed . ": " . $v . "," . "\n";
         }
     }
-    // <q-input
-    //                                 clearable
-    //                                 filled
-    //                                 v-model="user.entry.name"
-    //                                 :label="$t('g.user_name')"
-    //                                 lazy-rules
-    //                                 :rules="[
-    //                                     (val) => !!val || $t('v.required'),
-    //                                 ]"
-    //                             />
+
 
     public static function input($name, $filed, $bool, $type)
     {
-        if ($bool == true) {
-            $role = ' lazy-rules
+
+        if (config('theme.stack') === 'quasar') {
+            if ($bool == true) {
+                $role = ' lazy-rules
             :rules="[(val) => !!val || $t(' . "'v.required'" . ')]"
             :error-message="' . $name . '.errors.' . $filed . '"
             :error="' . $name . '.errors.' . $filed . ' ? true : false"';
-        } else {
-            $role = 'class="q-mb-md"';
-        }
-        return '<q-input
+            } else {
+                $role = 'class="q-mb-md"';
+            }
+            return '<q-input
         clearable
         type="' . $type . '"
         filled
@@ -175,25 +183,66 @@ class DefaultText
         :label="$t(' . "'input." . $name . "." . $filed . "'" . ')"
        ' . $role . '
       />' . "\n";
+        } elseif (config('theme.stack') === 'vuetify') {
+            if ($bool == true) {
+                self::$validation .= " single.entry." . $filed . " && ";
+                $role = ':rules="rules.required"
+                :error-messages="single.errors.name"
+                required';
+            } else {
+                $role = '';
+            }
+            return ' <v-text-field
+            clearable
+            type="' . $type . '"
+            v-model="single.entry.' . $filed . '"
+            :label="$t(' . "'input." . $name . "." . $filed . "'" . ')"
+            :hint="$t(' . "'input." . $name . "." . $filed . "'" . ')"
+            variant="solo"
+            color="primary"
+            ' . $role . '
+            />' . "\n";
+        }
     }
 
-    public static function editor($filed, $name)
+    public static function editor($filed, $name, $bool)
     {
-        return '<q-editor v-model="' . $name . '.entry.' . $filed . '" min-height="5rem"
+        if (config('theme.stack') === 'quasar') {
+            return '<q-editor v-model="' . $name . '.entry.' . $filed . '" min-height="5rem"
         :placeholder="' . "'input." . $name . "." . $filed . "'" . '"/>' . "\n";
+        } elseif (config('theme.stack') === 'vuetify') {
+            if ($bool == true) {
+                self::$validation .= " single.entry.' . $filed . '";
+                $role = ':rules="rules.required"
+            :error-messages="single.errors.name"
+            required';
+            } else {
+                $role = '';
+            }
+            return ' <v-textarea
+        clearable
+        v-model="single.entry.' . $filed . '"
+        :label="$t(' . "'input." . $name . "." . $filed . "'" . ')"
+        :hint="$t(' . "'input." . $name . "." . $filed . "'" . ')"
+        variant="solo"
+        color="primary"
+        ' . $role . '
+        />' . "\n";
+        }
     }
 
     public static function select($name, $filed, $bool, $lists)
     {
-        if ($bool == true) {
-            $role = ' lazy-rules
+        if (config('theme.stack') === 'quasar') {
+            if ($bool == true) {
+                $role = ' lazy-rules
             :rules="[(val) => !!val || $t(' . "'v.required'" . ')]"
             :error-message="' . $name . '.errors.' . $filed . '"
             :error="' . $name . '.errors.' . $filed . ' ? true : false"';
-        } else {
-            $role = 'class="q-mb-md"';
-        }
-        return '<q-select
+            } else {
+                $role = 'class="q-mb-md"';
+            }
+            return '<q-select
         clearable
         :options="' . $lists . '"
         option-value="id"
@@ -205,5 +254,19 @@ class DefaultText
         :label="$t(' . "'input." . $name . "." . $filed . "'" . ')"
        ' . $role . '
       />' . "\n";
+        } elseif (config('theme.stack') === 'vuetify') {
+            if ($bool == true) {
+                self::$validation .= " single.entry.' . $filed . '";
+            }
+            return '    <v-select
+            v-model="single.entry.' . $filed . '"
+        :label="$t(' . "'input." . $name . "." . $filed . "'" . ')"
+            clearable
+            :items="single.lists.' . $lists . '"
+            variant="solo"
+            item-title="name"
+            item-value="id"
+        />' . "\n";
+        }
     }
 }
