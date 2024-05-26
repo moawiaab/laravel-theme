@@ -17,7 +17,7 @@ export const useSettingsHeaderTable = defineStore("settings-header-table", {
             users: [],
             roles: [],
             permissions: [],
-            tableNames : [],
+            //tableNames
         },
         table: "",
         fileData: [],

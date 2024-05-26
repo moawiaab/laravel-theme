@@ -137,8 +137,8 @@ class DevelopmentApiController extends Controller
             $en = resource_path('js/i18n/en/index.ts');
             $router = resource_path('js/router/index.ts');
             $setingPath = resource_path('js/stores/settings/');
-            $text = $smallName .'s' ."\n" . 'tableNames';
-            FileService::replaceInFile('tableNames', $smallName .'s', $setingPath. 'SettingHeaderTable.js');
+            $text = $smallName .'s : [],' ."\n" . '//tableNames';
+            FileService::replaceInFile('//tableNames', $text, $setingPath. 'SettingHeaderTable.js');
 
         } else {
             $menu = null;
