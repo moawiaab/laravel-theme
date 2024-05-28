@@ -34,14 +34,14 @@ class DefaultText
         if (config('theme.stack') === 'quasar') {
             return "\n" . '{
             text: "item.' . $text . '",
-            icon: "list",
+            icon: "mdi-format-list-bulleted",
             to: "/' . $text . 's",
             access: "' . $text . '",
         },' . "\n" . ' //don`t remove this lint';
         } elseif (config('theme.stack') === 'vuetify') {
             return "\n" . '{
             text: "item.' . $text . '",
-            icon: "list",
+            icon: "mdi-format-list-bulleted",
             url: "/' . $text . 's",
             access: "' . $text . '",
         },' . "\n" . ' //don`t remove this lint';
@@ -60,7 +60,10 @@ class DefaultText
     public static function routeApi($name, $controller)
     {
         return "Route::resource('" . $name . "s', '" . $controller . "');
-        Route::put('/" . $name . "s/{" . $name . "}/restore', '" . $controller . "@restore');" . "\n" . ' //don`t remove this lint';
+        Route::post('/" . $name . "s/delete-all', '" . $controller . "@destroyAll');
+        Route::post('/" . $name . "s/add-all', '" . $controller . "@addAll');
+        Route::put('/" . $name . "s/{" . $name . "}/restore', '" . $controller . "@restore');"
+            . "\n" . ' //don`t remove this lint';
     }
 
     public static function removeRoute($name)

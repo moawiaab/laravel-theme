@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request as HttpRequest;
+use Moawiaab\LaravelTheme\Services\DevelopmentService;
 
 class BasicController extends Controller
 {
@@ -133,6 +134,20 @@ class BasicController extends Controller
     {
         abort_if(Gate::denies('basic_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $item->restore();
+        return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function addAll(HttpRequest $request)
+    {
+        $defaultValue = [
+            'user_id'      => auth()->id(),
+            'account_id'   => auth()->user()->account_id,
+            //set default value here
+        ];
+        $skipKeys= ['account', 'user'];
+        $fillable = DevelopmentService::check($request[0],$defaultValue, $skipKeys);
+
+        Basic::insert($fillable);
         return response(null, Response::HTTP_NO_CONTENT);
     }
 }

@@ -13,6 +13,7 @@ class DevelopmentService
     public static $error = "";
     private static $pram = [];
     public static $string = array("clients", "expanses", "suppliers", "ProductManagement", "FinancialManagement");
+    public static $keys = array("created_at", "deleted_at", "id", "user_id", "account_id", "updated_at", "deletable", "editable");
 
     public static function views()
     {
@@ -26,8 +27,20 @@ class DevelopmentService
         return $files;
     }
 
-    public static function check()
+    public static function check($request, $defaultValue, $fillable = [])
     {
+        $items = [];
+        $newKey = array_merge(self::$keys, $fillable);
+        foreach ($request as $req) {
+            $keys = [];
+            foreach ($req as $k => $v) {
+                if (in_array($k, $newKey)) continue;
+                $keys[$k] = $v;
+            }
+
+            array_push($items, array_merge($keys, $defaultValue));
+        }
+        return $items;
     }
 
 

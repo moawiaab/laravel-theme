@@ -17,6 +17,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Moawiaab\LaravelTheme\Http\Resources\Admin\UserResource;
 use Moawiaab\LaravelTheme\Models\PrivateLocker;
+use Moawiaab\LaravelTheme\Services\DevelopmentService;
 
 class UsersApiController extends Controller
 {
@@ -26,7 +27,7 @@ class UsersApiController extends Controller
         return UserResource::collection(
             User::advancedFilter()
                 ->when(auth()->user()->account_id != 1, function ($i) {
-                    $i->where('account_id', request('account',auth()->user()->account_id));
+                    $i->where('account_id', request('account', auth()->user()->account_id));
                 })
                 ->filter(FacadesRequest::only('trashed'))
                 ->paginate(request('rowsPerPage', 20))
@@ -94,11 +95,11 @@ class UsersApiController extends Controller
     {
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
-        if($user->id == 1 && $user->id == auth()->id()){
+        if ($user->id == 1 && $user->id == auth()->id()) {
             throw ValidationException::withMessages([
                 'password' => ["لم تتم تغيير كلمة السر بنجاح حاولة مرة اخرى"],
             ]);
-        }else{
+        } else {
             if ($user->deleted_at) {
                 $user->forceDelete();
             } else {
@@ -154,13 +155,14 @@ class UsersApiController extends Controller
 
     public function addAll(Request $request)
     {
-        // User::insert($request[0]);
-        foreach ($request[0] as $value) {
-            $perm = new User();
-            $perm->title = $value['title'];
-            $perm->details = $value['details'];
-            $perm->save();
-        }
+        $data = [
+            // 'user_id'      => auth()->id(),
+            'account_id'   => auth()->user()->account_id,
+            'password' => Hash::make('password'),
+        ];
+        $fillable = DevelopmentService::check($request[0],$data, ['role', 'account', 'toggle', 'locker']);
+
+        User::insert($fillable);
         return response(null, Response::HTTP_NO_CONTENT);
     }
     public function restore(User $item)
