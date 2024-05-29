@@ -1,8 +1,5 @@
 <template>
   <div class="">
-    <v-btn @click="testBtn">
-test
-    </v-btn>
     <v-row class="mb-2">
       <v-col>
         <show-card
@@ -133,10 +130,10 @@ export default {
     };
 
     const testBtn = () => {
-        axios.post("development/store").then((response) => {
+      axios.post("development/store").then((response) => {
         console.log(response);
       });
-    }
+    };
     return { charts, loading, options, testBtn };
   },
 };

@@ -1,6 +1,6 @@
 <template>
     <v-dialog
-        v-model="single.showModalCreateController"
+        v-model="single.showModalCreateModel"
         persistent
         max-width="1000"
         scrollable
@@ -8,14 +8,14 @@
         <v-form @submit.prevent="submitForm">
             <v-card>
                 <v-card-title class="text-h5 text-primary">
-                    create new controller
+                    create new Model
                 </v-card-title>
                 <v-divider />
                 <div class="ma-2">
                     <v-text-field
                         clearable
-                        label="Controller Name"
-                        hint="If You Like Set UserController Entre User Only"
+                        label="Model Name"
+                        hint="If You Like Set UserModel Entre User Only"
                         variant="solo"
                         v-model="single.form.controller"
                         :rules="rules.required"
@@ -23,22 +23,6 @@
                         required
                         color="primary"
                     />
-                    <div class="text-gary">
-                        Controller :
-                        {{ single.ucFirst(single.form.controller) }}Controller
-                    </div>
-                    <div class="">
-                        Model :
-                        {{ single.ucFirst(single.form.controller) }}
-                    </div>
-                    <div class="">
-                        Resource :
-                        {{ single.ucFirst(single.form.controller) }}Resource
-                    </div>
-                    <div class="">
-                        Require :
-                        {{ single.ucFirst(single.form.controller) }}Require
-                    </div>
                     <v-divider />
                     <v-row class="mt-1">
                         <v-col>
@@ -100,7 +84,7 @@
                         color="red-darken-1"
                         prepend-icon="mdi-close"
                         variant="tonal"
-                        @click="single.showModalCreateController = false"
+                        @click="single.showModalCreateModel = false"
                     >
                         {{ $t("g.close") }}
                     </v-btn>
@@ -132,8 +116,9 @@ export default {
 
         const submitForm = () => {
             if (validation()) {
-                single.storeData().then(() => {
-                    single.showModalCreateController = false;
+                single.form.tab = "model"
+                single.submittedData().then(() => {
+                    single.showModalCreateModel = false;
                     single.$reset();
                 });
             } else {

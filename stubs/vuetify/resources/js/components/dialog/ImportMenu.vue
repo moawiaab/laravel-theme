@@ -13,14 +13,18 @@
                             accept=".ods,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                         <v-list-item-title class="text-red">يجب عن يكون اسم الاعمدة بالانجليزي</v-list-item-title>
                         <v-row v-for="i in localHeader" :key="i">
-                            <v-col>{{ i.text }}</v-col>
+                            <v-col>{{ $t(i.text) }}</v-col>
                             <v-col> = {{ i.value }}</v-col>
                         </v-row>
                     </v-col>
                     <v-divider vertical />
                     <v-col>
                         <data-table :headers="localHeader" :items="item.fileData" :hide-footer="true"
-                            :table-height="500" body-text-direction="right" :loading="item.loading" />
+                            :table-height="500" body-text-direction="right" :loading="item.loading" >
+                            <template #header="header">
+				{{ $t(header.text) }}
+			</template>
+                        </data-table>
                     </v-col>
                 </v-row>
             </v-card-text>

@@ -16,7 +16,7 @@ class Basic extends Model
     use HasAdvancedFilter;
 
 
-    protected $table = 'tablesName';
+    // protected $table = 'tablesName';
 
     protected $orderable = [
         'id',

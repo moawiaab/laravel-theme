@@ -1,6 +1,9 @@
 <script setup>
 import { useDevelopmentIndex } from "@/stores/development";
 import CreateController from "./CreateController.vue";
+import CreateModel from "./CreateModel.vue";
+import CreateRes from "./CreateRes.vue";
+import CreateReq from "./CreateReq.vue";
 
 const development = useDevelopmentIndex();
 development.fetchData();
@@ -10,13 +13,15 @@ development.fetchData();
         <v-btn variant="tonal" class="ma-1" prepend-icon="mdi-pen" @click="development.showModalCreateController = true">
             create new controller</v-btn
         >
-        <v-btn variant="tonal" class="ma-1" prepend-icon="mdi-pen">
+        <v-btn variant="tonal" class="ma-1" prepend-icon="mdi-pen" @click="development.showModalCreateModel = true">
             create new model</v-btn
         >
-        <v-btn variant="tonal" class="ma-1" prepend-icon="mdi-pen">
+        <v-btn variant="tonal" class="ma-1" prepend-icon="mdi-pen"  @click="development.showModalCreateRes = true">
             create new resources</v-btn
+
         >
-        <v-btn variant="tonal" class="ma-1" prepend-icon="mdi-pen">
+
+        <v-btn variant="tonal" class="ma-1" prepend-icon="mdi-pen" @click="development.showModalCreateReq = true">
             create new requests</v-btn
         >
         <v-expansion-panels variant="accordion">
@@ -106,5 +111,8 @@ development.fetchData();
         </v-expansion-panels>
 
         <CreateController/>
+        <CreateModel/>
+        <CreateRes/>
+        <CreateReq/>
     </div>
 </template>

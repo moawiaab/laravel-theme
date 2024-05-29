@@ -22,7 +22,7 @@
                                     <v-list-item
                                         v-for="(item, index) in items.itemNav"
                                         :key="index"
-                                        :title="item.text"
+                                        :title="$t(item.text)"
                                         :value="index"
                                         :append-icon="item.icon"
                                         variant="plain"
@@ -38,7 +38,7 @@
                                     <v-list-item
                                         v-for="(item, index) in items.itemSide"
                                         :key="index"
-                                        :title="item.text"
+                                        :title="$t(item.text)"
                                         :value="index"
                                         :append-icon="item.icon"
                                         variant="plain"

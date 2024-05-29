@@ -29,20 +29,20 @@ class DefaultText
         }
     }
 
-    public static function menu($text)
+    public static function menu($text, $url)
     {
         if (config('theme.stack') === 'quasar') {
             return "\n" . '{
             text: "item.' . $text . '",
             icon: "mdi-format-list-bulleted",
-            to: "/' . $text . 's",
+            to: "/' . $url . '",
             access: "' . $text . '",
         },' . "\n" . ' //don`t remove this lint';
         } elseif (config('theme.stack') === 'vuetify') {
             return "\n" . '{
             text: "item.' . $text . '",
             icon: "mdi-format-list-bulleted",
-            url: "/' . $text . 's",
+            url: "/' . $url . '",
             access: "' . $text . '",
         },' . "\n" . ' //don`t remove this lint';
         }
@@ -51,18 +51,18 @@ class DefaultText
     public static function route($name)
     {
         return '{
-            path: "' . $name . 's",
-            name: "' . $name . 's",
-            component: () => import("@/Pages/' . ucfirst($name) . 's/Index.vue"),
+            path: "' . $name . '",
+            name: "List ' . $name . '",
+            component: () => import("@/Pages/' . ucfirst($name) . '/Index.vue"),
         },' . "\n" . ' //don`t remove this lint';
     }
 
     public static function routeApi($name, $controller)
     {
-        return "Route::resource('" . $name . "s', '" . $controller . "');
-        Route::post('/" . $name . "s/delete-all', '" . $controller . "@destroyAll');
-        Route::post('/" . $name . "s/add-all', '" . $controller . "@addAll');
-        Route::put('/" . $name . "s/{" . $name . "}/restore', '" . $controller . "@restore');"
+        return "Route::resource('" . $name . "', '" . $controller . "');
+        Route::post('/" . $name . "/delete-all', '" . $controller . "@destroyAll');
+        Route::post('/" . $name . "/add-all', '" . $controller . "@addAll');
+        Route::put('/" . $name . "/{item}/restore', '" . $controller . "@restore');"
             . "\n" . ' //don`t remove this lint';
     }
 
@@ -83,10 +83,9 @@ class DefaultText
     },' . "\n" . ' //don`t remove this lint';
     }
 
-    public static function langItem($text)
+    public static function langItem($item, $text)
     {
-        $name = strtolower($text);
-        return $name . ': "List ' . $text . 's",' . "\n" . ' //don`t remove this item';
+        return $item . ': "List ' . $text . '",' . "\n" . ' //don`t remove this item';
     }
 
     public static function items($items, $name)

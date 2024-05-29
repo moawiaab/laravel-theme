@@ -3,6 +3,8 @@
 namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Basic;
+use App\Models\User;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -110,12 +112,21 @@ class DevelopmentApiController extends Controller
         $controllerName = $name . 'ApiController';
         $controller = app_path('Http/Controllers/Api/' . $controllerName . '.php');
         $model = app_path('Models/' . $name . '.php');
+
+        copy(__DIR__ . '/../../../Models/Basic.php', $model);
+        FileService::replaceInFile('Basic', $name, $model);
+        $tb = "App\Models\\".$name;
+        $t = new $tb();
+        $tableName = $t->getTable() ?? $smallName . "s";
+
+        // dd($tableName);
+
         $resource = app_path('Http/Resources/' . $name . 'Resource.php');
         $storeR = app_path('Http/Requests/Store' . $name . 'Request.php');
         $updateR = app_path('Http/Requests/Update' . $name . 'Request.php');
 
-        $view = resource_path('js/Pages/' . $name . 's/');
-        $store = resource_path('js/stores/' . $smallName . 's/');
+        $view = resource_path('js/Pages/' . ucfirst($tableName));
+        $store = resource_path('js/stores/' . $tableName);
 
 
         $api = base_path('routes/api.php');
@@ -137,9 +148,8 @@ class DevelopmentApiController extends Controller
             $en = resource_path('js/i18n/en/index.ts');
             $router = resource_path('js/router/index.ts');
             $setingPath = resource_path('js/stores/settings/');
-            $text = $smallName .'s : [],' ."\n" . '//tableNames';
-            FileService::replaceInFile('//tableNames', $text, $setingPath. 'SettingHeaderTable.js');
-
+            $text = $tableName . ': [],' . "\n" . '//tableNames';
+            FileService::replaceInFile('//tableNames', $text, $setingPath . 'SettingHeaderTable.js');
         } else {
             $menu = null;
         }
@@ -151,15 +161,15 @@ class DevelopmentApiController extends Controller
 
         // copy files from basic to new directory
         copy(__DIR__ . '/../BasicController.php', $controller);
-        copy(__DIR__ . '/../../../Models/Basic.php', $model);
+
         copy(__DIR__ . '/../../Resources/BasicResource.php', $resource);
         copy(__DIR__ . '/../../Requests/StoreBasicRequest.php', $storeR);
         copy(__DIR__ . '/../../Requests/UpdateBasicRequest.php', $updateR);
 
         if (file_exists($controller)) {
             //replace model name
-            FileService::replaceInFile('Basic', $name, $model);
-            FileService::replaceInFile('tablesName', $smallName . "s", $model);
+
+            // FileService::replaceInFile('tablesName', $smallName . "s", $model);
             FileService::replaceInFile("'name',", DefaultText::$filedModel, $model);
             FileService::replaceInFile("//function", DefaultText::$appModel, $model);
 
@@ -190,24 +200,24 @@ class DevelopmentApiController extends Controller
                 (new Filesystem)->copyDirectory(__DIR__ . '/../../../Resources/Store/vuetify', $store);
             }
             // views files index , create, update, show
-            FileService::viewResource($smallName, $view, $store);
+            FileService::viewResource($smallName, $view, $store, $tableName);
 
             // add route to web page
-            FileService::replaceInFile('//don`t remove this lint', DefaultText::route($smallName), $router);
-            FileService::replaceInFile('//don`t remove this lint', DefaultText::routeApi($smallName, $controllerName), $api);
+            FileService::replaceInFile('//don`t remove this lint', DefaultText::route($tableName), $router);
+            FileService::replaceInFile('//don`t remove this lint', DefaultText::routeApi($tableName, $controllerName), $api);
 
             //add item to menu items
-            FileService::replaceInFile('//don`t remove this lint', DefaultText::menu($smallName), $menu);
+            FileService::replaceInFile('//don`t remove this lint', DefaultText::menu($smallName, $tableName), $menu);
 
             // add lang to ar and en
 
-            FileService::replaceInFile('//don`t remove this item', DefaultText::langItem($name), $ar);
+            FileService::replaceInFile('//don`t remove this item', DefaultText::langItem($smallName, ucfirst($tableName)), $ar);
             FileService::replaceInFile('//don`t remove this lint', DefaultText::lang($name), $ar);
-            FileService::replaceInFile('//don`t remove this item', DefaultText::langItem($name), $en);
+            FileService::replaceInFile('//don`t remove this item', DefaultText::langItem($smallName, ucfirst($tableName)), $en);
             FileService::replaceInFile('//don`t remove this lint', DefaultText::lang($name), $en);
 
             // replace table name
-            FileService::replaceInFile('basics', $smallName . "s", $migrate);
+            FileService::replaceInFile('basics', $tableName, $migrate);
             // set filed items
             FileService::replaceInFile('$table->string("name");', DefaultText::$filedTable, $migrate);
 
