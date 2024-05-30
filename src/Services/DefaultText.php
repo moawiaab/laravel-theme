@@ -2,6 +2,8 @@
 
 namespace Moawiaab\LaravelTheme\Services;
 
+use Illuminate\Support\Str;
+
 class DefaultText
 {
 
@@ -53,7 +55,7 @@ class DefaultText
         return '{
             path: "' . $name . '",
             name: "List ' . $name . '",
-            component: () => import("@/Pages/' . ucfirst($name) . '/Index.vue"),
+            component: () => import("@/Pages/' . $name . '/Index.vue"),
         },' . "\n" . ' //don`t remove this lint';
     }
 
@@ -132,7 +134,7 @@ class DefaultText
                 }`,';
             } elseif ($item['type'] == 'belongsTo') {
                 $lists = trim($item['belongsTo']);
-                $model = substr_replace($lists, '', -1);
+                $model = Str::studly(Str::singular($lists));
 
                 self::$appModelList .= "'" . $lists . "'    => \App\Models\\" . ucfirst($model) . "::get(['id', 'name'])," . "\n";
                 self::$appModel .= 'public function ' . $filed . '() : BelongsTo
@@ -214,7 +216,7 @@ class DefaultText
         :placeholder="' . "'input." . $name . "." . $filed . "'" . '"/>' . "\n";
         } elseif (config('theme.stack') === 'vuetify') {
             if ($bool == true) {
-                self::$validation .= " single.entry.' . $filed . '";
+                self::$validation .= " single.entry." . $filed . " && ";
                 $role = ':rules="rules.required"
             :error-messages="single.errors.name"
             required';
@@ -258,7 +260,7 @@ class DefaultText
       />' . "\n";
         } elseif (config('theme.stack') === 'vuetify') {
             if ($bool == true) {
-                self::$validation .= " single.entry.' . $filed . '";
+                self::$validation .= " single.entry." . $filed . " && ";
             }
             return '    <v-select
             v-model="single.entry.' . $filed . '"

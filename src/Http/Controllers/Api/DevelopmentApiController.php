@@ -102,12 +102,21 @@ class DevelopmentApiController extends Controller
 
     public function store(Request $request)
     {
+        $str = explode(' ', $request->controller);
+        $text = [];
+        foreach ($str as $key) {
+            if (strlen($key) > 1) array_push($text, ucfirst($key));
+        }
+        $small_name = strtolower(join("_", $text));
         // small name
         FileService::makeDefaultFolder();
 
-        $smallName = str_replace(' ', '', trim(strtolower($request->controller)));
-        DefaultText::items($request->items, $smallName);
-        $name = ucfirst($smallName);
+        // $smallName = str_replace(' ', '-', trim(strtolower($request->controller)));
+        $smallName = trim(strtolower(join("-", $text)));
+        // dd($str, $small_name, $smallName);
+
+        DefaultText::items($request->items, $small_name);
+        $name = ucfirst(join("", $text));
 
         $controllerName = $name . 'ApiController';
         $controller = app_path('Http/Controllers/Api/' . $controllerName . '.php');
@@ -115,9 +124,10 @@ class DevelopmentApiController extends Controller
 
         copy(__DIR__ . '/../../../Models/Basic.php', $model);
         FileService::replaceInFile('Basic', $name, $model);
-        $tb = "App\Models\\".$name;
+        $tb = "App\Models\\" . $name;
         $t = new $tb();
-        $tableName = $t->getTable() ?? $smallName . "s";
+        $tableName = $t->getTable() ?? $small_name . "s";
+        $url_page = str_replace('_', '-', $tableName);
 
         // dd($tableName);
 
@@ -125,15 +135,15 @@ class DevelopmentApiController extends Controller
         $storeR = app_path('Http/Requests/Store' . $name . 'Request.php');
         $updateR = app_path('Http/Requests/Update' . $name . 'Request.php');
 
-        $view = resource_path('js/Pages/' . ucfirst($tableName));
-        $store = resource_path('js/stores/' . $tableName);
+        $view = resource_path('js/Pages/' . $url_page);
+        $store = resource_path('js/stores/' . $url_page);
 
 
         $api = base_path('routes/api.php');
 
         $colName = $name . 'Column';
         //migrations
-        $m_name = date("Y-m-d") . "_" . time() . "_" . "create_" . $smallName . "_table.php";
+        $m_name = date("Y-m-d") . "_" . time() . "_" . "create_" . $small_name . "_table.php";
         $migrate = database_path("migrations/" . $m_name);
 
         $ar = resource_path('js/i18n/ar/index.ts');
@@ -148,7 +158,7 @@ class DevelopmentApiController extends Controller
             $en = resource_path('js/i18n/en/index.ts');
             $router = resource_path('js/router/index.ts');
             $setingPath = resource_path('js/stores/settings/');
-            $text = $tableName . ': [],' . "\n" . '//tableNames';
+            $text = '"'.$url_page.'": [],' . "\n" . '//tableNames';
             FileService::replaceInFile('//tableNames', $text, $setingPath . 'SettingHeaderTable.js');
         } else {
             $menu = null;
@@ -156,7 +166,7 @@ class DevelopmentApiController extends Controller
 
         copy(__DIR__ . '/../../../Resources/database/basic.php', $migrate);
 
-        $this->setPermission(strtolower($name));
+        $this->setPermission(strtolower($small_name));
         // dd("done");
 
         // copy files from basic to new directory
@@ -183,10 +193,10 @@ class DevelopmentApiController extends Controller
 
             //replace controller name and method names
             FileService::replaceInFile('BasicController', $controllerName, $controller);
-            FileService::replaceInFile('$basic', '$' . $smallName, $controller);
+            FileService::replaceInFile('$basic', '$' . $small_name, $controller);
             // FileService::replaceInFile('Basics/', $name . 's/', $controller);
             // FileService::replaceInFile('basics', $smallName . 's', $controller);
-            FileService::replaceInFile('basic_', $smallName . '_', $controller);
+            FileService::replaceInFile('basic_', $small_name . '_', $controller);
             FileService::replaceInFile('Basic', $name, $controller);
             FileService::replaceInFile('//set resource', DefaultText::$appModelList, $controller);
             // copy resources files in vue folder
@@ -200,21 +210,21 @@ class DevelopmentApiController extends Controller
                 (new Filesystem)->copyDirectory(__DIR__ . '/../../../Resources/Store/vuetify', $store);
             }
             // views files index , create, update, show
-            FileService::viewResource($smallName, $view, $store, $tableName);
+            FileService::viewResource($small_name, $view, $store, $url_page, $name);
 
             // add route to web page
-            FileService::replaceInFile('//don`t remove this lint', DefaultText::route($tableName), $router);
-            FileService::replaceInFile('//don`t remove this lint', DefaultText::routeApi($tableName, $controllerName), $api);
+            FileService::replaceInFile('//don`t remove this lint', DefaultText::route($url_page), $router);
+            FileService::replaceInFile('//don`t remove this lint', DefaultText::routeApi($url_page, $controllerName), $api);
 
             //add item to menu items
-            FileService::replaceInFile('//don`t remove this lint', DefaultText::menu($smallName, $tableName), $menu);
+            FileService::replaceInFile('//don`t remove this lint', DefaultText::menu($small_name, $url_page), $menu);
 
             // add lang to ar and en
 
-            FileService::replaceInFile('//don`t remove this item', DefaultText::langItem($smallName, ucfirst($tableName)), $ar);
-            FileService::replaceInFile('//don`t remove this lint', DefaultText::lang($name), $ar);
-            FileService::replaceInFile('//don`t remove this item', DefaultText::langItem($smallName, ucfirst($tableName)), $en);
-            FileService::replaceInFile('//don`t remove this lint', DefaultText::lang($name), $en);
+            FileService::replaceInFile('//don`t remove this item', DefaultText::langItem($small_name, $name), $ar);
+            FileService::replaceInFile('//don`t remove this lint', DefaultText::lang($small_name), $ar);
+            FileService::replaceInFile('//don`t remove this item', DefaultText::langItem($small_name, $name), $en);
+            FileService::replaceInFile('//don`t remove this lint', DefaultText::lang($small_name), $en);
 
             // replace table name
             FileService::replaceInFile('basics', $tableName, $migrate);
@@ -254,6 +264,7 @@ class DevelopmentApiController extends Controller
     public function storeModel(Request $request)
     {
         // small name
+
 
         $smallName = str_replace(' ', '', trim(strtolower($request->controller)));
         DefaultText::items($request->items, $smallName);

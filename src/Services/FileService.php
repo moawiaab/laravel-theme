@@ -58,13 +58,13 @@ class FileService
             mkdir($require, 0755);
     }
 
-    public static function viewResource($name, $path, $store, $tableName)
+    public static function viewResource($name, $path, $store, $tableName, $pName)
     {
-        $useStoreIndex = 'use' . ucfirst($name) . 'sIndex';
-        $useStoreSingle = 'use' . ucfirst($name) . 'sSingle';
-        $createName = 'Create' . ucfirst($name);
-        $editName = 'Edit' . ucfirst($name);
-        $showName = 'Show' . ucfirst($name);
+        $useStoreIndex = 'use' . $pName . 'Index';
+        $useStoreSingle = 'use' . $pName . 'Single';
+        $createName = 'Create' . $pName;
+        $editName = 'Edit' . $pName;
+        $showName = 'Show' . $pName;
         //index file
         FileService::replaceInFile('useUsersIndex', $useStoreIndex, $path . '/Index.vue');
         FileService::replaceInFile('users', $tableName, $path . '/Index.vue');
