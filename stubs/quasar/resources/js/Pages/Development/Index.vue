@@ -10,6 +10,7 @@ development.fetchData();
 </script>
 <template>
     <q-page padding>
+        <loader v-if="development.loading" />
         <q-splitter
             v-model="development.splitterModel"
             style="height: 100%"
@@ -247,6 +248,24 @@ development.fetchData();
                                         :columns="development.columns"
                                         :rows="development.form.items"
                                     >
+                                        <template #body>
+                                            <draggable
+                                                v-model="development.form.items"
+                                                tag="tbody"
+                                            >
+                                                <tr
+                                                    v-for="item in development
+                                                        .form.items"
+                                                    :key="item.name"
+                                                >
+                                                    <td scope="row">
+                                                        {{ item.id }}
+                                                    </td>
+                                                    <td>{{ item.name }}</td>
+                                                    <td>{{ item.sport }}</td>
+                                                </tr>
+                                            </draggable>
+                                        </template>
                                     </table-form>
                                     <q-separator />
                                     <q-btn
@@ -321,7 +340,6 @@ development.fetchData();
                                         </q-input>
                                     </div>
                                 </div>
-
 
                                 <table-form
                                     :columns="development.columns"

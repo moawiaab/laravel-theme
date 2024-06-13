@@ -15,7 +15,10 @@ use Moawiaab\LaravelTheme\Services\DefaultText;
 use Moawiaab\LaravelTheme\Services\DevelopmentService;
 use Moawiaab\LaravelTheme\Services\FileService;
 use Illuminate\Http\Response;
-
+use Moawiaab\LaravelTheme\Services\ControllerService;
+use Moawiaab\LaravelTheme\Services\ModelService;
+use Moawiaab\LaravelTheme\Services\RequestService;
+use Moawiaab\LaravelTheme\Services\ResourcesService;
 
 class DevelopmentApiController extends Controller
 {
@@ -102,211 +105,49 @@ class DevelopmentApiController extends Controller
 
     public function store(Request $request)
     {
-        $str = explode(' ', $request->controller);
-        $text = [];
-        foreach ($str as $key) {
-            if (strlen($key) > 1) array_push($text, ucfirst($key));
-        }
-        $small_name = strtolower(join("_", $text));
-        // small name
-        FileService::makeDefaultFolder();
+        FileService::makeDefaultFolder($request->controller);
+        // set model
+        ModelService::createIsNotExist($request->items);
 
-        // $smallName = str_replace(' ', '-', trim(strtolower($request->controller)));
-        $smallName = trim(strtolower(join("-", $text)));
-        // dd($str, $small_name, $smallName);
-
-        DefaultText::items($request->items, $small_name);
-        $name = ucfirst(join("", $text));
-
-        $controllerName = $name . 'ApiController';
-        $controller = app_path('Http/Controllers/Api/' . $controllerName . '.php');
-        $model = app_path('Models/' . $name . '.php');
-
-        copy(__DIR__ . '/../../../Models/Basic.php', $model);
-        FileService::replaceInFile('Basic', $name, $model);
-        $tb = "App\Models\\" . $name;
-        $t = new $tb();
-        $tableName = $t->getTable() ?? $small_name . "s";
-        $url_page = str_replace('_', '-', $tableName);
-
-        // dd($tableName);
-
-        $resource = app_path('Http/Resources/' . $name . 'Resource.php');
-        $storeR = app_path('Http/Requests/Store' . $name . 'Request.php');
-        $updateR = app_path('Http/Requests/Update' . $name . 'Request.php');
-
-        $view = resource_path('js/Pages/' . $url_page);
-        $store = resource_path('js/stores/' . $url_page);
-
-
-        $api = base_path('routes/api.php');
-
-        $colName = $name . 'Column';
-        //migrations
-        $m_name = date("Y-m-d") . "_" . time() . "_" . "create_" . $small_name . "_table.php";
-        $migrate = database_path("migrations/" . $m_name);
-
-        $ar = resource_path('js/i18n/ar/index.ts');
-
+        $view = resource_path('js/Pages/' . DefaultText::$url_page);
+        $store = resource_path('js/stores/' . DefaultText::$url_page);
+        // set controller
+        ControllerService::createIsNotExist();
+        //set Resources
+        ResourcesService::createIsNotExist();
+        //set Request
+        RequestService::createIsNotExist();
+        // copy resources files in vue folder
         if (config('theme.stack') === 'quasar') {
-            $menu = resource_path('js/Components/menu/ListMenu.vue');
-            $col = resource_path('js/types/columns.ts');
-            $en = resource_path('js/i18n/en-US/index.ts');
-            $router = resource_path('js/router/index.js');
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../../Resources/Basic/quasar', $view);
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../../Resources/Store/quasar', $store);
+            // add column to columns.ts
         } elseif (config('theme.stack') === 'vuetify') {
-            $menu = resource_path('js/plugins/sidebar_item.js');
-            $en = resource_path('js/i18n/en/index.ts');
-            $router = resource_path('js/router/index.ts');
-            $setingPath = resource_path('js/stores/settings/');
-            $text = '"'.$url_page.'": [],' . "\n" . '//tableNames';
-            FileService::replaceInFile('//tableNames', $text, $setingPath . 'SettingHeaderTable.js');
-        } else {
-            $menu = null;
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../../Resources/Basic/vuetify', $view);
+            (new Filesystem)->copyDirectory(__DIR__ . '/../../../Resources/Store/vuetify', $store);
         }
-
-        copy(__DIR__ . '/../../../Resources/database/basic.php', $migrate);
-
-        $this->setPermission(strtolower($small_name));
-        // dd("done");
-
-        // copy files from basic to new directory
-        copy(__DIR__ . '/../BasicController.php', $controller);
-
-        copy(__DIR__ . '/../../Resources/BasicResource.php', $resource);
-        copy(__DIR__ . '/../../Requests/StoreBasicRequest.php', $storeR);
-        copy(__DIR__ . '/../../Requests/UpdateBasicRequest.php', $updateR);
-
-        if (file_exists($controller)) {
-            //replace model name
-
-            // FileService::replaceInFile('tablesName', $smallName . "s", $model);
-            FileService::replaceInFile("'name',", DefaultText::$filedModel, $model);
-            FileService::replaceInFile("//function", DefaultText::$appModel, $model);
-
-            //replace resource name
-            FileService::replaceInFile('BasicResource', $name . "Resource", $resource);
-            //replace request name
-            FileService::replaceInFile('StoreBasicRequest', 'Store' . $name . "Request", $storeR);
-            FileService::replaceInFile("'name' => [],", DefaultText::$filedRequire, $storeR);
-            FileService::replaceInFile('UpdateBasicRequest', 'Update' . $name . "Request", $updateR);
-            FileService::replaceInFile("'name' => [],", DefaultText::$filedRequire, $updateR);
-
-            //replace controller name and method names
-            FileService::replaceInFile('BasicController', $controllerName, $controller);
-            FileService::replaceInFile('$basic', '$' . $small_name, $controller);
-            // FileService::replaceInFile('Basics/', $name . 's/', $controller);
-            // FileService::replaceInFile('basics', $smallName . 's', $controller);
-            FileService::replaceInFile('basic_', $small_name . '_', $controller);
-            FileService::replaceInFile('Basic', $name, $controller);
-            FileService::replaceInFile('//set resource', DefaultText::$appModelList, $controller);
-            // copy resources files in vue folder
-            if (config('theme.stack') === 'quasar') {
-                (new Filesystem)->copyDirectory(__DIR__ . '/../../../Resources/Basic/quasar', $view);
-                (new Filesystem)->copyDirectory(__DIR__ . '/../../../Resources/Store/quasar', $store);
-                // add column to columns.ts
-                FileService::editFile($col, DefaultText::column($colName));
-            } elseif (config('theme.stack') === 'vuetify') {
-                (new Filesystem)->copyDirectory(__DIR__ . '/../../../Resources/Basic/vuetify', $view);
-                (new Filesystem)->copyDirectory(__DIR__ . '/../../../Resources/Store/vuetify', $store);
-            }
-            // views files index , create, update, show
-            FileService::viewResource($small_name, $view, $store, $url_page, $name);
-
-            // add route to web page
-            FileService::replaceInFile('//don`t remove this lint', DefaultText::route($url_page), $router);
-            FileService::replaceInFile('//don`t remove this lint', DefaultText::routeApi($url_page, $controllerName), $api);
-
-            //add item to menu items
-            FileService::replaceInFile('//don`t remove this lint', DefaultText::menu($small_name, $url_page), $menu);
-
-            // add lang to ar and en
-
-            FileService::replaceInFile('//don`t remove this item', DefaultText::langItem($small_name, $name), $ar);
-            FileService::replaceInFile('//don`t remove this lint', DefaultText::lang($small_name), $ar);
-            FileService::replaceInFile('//don`t remove this item', DefaultText::langItem($small_name, $name), $en);
-            FileService::replaceInFile('//don`t remove this lint', DefaultText::lang($small_name), $en);
-
-            // replace table name
-            FileService::replaceInFile('basics', $tableName, $migrate);
-            // set filed items
-            FileService::replaceInFile('$table->string("name");', DefaultText::$filedTable, $migrate);
-
-            Artisan::call('migrate');
-        }
+        // views files index , create, update, show
+        FileService::viewResource(DefaultText::$small_name, $view, $store);
+        // add route to web page
+        DefaultText::setRoute();
 
         return  response([
             'data' => auth()->user()->role->permissions
                 ->pluck('title')->toArray()
         ], Response::HTTP_ACCEPTED);
 
-        // dd($name);
-    }
-
-
-    private function setPermission($name)
-    {
-        $data = [
-            ['details' => " access " .   $name, 'title' => $name . "_access"],
-            ['details' => " create " .  $name, 'title' => $name . "_create"],
-            ['details' => " edit " .  $name, 'title' => $name . "_edit"],
-            ['details' => " delete " .    $name, 'title' => $name . "_delete"]
-        ];
-        $role = Role::find(1);
-        $permission = Permission::insert($data);
-        if ($permission) {
-            $permissions = Permission::orderBy('id', 'desc')->take(4)->get(['id', 'title']);
-            foreach ($permissions as $key) {
-                $role->permissions()->syncWithoutDetaching($key->id);
-            }
-        }
+        // dd(DefaultText::$name);
     }
 
     public function storeModel(Request $request)
     {
-        // small name
-
-
-        $smallName = str_replace(' ', '', trim(strtolower($request->controller)));
-        DefaultText::items($request->items, $smallName);
-        $name = ucfirst($smallName);
-
-        $model = app_path('Models/' . $name . '.php');
-        $resource = app_path('Http/Resources/' . $name . 'Resource.php');
-        $storeR = app_path('Http/Requests/Store' . $name . 'Request.php');
-        $updateR = app_path('Http/Requests/Update' . $name . 'Request.php');
-
-        //migrations
-        $m_name = date("Y-m-d") . "_" . time() . "_" . "create_" . $smallName . "_table.php";
-        $migrate = database_path("migrations/" . $m_name);
-
+        FileService::makeDefaultFolder($request->controller);
         if ($request->tab == "model") {
-            copy(__DIR__ . '/../../../Resources/database/basic.php', $migrate);
-            copy(__DIR__ . '/../../../Models/Basic.php', $model);
-
-            //replace model name
-            FileService::replaceInFile('Basic', $name, $model);
-            FileService::replaceInFile('tablesName', $smallName . "s", $model);
-            FileService::replaceInFile("'name',", DefaultText::$filedModel, $model);
-            FileService::replaceInFile("//function", DefaultText::$appModel, $model);
-
-
-            // replace table name
-            FileService::replaceInFile('basics', $smallName . "s", $migrate);
-            // set filed items
-            FileService::replaceInFile('$table->string("name");', DefaultText::$filedTable, $migrate);
-            Artisan::call('migrate');
+            ModelService::createIsNotExist($request->items);
         } else if ($request->tab == "resource") {
-            copy(__DIR__ . '/../../Resources/BasicResource.php', $resource);
-            //replace resource name
-            FileService::replaceInFile('BasicResource', $name . "Resource", $resource);
+            ResourcesService::createIsNotExist();
         } else if ($request->tab == "request") {
-            copy(__DIR__ . '/../../Requests/StoreBasicRequest.php', $storeR);
-            copy(__DIR__ . '/../../Requests/UpdateBasicRequest.php', $updateR);
-            //replace request name
-            FileService::replaceInFile('StoreBasicRequest', 'Store' . $name . "Request", $storeR);
-            FileService::replaceInFile("'name' => [],", DefaultText::$filedRequire, $storeR);
-            FileService::replaceInFile('UpdateBasicRequest', 'Update' . $name . "Request", $updateR);
-            FileService::replaceInFile("'name' => [],", DefaultText::$filedRequire, $updateR);
+            RequestService::createIsNotExist();
         }
 
         return  response(null, Response::HTTP_ACCEPTED);

@@ -25,6 +25,7 @@ const development = useDevelopmentIndex();
         <q-separator />
 
         <q-table
+        dense
             :rows="rows"
             :columns="columns"
             title="Default Field is : | id | user_id | account_id "
@@ -54,6 +55,10 @@ const development = useDevelopmentIndex();
 
                     <q-td key="require" :props="props">
                         <q-checkbox v-model="props.row.require" />
+                    </q-td>
+
+                    <q-td key="remove" :props="props">
+                        <q-btn flat glossy dense fab-mini icon="delete" color="negative" @click="development.deleteItem(props.row)" />
                     </q-td>
                 </q-tr>
             </template>

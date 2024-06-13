@@ -7,6 +7,11 @@ use Illuminate\Support\Str;
 class DefaultText
 {
 
+    public static $small_name = "";
+    public static $controllerName = "";
+    public static $name = "";
+    public static $tableName = "";
+    public static $url_page = "";
     public static $filedTable = "";
     public static $filedModel = "";
     public static $filedRequire = "";
@@ -50,22 +55,71 @@ class DefaultText
         }
     }
 
-    public static function route($name)
+    public static function route()
     {
         return '{
-            path: "' . $name . '",
-            name: "List ' . $name . '",
-            component: () => import("@/Pages/' . $name . '/Index.vue"),
+            path: "' . DefaultText::$url_page . '",
+            name: "List ' . DefaultText::$url_page . '",
+            component: () => import("@/Pages/' . DefaultText::$url_page . '/Index.vue"),
         },' . "\n" . ' //don`t remove this lint';
     }
 
-    public static function routeApi($name, $controller)
+    public static function routeApi()
     {
-        return "Route::resource('" . $name . "', '" . $controller . "');
-        Route::post('/" . $name . "/delete-all', '" . $controller . "@destroyAll');
-        Route::post('/" . $name . "/add-all', '" . $controller . "@addAll');
-        Route::put('/" . $name . "/{item}/restore', '" . $controller . "@restore');"
+        return "Route::resource('" . DefaultText::$url_page . "', '" . DefaultText::$controllerName . "');
+        Route::post('/" . DefaultText::$url_page . "/delete-all', '" . DefaultText::$controllerName . "@destroyAll');
+        Route::post('/" . DefaultText::$url_page . "/add-all', '" . DefaultText::$controllerName . "@addAll');
+        Route::put('/" . DefaultText::$url_page . "/{item}/restore', '" . DefaultText::$controllerName . "@restore');"
             . "\n" . ' //don`t remove this lint';
+    }
+
+    public static function setRoute()
+    {
+        $api = base_path('routes/api.php');
+        $ar = resource_path('js/i18n/ar/index.ts');
+        $file = file_get_contents($api);
+
+        if (config('theme.stack') === 'quasar') {
+            $menu = resource_path('js/Components/menu/ListMenu.vue');
+            $menuFile = file_get_contents($menu);
+            $col = resource_path('js/types/columns.ts');
+            $en = resource_path('js/i18n/en-US/index.ts');
+            $router = resource_path('js/router/index.js');
+            $routerFile = file_get_contents($router);
+            $colName = DefaultText::$name . 'Column';
+            FileService::editFile($col, DefaultText::column($colName));
+        } elseif (config('theme.stack') === 'vuetify') {
+            $menu = resource_path('js/plugins/sidebar_item.js');
+            $menuFile = file_get_contents($menu);
+            $en = resource_path('js/i18n/en/index.ts');
+            $router = resource_path('js/router/index.ts');
+            $routerFile = file_get_contents($router);
+            $setingPath = resource_path('js/stores/settings/');
+            $settingFile = file_get_contents($api);
+            $text = '"' . DefaultText::$url_page . '": [],' . "\n" . '//tableNames';
+            if (!strpos($settingFile, DefaultText::$url_page)) {
+                FileService::replaceInFile('//tableNames', $text, $setingPath . 'SettingHeaderTable.js');
+            }
+        }
+
+        if (!strpos($file, DefaultText::$controllerName)) {
+            self::routeApi();
+            FileService::replaceInFile('//don`t remove this lint', DefaultText::routeApi(DefaultText::$url_page), $api);
+        }
+        if (!strpos($routerFile, DefaultText::$url_page)) {
+            self::route();
+            FileService::replaceInFile('//don`t remove this lint', DefaultText::route(DefaultText::$url_page), $router);
+        }
+
+        if (!strpos($menuFile, DefaultText::$small_name)) {
+
+            FileService::replaceInFile('//don`t remove this lint', DefaultText::menu(DefaultText::$small_name, DefaultText::$url_page), $menu);
+            // add lang to ar and en
+            FileService::replaceInFile('//don`t remove this item', DefaultText::langItem(DefaultText::$small_name, DefaultText::$name), $ar);
+            FileService::replaceInFile('//don`t remove this lint', DefaultText::lang(DefaultText::$small_name), $ar);
+            FileService::replaceInFile('//don`t remove this item', DefaultText::langItem(DefaultText::$small_name, DefaultText::$name), $en);
+            FileService::replaceInFile('//don`t remove this lint', DefaultText::lang(DefaultText::$small_name), $en);
+        }
     }
 
     public static function removeRoute($name)
@@ -90,7 +144,7 @@ class DefaultText
         return $item . ': "List ' . $text . '",' . "\n" . ' //don`t remove this item';
     }
 
-    public static function items($items, $name)
+    public static function items($items)
     {
         foreach ($items as $item) {
             $v = 'null';
@@ -119,10 +173,10 @@ class DefaultText
                 $v = $item['value'] ?? 'null';
             }
 
-            self::$columnNames .= '{ name: "' . $filed . '", label: "input.' . $name . "." . $filed . '", align: "left", field: "' . $filed . '",';
-            self::$columnNamesVuetify .= '{ text: "input.' . $name . "." . $filed . '", value: "' . $filed . '"';
+            self::$columnNames .= '{ name: "' . $filed . '", label: "input.' . DefaultText::$small_name . "." . $filed . '", align: "left", field: "' . $filed . '",';
+            self::$columnNamesVuetify .= '{ text: "input.' . DefaultText::$small_name . "." . $filed . '", value: "' . $filed . '"';
             if ($item['type'] == 'longText') {
-                self::$inputItems .= self::editor($filed, $name, $item['require']);
+                self::$inputItems .= self::editor($filed, DefaultText::$small_name, $item['require']);
                 self::$columnNames .= 'format: (val: any) =>
                 `${
                     val.replace(/(<([^>]+)>)/gi, "").length > 30
@@ -142,9 +196,9 @@ class DefaultText
                     return $this->belongsTo(' . ucfirst($model) . '::class);
                 }' . "\n";
                 $filed = $filed . "_id";
-                self::$inputItems .= self::select($name, $filed, $item['require'], $lists);
+                self::$inputItems .= self::select(DefaultText::$small_name, $filed, $item['require'], $lists);
             } else {
-                self::$inputItems .= self::input($name, $filed, $item['require'], $inputType);
+                self::$inputItems .= self::input(DefaultText::$small_name, $filed, $item['require'], $inputType);
             }
 
             $filedType = $item['type'] == "phone" ? "string" : $item['type'];

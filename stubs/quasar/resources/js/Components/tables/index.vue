@@ -21,8 +21,11 @@
                 <loader v-if="table.loading" />
             </template>
             <template v-slot:top-right>
+                <slot name="filter" />
                 <q-input
                     dense
+                    outlined
+                    class="q-mr-xs"
                     debounce="300"
                     v-model="filter"
                     :placeholder="$t('g.search')"
@@ -30,48 +33,50 @@
                     <template #prepend>
                         <q-icon name="search" />
                     </template>
-                    <template v-slot:after>
-                        <slot name="filter" />
-                        <q-select
-                            v-model="table.visibleColumns"
-                            multiple
-                            dense
-                            options-dense
-                            :display-value="$q.lang.table.columns"
-                            emit-value
-                            map-options
-                            :options="columns"
-                            option-value="name"
-                            :option-label="(opt) => $t(opt.label)"
-                            options-cover
-                            style="min-width: 100px"
-                        />
-
-                        <q-select
-                            v-model="filters"
-                            dense
-                            options-dense
-                            emit-value
-                            map-options
-                            :options="table.trashedData"
-                            option-value="id"
-                            :option-label="(opt) => $t(opt.name)"
-                            options-cover
-                            style="min-width: 100px"
-                        />
-
-                        <q-btn
-                            glossy
-                            color="primary"
-                            icon="archive"
-                            dense
-                            flat
-                            rounded
-                            no-caps
-                            @click="exportTable"
-                        />
-                    </template>
                 </q-input>
+
+                <q-select
+                    outlined
+                    class="q-mr-xs"
+                    v-model="table.visibleColumns"
+                    multiple
+                    dense
+                    options-dense
+                    :display-value="$q.lang.table.columns"
+                    emit-value
+                    map-options
+                    :options="columns"
+                    option-value="name"
+                    :option-label="(opt) => $t(opt.label)"
+                    options-cover
+                    style="min-width: 100px"
+                />
+
+                <q-select
+                    outlined
+                    class="q-mr-xs"
+                    v-model="filters"
+                    dense
+                    options-dense
+                    emit-value
+                    map-options
+                    :options="table.trashedData"
+                    option-value="id"
+                    :option-label="(opt) => $t(opt.name)"
+                    options-cover
+                    style="min-width: 100px"
+                />
+
+                <q-btn
+                    glossy
+                    color="primary"
+                    icon="archive"
+                    dense
+                    flat
+                    rounded
+                    no-caps
+                    @click="exportTable"
+                />
             </template>
 
             <!-- start expand -->
@@ -124,7 +129,10 @@
                         </q-td>
                     </template>
 
-                    <q-td v-if="props.row.deleted_at" class="deletedItem text-right">
+                    <q-td
+                        v-if="props.row.deleted_at"
+                        class="deletedItem text-right"
+                    >
                         <q-btn
                             glossy
                             icon="undo"
@@ -217,7 +225,10 @@
             <!-- end expand -->
 
             <template #body-cell-options="props">
-                <q-td v-if="props.row.deleted_at" class="deletedItem text-right">
+                <q-td
+                    v-if="props.row.deleted_at"
+                    class="deletedItem text-right"
+                >
                     <q-btn
                         glossy
                         icon="visibility"
@@ -363,6 +374,8 @@ import { useTables } from "../../stores/tables/index";
 import { watch, computed, onMounted, ref } from "vue";
 import exportFile from "quasar/src/utils/export-file/export-file.js";
 import { useAuth } from "@/stores/auth/index";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const table = useTables();
 const auth = useAuth();
@@ -421,7 +434,7 @@ function wrapCsvValue(val, formatFn, row) {
 
 const exportTable = () => {
     // naive encoding to csv format
-    const content = [props.columns.map((col) => wrapCsvValue(col.label))]
+    const content = [props.columns.map((col) => wrapCsvValue(t(col.label)))]
         .concat(
             table.data.map((row) =>
                 props.columns
@@ -460,7 +473,7 @@ const fabBtn = [
         icon: "add",
         label: "f.add",
         to: props.creatable ? props.router + `/create` : null,
-        onClick: () => (table.newRow = true),
+        onClick: () => (props.creatable ? null : (table.newRow = true)),
         disable:
             table.newRow ||
             props.newRow ||

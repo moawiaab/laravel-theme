@@ -33,6 +33,7 @@ export const useDevelopmentIndex = defineStore("development-store", {
         loading: false,
         belongsTo: false,
         selectType: "",
+        drag: false,
         options: [
             "text",
             "integer",
@@ -64,6 +65,7 @@ export const useDevelopmentIndex = defineStore("development-store", {
             { name: "type", label: "Filed Type", field: "type" },
             { name: "value", label: "Default Value", field: "value" },
             { name: "require", label: "Require", field: "require" },
+            { name: "remove", label: "Remove Item", field: "remove" },
         ],
         errors: {
             controller: null,
@@ -181,6 +183,10 @@ export const useDevelopmentIndex = defineStore("development-store", {
                     type: "negative",
                 });
             }
+        },
+
+        deleteItem(item: any) {
+            this.form.items = this.form.items.filter(i => i !== item);
         },
     },
 });
