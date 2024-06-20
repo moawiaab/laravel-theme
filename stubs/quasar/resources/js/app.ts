@@ -48,7 +48,9 @@ import router from './router'
 import DataTable from "@/Components/tables/index.vue";
 import fabs from "@/Components/buttons/Fab.vue";
 import InputText from "@/Components/input/Text.vue"
-import InputSelect from "@/Components/input/select.vue"
+import MInput from "@/Components/input/TextFilled.vue"
+import MSelect from "@/Components/input/select.vue"
+import FSelect from "@/Components/input/InputSelect.vue"
 import WidgetsBar from "@/Components/Widgets/bar.vue"
 import ItemLabel from "@/Components/item/label.vue"
 import Loader from "@/Components/loader.vue"
@@ -117,8 +119,9 @@ myApp.use(Quasar, {
 // });
 myApp.component("DataTable", DataTable)
 myApp.component("f-abs", fabs)
-myApp.component("input-text", InputText)
-myApp.component("input-select", InputSelect)
+myApp.component("m-input", MInput)
+myApp.component("m-select", MSelect)
+myApp.component("f-select", FSelect)
 myApp.component("widgets-bar", WidgetsBar)
 myApp.component("widgets-show-card", WidgetsShowCard)
 myApp.component("item-label", ItemLabel)

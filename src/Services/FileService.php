@@ -108,7 +108,7 @@ class FileService
 
         if (config('theme.stack') === 'quasar') {
             FileService::replaceInFile('useUsersIndex', $useStoreIndex, $store . '/index.ts');
-            FileService::replaceInFile('UserColumn', ucfirst($name) . 'Column', $store . '/index.ts');
+            FileService::replaceInFile('UserColumn', DefaultText::$name . 'Column', $store . '/index.ts');
             FileService::replaceInFile('users', DefaultText::$url_page, $store . '/index.ts');
             FileService::replaceInFile('user', $name, $store . '/index.ts');
         } elseif (config('theme.stack') === 'vuetify') {

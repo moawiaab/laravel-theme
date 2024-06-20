@@ -4,8 +4,10 @@
         persistent
         transition-show="scale"
         transition-hide="scale"
+        :maximized="settings.maximizedToggle"
     >
-        <q-card style="width: 500px; max-width: 80vw">
+        <q-card style="min-width: 60vw">
+            <widgets-bar />
             <q-card-section>
                 <div class="text-h6">
                     {{$t('input.user.title_edit')}} :
@@ -47,19 +49,19 @@
     </q-dialog>
 </template>
 
-<script>
-import { useTables } from "../../stores/tables/index";
-import { useForms } from "../../Composables/rules";
-import { useUsersIndex } from "../../stores/users/index";
-import { watch } from "vue";
+<script setup>
+import { useTables } from "@/stores/tables/index";
+import { useForms } from "@/Composables/rules";
+import { useUsersIndex } from "@/stores/users/index";
+import { watch } from "@vue/runtime-core";
+import { useSettings } from "@/stores/settings";
+const settings = useSettings();
 
 const table = useTables();
 const { rules: rulesData } = useForms();
 const rules = rulesData;
 const user = useUsersIndex();
 
-export default {
-    setup() {
         watch(table, (e) => {
             if (e.editRow) {
                 user.fetchEditData(table.row.id);
@@ -73,9 +75,7 @@ export default {
         const onReset = () => {
             user.entry = {};
         };
-        return { table, rules, user, onSubmit, onReset };
-    },
-};
+
 </script>
 
 <style></style>

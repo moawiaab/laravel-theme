@@ -1,9 +1,12 @@
 <script lang="ts" setup>
+import { ref } from "@vue/runtime-core";
+
 interface Item {
     id: number;
     name: string;
 }
 const myModel = defineModel();
+
 const props = defineProps({
     msg: { type: String },
     lazy: { type: Boolean, default: true },
@@ -15,12 +18,33 @@ const props = defineProps({
     pIcon: { type: String },
     label: { type: String },
 });
+
+const localOptions = ref(props.options);
+
+const filterFn = (val: string, update) => {
+    if (val === "") {
+        update(() => {
+            localOptions.value = props.options;
+        });
+        return;
+    }
+
+    update(() => {
+        const needle = val.toLowerCase();
+        localOptions.value = props.options!.filter(
+            (v) => v.name.toLowerCase().indexOf(needle) > -1
+        );
+    });
+};
 </script>
 
 <template>
     <q-select
         v-model="myModel"
+        use-input
         filled
+        @filter="filterFn"
+        input-debounce="0"
         clearable
         :lazy-rules="lazy"
         :error="error ? true : false"
@@ -29,17 +53,16 @@ const props = defineProps({
         :option-label="`${o_label}`"
         emit-value
         map-options
+        :options="localOptions"
         :label="`${label}`"
-        :options="options"
     >
-        <template #append v-if="icon">
-            <q-icon :name="icon" />
+        <template v-slot:no-option>
+            <q-item>
+                <q-item-section class="text-grey"> No results </q-item-section>
+            </q-item>
         </template>
         <template #prepend v-if="pIcon">
             <q-icon :name="pIcon" />
-        </template>
-        <template v-for="(_, slot) of $slots" #[slot]>
-            <slot :name="slot" />
         </template>
     </q-select>
 </template>

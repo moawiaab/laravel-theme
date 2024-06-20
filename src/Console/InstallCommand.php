@@ -76,7 +76,9 @@ class InstallCommand extends Command implements PromptsForMissingInput
                     "typescript" => "^5.4.5",
                     "vue-tsc" => "^2.0.19",
                     "autoprefixer" => "^10.4.19",
-                    'sass' => "^1.66.1"
+                    'sass' => "^1.66.1",
+                    'vue'  => '^3.4.29',
+                    "vite" => "^5.3.1",
                 ] + $packages;
             });
 
@@ -190,73 +192,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
                 return 1;
             }
         }
-        // if (
-        //     !$this->option('locker')
-        //     && !$this->option('client')
-        //     && !$this->option('supplier')
-        //     && !$this->option('product')
-        //     && !$this->option('expanse')
-        // ) {
-        //     unlink(app_path('Http/Controllers/Api/ClientApiController.php'));
-        //     unlink(app_path('Http/Controllers/Api/BudgetApiController.php'));
-        //     unlink(app_path('Http/Controllers/Api/BudgetNameApiController.php'));
-        //     unlink(app_path('Http/Controllers/Api/CategoryApiController.php'));
-        //     unlink(app_path('Http/Controllers/Api/CheckApiController.php'));
-        //     unlink(app_path('Http/Controllers/Api/ExpanseApiController.php'));
-        //     unlink(app_path('Http/Controllers/Api/OrderApiController.php'));
-        //     unlink(app_path('Http/Controllers/Api/PrivateLockerApiController.php'));
-        //     unlink(app_path('Http/Controllers/Api/ProductApiController.php'));
-        //     unlink(app_path('Http/Controllers/Api/PublicTreasuryApiController.php'));
-        //     unlink(app_path('Http/Controllers/Api/ReportsApiController.php'));
-        //     unlink(app_path('Http/Controllers/Api/StageApiController.php'));
-        //     unlink(app_path('Http/Controllers/Api/StoreApiController.php'));
-        //     unlink(app_path('Http/Controllers/Api/SupplierApiController.php'));
-        //     unlink(app_path('Http/Controllers/Api/SupplierOrderApiController.php'));
-        //     unlink(app_path('Http/Controllers/Api/UnitApiController.php'));
-        // } else {
-        //     if (!$this->option('expanse')) {
-        //         if (file_exists(app_path('Http/Controllers/Api/ExpanseApiController.php'))) {
-        //             unlink(app_path('Http/Controllers/Api/ExpanseApiController.php'));
-        //         }
-        //         if (file_exists(app_path('Http/Controllers/Api/BudgetApiController.php'))) {
-        //             unlink(app_path('Http/Controllers/Api/BudgetApiController.php'));
-        //         }
-        //         if (file_exists(app_path('Http/Controllers/Api/BudgetNameApiController.php'))) {
-        //             unlink(app_path('Http/Controllers/Api/BudgetNameApiController.php'));
-        //         }
-        //     }
-        //     if (!$this->option('client') && !$this->option('product')) {
-        //         if (file_exists(app_path('Http/Controllers/Api/ClientApiController.php'))) {
-        //             unlink(app_path('Http/Controllers/Api/ClientApiController.php'));
-        //         }
-        //     }
-        //     if (!$this->option('supplier') && !$this->option('product')) {
-        //         if (file_exists(app_path('Http/Controllers/Api/SupplierApiController.php'))) {
-        //             unlink(app_path('Http/Controllers/Api/SupplierApiController.php'));
-        //         }
-        //     }
-        //     if (!$this->option('product')) {
-        //         if (file_exists(app_path('Http/Controllers/Api/CategoryApiController.php'))) {
-        //             unlink(app_path('Http/Controllers/Api/CategoryApiController.php'));
-        //         }
-        //         if (file_exists(app_path('Http/Controllers/Api/OrderApiController.php'))) {
-        //             unlink(app_path('Http/Controllers/Api/OrderApiController.php'));
-        //         }
-        //         if (file_exists(app_path('Http/Controllers/Api/ProductApiController.php'))) {
-        //             unlink(app_path('Http/Controllers/Api/ProductApiController.php'));
-        //         }
-
-        //         if (file_exists(app_path('Http/Controllers/Api/StoreApiController.php'))) {
-        //             unlink(app_path('Http/Controllers/Api/StoreApiController.php'));
-        //         }
-        //         if (file_exists(app_path('Http/Controllers/Api/UnitApiController.php'))) {
-        //             unlink(app_path('Http/Controllers/Api/UnitApiController.php'));
-        //         }
-        //         if (file_exists(app_path('Http/Controllers/Api/SupplierOrderApiController.php'))) {
-        //             unlink(app_path('Http/Controllers/Api/SupplierOrderApiController.php'));
-        //         }
-        //     }
-        // }
     }
 
     /**
@@ -504,12 +439,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
                 fn ($options) => $options->put('lang', 'Select Arabic language')
             )->sort()->sort()->all(),
         ))->each(fn ($option) => $input->setOption($option, true));
-
-        // $input->setOption('pest', select(
-        //     label: 'Which testing framework do you prefer?',
-        //     options: ['PHPUnit', 'Pest'],
-        //     default: 'default',
-        // ) === 'Pest');
     }
 
     // public static function delTree($dir) {

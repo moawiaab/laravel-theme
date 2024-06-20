@@ -10,6 +10,7 @@ class DefaultText
     public static $small_name = "";
     public static $controllerName = "";
     public static $name = "";
+    public static $colName = "";
     public static $tableName = "";
     public static $url_page = "";
     public static $filedTable = "";
@@ -226,21 +227,17 @@ class DefaultText
 
         if (config('theme.stack') === 'quasar') {
             if ($bool == true) {
-                $role = ' lazy-rules
-            :rules="[(val) => !!val || $t(' . "'v.required'" . ')]"
-            :error-message="' . $name . '.errors.' . $filed . '"
-            :error="' . $name . '.errors.' . $filed . ' ? true : false"';
+                $role = ':rules="[(val) => !!val || $t(' . "'v.required'" . ')]"';
             } else {
-                $role = 'class="q-mb-md"';
+                $role = '';
             }
-            return '<q-input
-        clearable
-        type="' . $type . '"
-        filled
-        v-model="' . $name . '.entry.' . $filed . '"
-        :label="$t(' . "'input." . $name . "." . $filed . "'" . ')"
-       ' . $role . '
-      />' . "\n";
+            return '<m-input
+                        type="' . $type . '"
+                        v-model="single.entry.' . $filed . '"
+                        :label="$t(' . "'input." . $name . "." . $filed . "'" . ')"
+                        :error="single.errors.' . $filed . '"
+                        ' . $role . '
+                        />' . "\n";
         } elseif (config('theme.stack') === 'vuetify') {
             if ($bool == true) {
                 self::$validation .= " single.entry." . $filed . " && ";
@@ -266,8 +263,8 @@ class DefaultText
     public static function editor($filed, $name, $bool)
     {
         if (config('theme.stack') === 'quasar') {
-            return '<q-editor v-model="' . $name . '.entry.' . $filed . '" min-height="5rem"
-        :placeholder="' . "'input." . $name . "." . $filed . "'" . '"/>' . "\n";
+            return '<q-editor v-model="single.entry.' . $filed . '" min-height="5rem"
+        :placeholder="$t(' . "'input." . $name . "." . $filed . "'" . ')"/>' . "\n";
         } elseif (config('theme.stack') === 'vuetify') {
             if ($bool == true) {
                 self::$validation .= " single.entry." . $filed . " && ";
@@ -293,25 +290,16 @@ class DefaultText
     {
         if (config('theme.stack') === 'quasar') {
             if ($bool == true) {
-                $role = ' lazy-rules
-            :rules="[(val) => !!val || $t(' . "'v.required'" . ')]"
-            :error-message="' . $name . '.errors.' . $filed . '"
-            :error="' . $name . '.errors.' . $filed . ' ? true : false"';
+                $role = ':rules="[(val) => !!val || $t(' . "'v.required'" . ')]"';
             } else {
-                $role = 'class="q-mb-md"';
+                $role = '';
             }
-            return '<q-select
-        clearable
-        :options="' . $lists . '"
-        option-value="id"
-        option-label="name"
-        emit-value
-        map-options
-        filled
-        v-model="' . $name . '.entry.' . $filed . '"
-        :label="$t(' . "'input." . $name . "." . $filed . "'" . ')"
-       ' . $role . '
-      />' . "\n";
+            return '<m-select
+                        :options="single.lists.' . $lists . '"
+                        v-model="single.entry.' . $filed . '"
+                        :label="$t(' . "'input." . $name . "." . $filed . "'" . ')"
+                        :error="single.errors.' . $filed . '"
+                        ' . $role . ' />' . "\n";
         } elseif (config('theme.stack') === 'vuetify') {
             if ($bool == true) {
                 self::$validation .= " single.entry." . $filed . " && ";

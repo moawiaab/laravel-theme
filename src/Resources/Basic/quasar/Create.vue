@@ -4,8 +4,10 @@
         persistent
         transition-show="scale"
         transition-hide="scale"
+        :maximized="settings.maximizedToggle"
     >
-        <q-card style="width: 800px; max-width: 80vw">
+        <q-card style="min-width: 60vw">
+            <widgets-bar />
             <q-card-section>
                 <div class="text-h6">{{ $t("input.user.title_new") }}</div>
             </q-card-section>
@@ -17,9 +19,7 @@
                         style="height: 100%"
                     >
                         <template v-slot:before>
-                            <div class="q-pa-sm">
-                                inputsItem
-                            </div>
+                            <div class="q-pa-sm">inputsItem</div>
                         </template>
 
                         <template v-slot:separator>
@@ -32,10 +32,7 @@
                         </template>
 
                         <template v-slot:after>
-                            <div class="q-pa-sm">
-
-                                Set Details Her
-                            </div>
+                            <div class="q-pa-sm">Set Details Her</div>
                         </template>
                     </q-splitter>
                 </q-card-section>
@@ -46,7 +43,7 @@
                         :label="$t('g.save')"
                         type="submit"
                         color="primary"
-                        :loading="user.loading"
+                        :loading="single.loading"
                     />
                     <q-btn
                         :label="$t('g.reset')"
@@ -67,36 +64,31 @@
     </q-dialog>
 </template>
 
-<script>
-import { useTables } from "../../stores/tables/index";
-import { useForms } from "../../Composables/rules";
-import { useUsersIndex } from "../../stores/users/index";
-import { watch } from "vue";
+<script setup>
+import { useTables } from "@/stores/tables/index";
+import { useForms } from "@/Composables/rules";
+import { useUsersIndex } from "@/stores/users/index";
+import { watch } from "@vue/runtime-core";
+import { useSettings } from "@/stores/settings";
+const settings = useSettings();
 
 const table = useTables();
 const { rules: rulesData } = useForms();
 const rules = rulesData;
-const user = useUsersIndex();
+const single = useUsersIndex();
 
-export default {
-    setup() {
-        watch(table, (e) => {
-            if (e.newRow) {
-                user.$reset();
-                user.fetchCreateData();
-            }
-        });
+watch(table, (e) => {
+    if (e.newRow) {
+        single.$reset();
+        single.fetchCreateData();
+    }
+});
 
-        const onSubmit = () => {
-            user.storeData();
-        };
+const onSubmit = () => {
+    single.storeData();
+};
 
-        const onReset = () => {
-            user.entry = {};
-        };
-        return { table, rules, user, onSubmit, onReset };
-    },
+const onReset = () => {
+    single.entry = {};
 };
 </script>
-
-<style></style>
