@@ -4,7 +4,7 @@
         persistent
         transition-show="scale"
         transition-hide="scale"
-        :maximized="settings.maximizedToggle"
+        :maximized="$q.platform.is.mobile? true: settings.maximizedToggle"
     >
         <q-card style="min-width: 30vw">
             <widgets-bar />

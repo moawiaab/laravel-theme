@@ -2,6 +2,9 @@
     <q-page>
         <q-table
             class="my-sticky-column-table"
+            :class="`${f.optionTypeLast ? 'lastItemTrue' : ''} ${
+                f.optionTypeFirst ? 'firstItemTrue' : ''
+            }`"
             flat
             :style="`height : ${$q.screen.height - 120}px`"
             :title="title"
@@ -25,7 +28,7 @@
                 <q-input
                     dense
                     outlined
-                    class="q-mr-xs"
+                    class="q-ma-xs"
                     debounce="300"
                     v-model="filter"
                     :placeholder="$t('g.search')"
@@ -37,7 +40,7 @@
 
                 <q-select
                     outlined
-                    class="q-mr-xs"
+                    class="q-ma-xs"
                     v-model="table.visibleColumns"
                     multiple
                     dense
@@ -54,7 +57,7 @@
 
                 <q-select
                     outlined
-                    class="q-mr-xs"
+                    class="q-ma-xs"
                     v-model="filters"
                     dense
                     options-dense
@@ -91,6 +94,10 @@
                     >
                         {{ $t(col.label) }}
                     </q-th>
+                    <!-- <q-th
+                        auto-width
+                        :class="f.optionType ? 'lastItemTrue' : ''"
+                    /> -->
                 </q-tr>
             </template>
             <template #header="props" v-else>
@@ -228,6 +235,7 @@
                 <q-td
                     v-if="props.row.deleted_at"
                     class="deletedItem text-right"
+                    :class="f.optionType ? 'lastItemTrue' : ''"
                 >
                     <q-btn
                         glossy
@@ -264,7 +272,12 @@
                         v-if="deletable && auth.can.includes(`${role}_delete`)"
                     />
                 </q-td>
-                <q-td :items="props.row" class="text-right" v-else>
+                <q-td
+                    :items="props.row"
+                    class="text-right"
+                    :class="f.optionType ? 'lastItemTrue' : ''"
+                    v-else
+                >
                     <!-- {{ props.row.name }} -->
                     <slot name="options" :props="props.row" />
 
@@ -375,6 +388,9 @@ import { watch, computed, onMounted, ref } from "vue";
 import exportFile from "quasar/src/utils/export-file/export-file.js";
 import { useAuth } from "@/stores/auth/index";
 import { useI18n } from "vue-i18n";
+import { useFormats } from "../../stores/formats";
+
+const f = useFormats();
 const { t } = useI18n();
 
 const table = useTables();
@@ -414,6 +430,7 @@ function onRequest(props, col) {
 
 onMounted(() => {
     table.setRouter(props.router);
+    table.pagination.rowsPerPage = f.rowNum || 15;
     // get initial data from server (1st page)
     table.visibleColumns = props.columns.map((e) => e.name);
     tableRef.value.requestServerInteraction();
@@ -527,18 +544,26 @@ tr:has(td.deletedItem) {
   td:last-child,
   td:first-child
     background-color: #ffffff
-
-  th:first-child,
-  td:first-child
-    position: sticky
-    left: 0
-    z-index: 1
-  th:last-child,
-  td:last-child
-    position: sticky
-    right: 0
+.firstItemTrue
+    th:first-child,
+    td:first-child
+        position: sticky
+        left: 0
+        z-index: 1
+.lastItemTrue
+    th:last-child,
+    td:last-child
+        position: sticky
+        right: 0
     z-index: 0
 tr:has(td.deletedItem)
   td
+    background: #ffb3b190 !important
+
+tr:has(td.stk1)
+  td
     background: #ffb3bc80 !important
+tr:has(td.stk2)
+    td
+      background: #ffb3bc80 !important
 </style>

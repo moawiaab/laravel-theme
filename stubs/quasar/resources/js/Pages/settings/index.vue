@@ -1,6 +1,9 @@
 <script lang="ts" setup>
+import { useFormats } from "../../stores/formats";
 import { useSettingsSide } from "@/stores/settings/index";
 import { ref, onMounted } from "vue";
+
+const f = useFormats();
 
 const setting = useSettingsSide();
 
@@ -28,7 +31,7 @@ const onSubmit = () => {
                 >
                     <template v-slot:before>
                         <div class="q-pa-md">
-                            <q-list dense separator>
+                            <!-- <q-list dense separator>
                                 <q-item dense>
                                     <q-item-section>
                                         <q-item-label>
@@ -96,7 +99,7 @@ const onSubmit = () => {
                                         </q-item-label>
                                     </q-item-section>
                                 </q-item>
-                            </q-list>
+                            </q-list> -->
                         </div>
                     </template>
 
@@ -111,7 +114,35 @@ const onSubmit = () => {
 
                     <template v-slot:after>
                         <div class="q-pa-md">
-                            <!-- <pre>{{ setting.entry }}</pre> -->
+                            <q-item-section>
+                                <q-item-label> الجداول</q-item-label>
+                                <q-item-label caption>
+                                    <q-toggle
+                                        v-model="f.optionTypeLast"
+                                        label="تثبيت الغييرات في اخر الجدول"
+                                        size="lg"
+                                    />
+                                </q-item-label>
+
+                                 <q-item-label caption>
+                                    <q-toggle
+                                        v-model="f.optionTypeFirst"
+                                        label="تثبيت أول عمود في الجدول"
+                                        size="lg"
+                                    />
+                                </q-item-label>
+
+                                <q-item-label caption>
+                                    <q-select
+                                    outlined
+                                    label="عدد صفوف الجدول "
+                                    dense
+                                    filled
+                                    v-model="f.rowNum"
+                                    :options="[5,10,15,20,25,30,50,75,100,125,150,200,250 ]"
+                                    />
+                                </q-item-label>
+                            </q-item-section>
                         </div>
                     </template>
                 </q-splitter>

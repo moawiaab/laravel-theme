@@ -3,7 +3,7 @@
         v-model="table.showRow"
         transition-show="scale"
         transition-hide="scale"
-        :maximized="settings.maximizedToggle"
+        :maximized="$q.platform.is.mobile? true: settings.maximizedToggle"
     >
         <q-card style="min-width: 60vw">
             <widgets-bar />

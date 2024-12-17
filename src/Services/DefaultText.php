@@ -164,6 +164,7 @@ class DefaultText
                 $type = "numeric";
                 $inputType = "number";
                 $v = $item['value'] ?? 'null';
+                self::$columnNames .= 'format: (val: number) => formatNumber(val),';
             } elseif ($item['type'] == 'date') {
                 $type = "date";
                 $inputType = "date";
@@ -172,21 +173,14 @@ class DefaultText
                 $type = "integer";
                 $inputType = "number";
                 $v = $item['value'] ?? 'null';
+                self::$columnNames .= 'format: (val: number) => formatNumber(val),';
             }
 
             self::$columnNames .= '{ name: "' . $filed . '", label: "input.' . DefaultText::$small_name . "." . $filed . '", align: "left", field: "' . $filed . '",';
             self::$columnNamesVuetify .= '{ text: "input.' . DefaultText::$small_name . "." . $filed . '", value: "' . $filed . '"';
             if ($item['type'] == 'longText') {
                 self::$inputItems .= self::editor($filed, DefaultText::$small_name, $item['require']);
-                self::$columnNames .= 'format: (val: any) =>
-                `${
-                    val.replace(/(<([^>]+)>)/gi, "").length > 30
-                        ? val
-                              .replace(/(<([^>]+)>)/gi, "")
-                              .split("", 30)
-                              .join("") + "..."
-                        : val.replace(/(<([^>]+)>)/gi, "")
-                }`,';
+                self::$columnNames .= 'format: (val: any) => detailsText(val),';
             } elseif ($item['type'] == 'belongsTo') {
                 $lists = trim($item['belongsTo']);
                 $model = Str::studly(Str::singular($lists));
