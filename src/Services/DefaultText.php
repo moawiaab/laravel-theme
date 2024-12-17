@@ -164,7 +164,6 @@ class DefaultText
                 $type = "numeric";
                 $inputType = "number";
                 $v = $item['value'] ?? 'null';
-                self::$columnNames .= 'format: (val: number) => formatNumber(val),';
             } elseif ($item['type'] == 'date') {
                 $type = "date";
                 $inputType = "date";
@@ -173,7 +172,6 @@ class DefaultText
                 $type = "integer";
                 $inputType = "number";
                 $v = $item['value'] ?? 'null';
-                self::$columnNames .= 'format: (val: number) => formatNumber(val),';
             }
 
             self::$columnNames .= '{ name: "' . $filed . '", label: "input.' . DefaultText::$small_name . "." . $filed . '", align: "left", field: "' . $filed . '",';
@@ -192,6 +190,8 @@ class DefaultText
                 }' . "\n";
                 $filed = $filed . "_id";
                 self::$inputItems .= self::select(DefaultText::$small_name, $filed, $item['require'], $lists);
+            } elseif ($item['type'] == 'decimal' || $item['type'] == 'integer' || $item['type'] == 'bigInteger' || $item['type'] == 'double') {
+                self::$columnNames .= 'format: (val: number) => formatNumber(val),';
             } else {
                 self::$inputItems .= self::input(DefaultText::$small_name, $filed, $item['require'], $inputType);
             }

@@ -20,7 +20,7 @@ export default defineConfig({
             },
         }),
         quasar({
-            sassVariables: "resources/sass/quasar-variables.sass",
+            // sassVariables: "resources/sass/quasar-variables.sass",
         }),
         // VueI18nPlugin({
         //     include: resolve(__dirname, "resources/js/i18n/index.ts"),
