@@ -124,22 +124,40 @@ const onSubmit = () => {
                                     />
                                 </q-item-label>
 
-                                 <q-item-label caption>
+                                <q-item-label caption>
                                     <q-toggle
                                         v-model="f.optionTypeFirst"
                                         label="تثبيت أول عمود في الجدول"
                                         size="lg"
                                     />
                                 </q-item-label>
-
                                 <q-item-label caption>
                                     <q-select
-                                    outlined
-                                    label="عدد صفوف الجدول "
-                                    dense
-                                    filled
-                                    v-model="f.rowNum"
-                                    :options="[5,10,15,20,25,30,50,75,100,125,150,200,250 ]"
+                                        outlined
+                                        label="عدد صفوف الجدول "
+                                        dense
+                                        filled
+                                        v-model="f.rowNum"
+                                        :options="[
+                                            5, 10, 15, 20, 25, 30, 50, 75, 100,
+                                            125, 150, 200, 250,
+                                        ]"
+                                    />
+                                </q-item-label>
+
+                                <q-item-label caption>
+                                    <q-input
+                                        outlined
+                                        filled
+                                        dense
+                                        label="عدد الحروف في حقل التفاصيل"
+                                        v-model="f.textLengths"
+                                        type="number"
+                                        min="5"
+                                        max="200"
+                                        :rules="[
+                                            (val) => !!val || $t('v.required'),
+                                        ]"
                                     />
                                 </q-item-label>
                             </q-item-section>

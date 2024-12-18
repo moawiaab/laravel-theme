@@ -50,6 +50,14 @@ class Account extends Model
         return $this->hasMany(Role::class);
     }
 
+    public function budgets(): HasMany
+    {
+        return $this->hasMany(Budget::class);
+    }
+    public function expanses(): HasMany
+    {
+        return $this->hasMany(Expanse::class);
+    }
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');

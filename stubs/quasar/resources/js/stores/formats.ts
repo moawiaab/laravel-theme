@@ -5,7 +5,7 @@ import { defineStore } from "pinia";
 export const useFormats = defineStore("formats-data-store", {
     state: () => ({
         entry: {},
-        textLengths: 5,
+        textLengths: 30,
         optionType: false,
         optionTypeLast: false,
         optionTypeFirst: false,

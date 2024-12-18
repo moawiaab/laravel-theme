@@ -2,9 +2,9 @@
 
 namespace Moawiaab\LaravelTheme\Http\Resources;
 
-use App\Http\Resources\Admin\ExpanseResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\ExpanseResource;
 
 class BudgetResource extends JsonResource
 {
@@ -20,6 +20,8 @@ class BudgetResource extends JsonResource
             'name'          => $this->budget->name ?? '',
             'amount'        => $this->amount ?? 0,
             'expense'       => $this->expense_amount ?? 0,
+            'knob'          => (int)$this->expense_amount / $this->amount * 100 ?? 0,
+            'new_amount'    => $this->amount - $this->expense_amount ?? 0,
             'toggle'        => $this->status,
             'budget_status' => $this->status_label ?? '',
             'num'           => $this->expanses->count() ?? 0,

@@ -76,7 +76,7 @@ class ExpanseApiController extends Controller
         return response([
             'meta' => [
                 'budgets' => auth()->user()->account->budgets()
-                    ->where('stage_id', $this->stageId())
+                    ->where(['stage_id' => $this->stageId(), 'status' => 1])
                     ->get()->transform(fn ($e) =>
                     [
                         'id' => $e->id,

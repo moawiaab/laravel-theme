@@ -3,13 +3,13 @@
         v-model="table.showRow"
         transition-show="scale"
         transition-hide="scale"
-        :maximized="$q.platform.is.mobile? true: settings.maximizedToggle"
+        :maximized="$q.platform.is.mobile ? true : settings.maximizedToggle"
     >
-        <q-card style="min-width: 60vw">
+        <q-card style="min-width: 70vw">
             <widgets-bar />
             <q-card-section>
                 <div class="text-h6">
-                   {{$t('input.budget.view')}} :
+                    {{ $t("input.budget.view") }} :
                     {{ table.row.name || budget.entry.name }}
                 </div>
             </q-card-section>
@@ -24,13 +24,19 @@
                         <div class="q-pa-sm">
                             <q-list separator>
                                 <item-label
-                                    :label="`${$t('input.budget.name')} : ${budget.entry.name}`"
+                                    :label="`${$t('input.budget.name')} : ${
+                                        budget.entry.name
+                                    }`"
                                 />
                                 <item-label
-                                    :label="`${$t('input.budget.amount')}: ${budget.entry.amount}`"
+                                    :label="`${$t('input.budget.amount')}: ${
+                                        budget.entry.amount
+                                    }`"
                                 />
                                 <item-label
-                                    :label="`${$t('input.budget.expense')}: ${budget.entry.expense}`"
+                                    :label="`${$t('input.budget.expense')}: ${
+                                        budget.entry.expense
+                                    }`"
                                 />
                                 <item-label
                                     :label="`${$t('input.budget.num_r')}: ${
@@ -39,10 +45,14 @@
                                     }`"
                                 />
                                 <item-label
-                                    :label="`${$t('input.budget.num')}: ${budget.entry.num}`"
+                                    :label="`${$t('input.budget.num')}: ${
+                                        budget.entry.num
+                                    }`"
                                 />
                                 <item-label
-                                    :label="`${$t('g.created_at')}: ${budget.entry.created_at}`"
+                                    :label="`${$t('g.created_at')}: ${
+                                        budget.entry.created_at
+                                    }`"
                                 />
                             </q-list>
                         </div>
@@ -58,7 +68,25 @@
                     </template>
 
                     <template v-slot:after>
-                        <div class="q-pa-sm">details</div>
+                        <div class="q-pa-sm" v-if="budget.entry.items">
+                            <q-table
+                                :rows="budget.entry.items"
+                                :columns="budget.expanseList"
+                                :rows-per-page-options="[0]"
+                            >
+                                <template #header="props">
+                                    <q-tr :props="props">
+                                        <q-th
+                                            v-for="col in props.cols"
+                                            :key="col.name"
+                                            :props="props"
+                                        >
+                                            {{ $t(col.label) }}
+                                        </q-th>
+                                    </q-tr>
+                                </template>
+                            </q-table>
+                        </div>
                     </template>
                 </q-splitter>
             </q-card-section>
@@ -79,7 +107,7 @@
 import { useTables } from "@/stores/tables/index";
 import { useBudgetsIndex } from "@/stores/budgets/index";
 import { useSettings } from "@/stores/settings";
-import {watch} from "vue"
+import { watch } from "vue";
 const settings = useSettings();
 const table = useTables();
 
@@ -88,9 +116,9 @@ const budget = useBudgetsIndex();
 watch(table, (e) => {
     if (e.showRow) {
         budget.fetchShowData(table.row.id);
+        table.splitterModel = 35
     }
 });
-
 </script>
 
 <style></style>

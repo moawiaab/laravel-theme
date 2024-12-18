@@ -15,9 +15,38 @@ const account = useBudgetsIndex();
             selection="multiple"
             router="budgets"
             role="budget"
-            :expand="true"
+            :expand="false"
             :toggle="true"
         >
+            <template #body-cell-knob="props">
+                <q-td>
+                    <q-knob
+                        readonly
+                        rounded
+                        v-model="props.items.row.knob"
+                        size="40px"
+                        :thickness="0.4"
+                        center-color="grey-5"
+                        show-value
+                        :color="
+                            props.items.row.knob < 40
+                                ? 'green'
+                                : props.items.row.knob > 80
+                                ? 'red'
+                                : 'orange'
+                        "
+                        :track-color="
+                            props.items.row.knob < 40
+                                ? 'green-2'
+                                : props.items.row.knob > 80
+                                ? 'red-2'
+                                : 'orange-2'
+                        "
+                    >
+                        {{ props.items.row.knob }}%</q-knob
+                    >
+                </q-td>
+            </template>
             <template #table-body="{ props }">
                 <q-table
                     :rows="props.row.items"
