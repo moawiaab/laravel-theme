@@ -22,7 +22,6 @@ const account = useBudgetsIndex();
                 <q-td>
                     <q-knob
                         readonly
-                        rounded
                         v-model="props.items.row.knob"
                         size="40px"
                         :thickness="0.4"
@@ -46,25 +45,6 @@ const account = useBudgetsIndex();
                         {{ props.items.row.knob }}%</q-knob
                     >
                 </q-td>
-            </template>
-            <template #table-body="{ props }">
-                <q-table
-                    :rows="props.row.items"
-                    :columns="account.expanseList"
-                    :rows-per-page-options="[0]"
-                >
-                    <template #header="props">
-                        <q-tr :props="props">
-                            <q-th
-                                v-for="col in props.cols"
-                                :key="col.name"
-                                :props="props"
-                            >
-                                {{ $t(col.label) }}
-                            </q-th>
-                        </q-tr>
-                    </template>
-                </q-table>
             </template>
         </data-table>
 

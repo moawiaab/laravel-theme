@@ -78,7 +78,7 @@
 import { useTables } from "@/stores/tables/index";
 import { usePrivateLockersIndex } from "@/stores/private-lockers/index";
 import { useSettings } from "@/stores/settings";
-import { useForms } from "../../Composables/rules";
+import { useForms } from "../../../Composables/rules";
 import { watch, ref } from "vue";
 const settings = useSettings();
 

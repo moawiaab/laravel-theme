@@ -3,9 +3,9 @@
         v-model="table.showRow"
         transition-show="scale"
         transition-hide="scale"
-        :maximized="$q.platform.is.mobile? true: settings.maximizedToggle"
+        :maximized="$q.platform.is.mobile ? true : settings.maximizedToggle"
     >
-        <q-card style="min-width: 60vw">
+        <q-card style="min-width: 80vw">
             <widgets-bar />
             <q-card-section>
                 <div class="text-h6">
@@ -52,11 +52,22 @@
                     </template>
 
                     <template v-slot:after>
-                        <div class="">
+                        <div class="" v-if="locker.entry.items">
                             <q-table
                                 :rows="locker.entry.items"
                                 :columns="OpenDate"
                             >
+                                <template #header="props">
+                                    <q-tr :props="props">
+                                        <q-th
+                                            v-for="col in props.cols"
+                                            :key="col.name"
+                                            :props="props"
+                                        >
+                                            {{ $t(col.label) }}
+                                        </q-th>
+                                    </q-tr>
+                                </template>
                             </q-table>
                         </div>
                     </template>
@@ -80,7 +91,7 @@ import { useTables } from "@/stores/tables/index";
 import { usePrivateLockersIndex } from "@/stores/private-lockers/index";
 import { useSettings } from "@/stores/settings";
 import { OpenDate } from "@/types/columns";
-import {watch} from "vue"
+import { watch } from "vue";
 const settings = useSettings();
 const table = useTables();
 
@@ -89,6 +100,9 @@ const locker = usePrivateLockersIndex();
 watch(table, (e) => {
     if (e.showRow) {
         locker.fetchShowData(table.row.id);
+        table.splitterModel = 35
+    }else {
+        table.splitterModel = 50
     }
 });
 

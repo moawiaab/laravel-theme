@@ -94,7 +94,7 @@
 
 <script setup>
 import { useAmounts } from "@/stores/private-lockers/amount";
-import { useForms } from "../../Composables/rules";
+import { useForms } from "../../../Composables/rules";
 import { watch } from "vue";
 const amount = useAmounts();
 const { rules: rulesData } = useForms();

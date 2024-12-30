@@ -2,8 +2,8 @@
 
 namespace Moawiaab\LaravelTheme\Http\Resources\Admin;
 
-use App\Http\Resources\AmountListResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Moawiaab\LaravelTheme\Http\Resources\AmountListResource;
 
 class PrivateLockerResource extends JsonResource
 {
