@@ -14,7 +14,7 @@ class CategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return !Gate::denies('category_create');
+        return !Gate::allows('category_create');
     }
 
     /**

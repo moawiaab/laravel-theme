@@ -23,7 +23,7 @@ class BasicController extends Controller
     public function index()
     {
         // return Unit::all();
-        abort_if(Gate::denies('basic_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('basic_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return BasicResource::collection(
             Basic::advancedFilter()->filter(FacadesRequest::only('trashed'))
                 ->paginate(request('rowsPerPage', 20))
@@ -81,7 +81,7 @@ class BasicController extends Controller
      */
     public function edit(Basic $basic)
     {
-        abort_if(Gate::denies('basic_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('basic_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         return response([
             'data' => new BasicResource($basic),
@@ -109,7 +109,7 @@ class BasicController extends Controller
      */
     public function destroy(Basic $basic)
     {
-        abort_if(Gate::denies('basic_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('basic_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         if ($basic->deleted_at) {
             $basic->forceDelete();
         } else {
@@ -121,7 +121,7 @@ class BasicController extends Controller
 
     public function destroyAll(HttpRequest $request)
     {
-        abort_if(Gate::denies('basic_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('basic_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         Basic::whereIn('id', $request->items)->onlyTrashed()->forceDelete();
         Basic::whereIn('id', $request->items)->delete();
 
@@ -132,7 +132,7 @@ class BasicController extends Controller
 
     public function restore(Basic $item)
     {
-        abort_if(Gate::denies('basic_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('basic_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $item->restore();
         return response(null, Response::HTTP_NO_CONTENT);
     }

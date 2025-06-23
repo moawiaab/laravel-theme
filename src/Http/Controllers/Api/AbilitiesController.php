@@ -19,8 +19,9 @@ class AbilitiesController extends Controller
                 'account_id' => auth()->user()->account_id
             ]);
         }
-        $permissions = auth()->user()->role->permissions
-            ->pluck('title')->toArray();
+
+        // $user->getAllPermissions()->pluck('name')
+        $permissions = auth()->user()->getAllPermissions->pluck('name')->toArray();
         if (auth()->user()->status == 0) {
             $permissions = ['user_locked', 'dashboard_access'];
         }

@@ -15,7 +15,7 @@ class UserResource extends JsonResource
             'toggle'     => $this->status,
             'locker'     => $this->locker->id ?? false,
             'phone'      => $this->phone ?? '',
-            'role_id'    => $this->role_id ?? '',
+            // 'role_id'    => $this->role_id ?? '',
             'account'    => $this->account->name ?? '',
             'deletable'  => $this->account_id == auth()->user()->account_id ?? false,
             'editable'   => $this->account_id == auth()->user()->account_id ?? false,

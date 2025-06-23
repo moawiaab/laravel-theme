@@ -18,6 +18,7 @@ use Moawiaab\LaravelTheme\Support\HasAdvancedFilter;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasMedia
 {
@@ -27,6 +28,7 @@ class User extends Authenticatable implements HasMedia
     use HasFactory;
     use HasApiTokens;
     use InteractsWithMedia;
+     use HasRoles;
 
     public $table = 'users';
 
@@ -110,12 +112,6 @@ class User extends Authenticatable implements HasMedia
             $this->attributes['password'] = Hash::needsRehash($input) ? Hash::make($input) : $input;
         }
     }
-
-    public function role() : BelongsTo
-    {
-        return $this->belongsTo(Role::class);
-    }
-
     public function account()
     {
         return $this->belongsTo(Account::class);

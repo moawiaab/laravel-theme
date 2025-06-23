@@ -14,7 +14,7 @@ class ProductRequest extends FormRequest
      */
     public function authorize()
     {
-        return !Gate::denies('product_create') || !Gate::denies('product_edit');
+        return !Gate::allows('product_create') || !Gate::allows('product_edit');
     }
 
     /**

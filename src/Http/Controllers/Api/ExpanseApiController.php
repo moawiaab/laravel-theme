@@ -23,7 +23,7 @@ class ExpanseApiController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('expanse_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('expanse_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return ExpanseResource::collection(
             Expanse::advancedFilter()
                 ->where('account_id', request('account',auth()->user()->account_id))
@@ -72,7 +72,7 @@ class ExpanseApiController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('expanse_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('expanse_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return response([
             'meta' => [
                 'budgets' => auth()->user()->account->budgets()
@@ -91,7 +91,7 @@ class ExpanseApiController extends Controller
 
     public function show(Expanse $expanse)
     {
-        abort_if(Gate::denies('expanse_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('expanse_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return [
             'data' =>  new ExpanseResource($expanse),
         ];
@@ -107,7 +107,7 @@ class ExpanseApiController extends Controller
 
     public function edit(Expanse $expanse)
     {
-        abort_if(Gate::denies('expanse_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('expanse_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return response([
             'data' => $expanse,
             'meta' => ['stages' => auth()->user()->account->stages()->get(['id', 'name'])],
@@ -116,7 +116,7 @@ class ExpanseApiController extends Controller
 
     public function destroy(Expanse $expanse)
     {
-        abort_if(Gate::denies('expanse_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('expanse_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $expanse->delete();
         return response(null, Response::HTTP_NO_CONTENT);
     }

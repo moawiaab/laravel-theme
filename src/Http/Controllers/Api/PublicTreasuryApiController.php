@@ -18,7 +18,7 @@ class PublicTreasuryApiController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('public_treasury_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('public_treasury_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return OpenDaysResources::collection(
             OpenDay::advancedFilter()
                 ->where('account_id', request('account',auth()->user()->account_id))
@@ -38,7 +38,7 @@ class PublicTreasuryApiController extends Controller
 
     public function create()
     {
-        // abort_if(Gate::denies('public_treasury_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_unless(Gate::allows('public_treasury_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return response([
             'meta' => [],
@@ -48,7 +48,7 @@ class PublicTreasuryApiController extends Controller
     public function show($id)
     {
         $publicTreasury = PublicTreasury::where('account_id', request('account',auth()->user()->account_id))->first();
-        // abort_if(Gate::denies('public_treasury_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_unless(Gate::allows('public_treasury_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         if (!$publicTreasury) {
             $pub = new PublicTreasury();
             $pub->name   =  'خزنة الرئيسية';
@@ -78,7 +78,7 @@ class PublicTreasuryApiController extends Controller
 
     public function edit(PublicTreasury $publicTreasury)
     {
-        abort_if(Gate::denies('public_treasury_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('public_treasury_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return response([
             'data' => new PublicTreasuryResource($publicTreasury),
@@ -88,7 +88,7 @@ class PublicTreasuryApiController extends Controller
 
     public function destroy(OpenDay $publicTreasury)
     {
-        abort_if(Gate::denies('public_treasury_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('public_treasury_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $publicTreasury->details = request('details', '');
         $publicTreasury->user_updated_id = auth()->id();

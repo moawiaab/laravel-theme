@@ -25,7 +25,7 @@ class SupplierApiController extends Controller
      */
     public function index()
     {
-        abort_if(Gate::denies('supplier_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('supplier_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return SupplierResource::collection(
             Supplier::where('account_id', request('account',auth()->user()->account_id))->advancedFilter()->filter(Request::only('trashed'))
                 ->paginate(
@@ -36,7 +36,7 @@ class SupplierApiController extends Controller
 
     public function getAmount(Supplier $supplier)
     {
-        abort_if(Gate::denies('supplier_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('supplier_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return AmountResources::collection(
             FinancialSupplier::advancedFilter()->where('supplier_id', $supplier->id)
                 ->filter(Request::only('trashed'))->paginate(request('rowsPerPage', 20))
@@ -50,7 +50,7 @@ class SupplierApiController extends Controller
      */
     public function create()
     {
-        abort_if(Gate::denies('supplier_create'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('supplier_create'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         return response([
             'meta' => [],
@@ -86,7 +86,7 @@ class SupplierApiController extends Controller
      */
     public function show(Supplier $supplier)
     {
-        abort_if(Gate::denies('supplier_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('supplier_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         $items =  new AmountResources(FinancialSupplier::with(['user'])->advancedFilter()->supplier($supplier->id));
         return [
@@ -107,7 +107,7 @@ class SupplierApiController extends Controller
      */
     public function edit(supplier $supplier)
     {
-        abort_if(Gate::denies('supplier_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('supplier_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         return response([
             'data' => $supplier,
@@ -139,7 +139,7 @@ class SupplierApiController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        abort_if(Gate::denies('supplier_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('supplier_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         if ($supplier->deleted_at) {
             $supplier->forceDelete();
@@ -152,7 +152,7 @@ class SupplierApiController extends Controller
 
     public function destroyAll(HttpRequest $request)
     {
-        abort_if(Gate::denies('supplier_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('supplier_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         Supplier::whereIn('id', $request->items)->onlyTrashed()->forceDelete();
         Supplier::whereIn('id', $request->items)->delete();
 
@@ -162,7 +162,7 @@ class SupplierApiController extends Controller
 
     public function addAll(HttpRequest $request)
     {
-        abort_if(Gate::denies('supplier_create'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('supplier_create'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         foreach ($request[0] as $value) {
             $perm = new Supplier();
             $perm->user_id    = auth()->id();
@@ -179,14 +179,14 @@ class SupplierApiController extends Controller
     }
     public function restore(SUpplier $supplier)
     {
-        abort_if(Gate::denies('supplier_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('supplier_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $supplier->restore();
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
     public function toggle(Supplier $supplier)
     {
-        abort_if(Gate::denies('supplier_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('supplier_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $supplier->status = !$supplier->status;
         $supplier->save();
         return response(null, Response::HTTP_NO_CONTENT);

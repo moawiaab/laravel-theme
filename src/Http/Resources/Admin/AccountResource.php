@@ -15,9 +15,9 @@ class AccountResource extends JsonResource
             'phone'   => $this->phone,
             'toggle'  => $this->status,
             'user'    => $this->users->count(),
-            'role'    => $this->roles->count(),
+            'role'    => 0, //$this->roles->count(),
             'users' => $this->users->transform(fn($e) => ['user' => $e->name]),
-            'roles' => $this->roles->transform(fn($e) => ['role' => $e->title]),
+            'roles' => [],//$this->roles->transform(fn($e) => ['role' => $e->title]),
             'created_at' => $this->created_at ? $this->created_at->format('d-m-Y') : '',
         ];
     }

@@ -14,7 +14,7 @@ class StoresRequest extends FormRequest
      */
     public function authorize()
     {
-        return !Gate::denies('store_create') || !Gate::denies('store_edit');
+        return !Gate::allows('store_create') || !Gate::allows('store_edit');
     }
 
     /**

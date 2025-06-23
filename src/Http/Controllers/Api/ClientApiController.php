@@ -26,7 +26,7 @@ class ClientApiController extends Controller
      */
     public function index()
     {
-        abort_if(Gate::denies('client_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('client_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return ClientResource::collection(
             Client::advancedFilter()->where('account_id', request('account', auth()->user()->account_id))
                 ->filter(Request::only('trashed'))->paginate(request('rowsPerPage', 20))
@@ -35,7 +35,7 @@ class ClientApiController extends Controller
 
     public function getAmount(Client $client)
     {
-        abort_if(Gate::denies('client_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('client_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return AmountResources::collection(
             FinancialClient::advancedFilter()->where('client_id', $client->id)
                 ->filter(Request::only('trashed'))->paginate(request('rowsPerPage', 20))
@@ -48,7 +48,7 @@ class ClientApiController extends Controller
      */
     public function create()
     {
-        abort_if(Gate::denies('client_create'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('client_create'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         return response([
             'meta' => [
@@ -88,7 +88,7 @@ class ClientApiController extends Controller
      */
     public function show(Client $client)
     {
-        abort_if(Gate::denies('client_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('client_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         // $items =  new AmountResources(FinancialClient::with(['user'])->advancedFilter()->client($client->id));
         // $orders =  OrdersResource::collection(Order::with(['items'])->advancedFilter()->client($client->id));
@@ -111,7 +111,7 @@ class ClientApiController extends Controller
      */
     public function edit(Client $client)
     {
-        abort_if(Gate::denies('client_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('client_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         return response([
             'data' => $client,
@@ -145,7 +145,7 @@ class ClientApiController extends Controller
      */
     public function destroy(Client $client)
     {
-        abort_if(Gate::denies('client_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('client_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         if ($client->deleted_at) {
             $client->forceDelete();
@@ -158,7 +158,7 @@ class ClientApiController extends Controller
 
     public function destroyAll(HttpRequest $request)
     {
-        abort_if(Gate::denies('client_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('client_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         Client::whereIn('id', $request->items)->onlyTrashed()->forceDelete();
         Client::whereIn('id', $request->items)->delete();
 
@@ -168,7 +168,7 @@ class ClientApiController extends Controller
 
     public function addAll(HttpRequest $request)
     {
-        abort_if(Gate::denies('client_create'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('client_create'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         foreach ($request[0] as $value) {
             $perm = new Client();
             $perm->user_id    = auth()->id();
@@ -187,14 +187,14 @@ class ClientApiController extends Controller
     }
     public function restore(Client $client)
     {
-        abort_if(Gate::denies('client_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('client_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $client->restore();
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
     public function toggle(Client $client)
     {
-        abort_if(Gate::denies('client_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('client_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $client->status = !$client->status;
         $client->save();
         return response(null, Response::HTTP_NO_CONTENT);

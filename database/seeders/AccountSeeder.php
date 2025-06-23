@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Moawiaab\LaravelTheme\Models\Account;
-use Moawiaab\LaravelTheme\Models\Role;
+use Spatie\Permission\Models\Role;
 
 class AccountSeeder extends Seeder
 {
@@ -20,14 +20,16 @@ class AccountSeeder extends Seeder
         $role = [
             [
                 'id'             => 1,
-                'title'          => 'المدير العام',
-                'account_id'     => 1,
+                'description'    => 'المدير العام',
+                'name'           => 'Super Admin',
+                'guard_name'     => 'web',
                 'created_at'     => now(),
             ],
             [
                 'id'             => 2,
-                'title'          => 'مدير فرع',
-                'account_id'     => 1,
+                'description'    => 'مدير فرع',
+                'name'           => 'Admin',
+                'guard_name'     => 'web',
                 'created_at'     => now(),
             ],
         ];
@@ -60,7 +62,6 @@ class AccountSeeder extends Seeder
                 'email'          => 'admin@admin.com',
                 'password'       => bcrypt('password'),
                 'remember_token' => null,
-                'role_id'        => 1,
                 'account_id'     => 1,
                 'created_at'     => now(),
             ],
@@ -70,12 +71,15 @@ class AccountSeeder extends Seeder
                 'email'          => 'user@admin.com',
                 'password'       => bcrypt('password'),
                 'remember_token' => null,
-                'role_id'        => 2,
                 'account_id'     => 2,
                 'created_at'     => now(),
             ],
         ];
 
         User::insert($users);
+        $admin = User::find(1);
+        $admin->assignRole('Super Admin');
+        $user = User::find(2);
+        $user->assignRole('Admin');
     }
 }

@@ -26,7 +26,7 @@ class StoreApiController extends Controller
      */
     public function index()
     {
-        abort_if(Gate::denies('store_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('store_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return StoresResource::collection(
             Store::advancedFilter()
                 ->where('account_id', request('account', auth()->user()->account_id))
@@ -38,7 +38,7 @@ class StoreApiController extends Controller
     public function emport()
     {
         // return response(['data' => 'data']);
-        abort_if(Gate::denies('store_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('store_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return StoreItemResource::collection(
             SupplierOrderItem::advancedFilter()
                 ->where('account_id', request('account', auth()->user()->account_id))
@@ -48,7 +48,7 @@ class StoreApiController extends Controller
     }
     public function export()
     {
-        abort_if(Gate::denies('store_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('store_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return StoreItemResource::collection(
             OrderItem::advancedFilter()
                 ->where('account_id', request('account', auth()->user()->account_id))
@@ -63,7 +63,7 @@ class StoreApiController extends Controller
      */
     public function create()
     {
-        abort_if(Gate::denies('store_create'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('store_create'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return response([
             'meta' => [
                 'products' =>  Product::when(
@@ -148,7 +148,7 @@ class StoreApiController extends Controller
      */
     public function destroy(Store $store)
     {
-        abort_if(Gate::denies('store_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('store_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         if ($store->deleted_at) {
             $store->forceDelete();
         } else {
@@ -158,7 +158,7 @@ class StoreApiController extends Controller
 
     public function destroyAll(Request $request)
     {
-        abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('user_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         Store::whereIn('id', $request->items)->where('status', 1)->onlyTrashed()->forceDelete();
         Store::whereIn('id', $request->items)->delete('status', 1);
         return response(null, Response::HTTP_NO_CONTENT);
@@ -268,14 +268,14 @@ class StoreApiController extends Controller
     // }
     public function restore(Store $item)
     {
-        abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('user_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $item->restore();
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
     public function toggle(Store $store)
     {
-        abort_if(Gate::denies('store_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('store_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $store->status = !$store->status;
         $store->save();
         return response(null, Response::HTTP_NO_CONTENT);

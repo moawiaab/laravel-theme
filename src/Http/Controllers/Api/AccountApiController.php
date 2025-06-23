@@ -6,13 +6,24 @@ use App\Http\Controllers\Controller;
 use Moawiaab\LaravelTheme\Http\Requests\AccountRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Controllers\HasMiddleware;
+// use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Gate;
 use Moawiaab\LaravelTheme\Http\Requests\UpdateAccountRequest;
 use Moawiaab\LaravelTheme\Http\Resources\Admin\AccountResource;
 use Moawiaab\LaravelTheme\Models\Account;
 
+
+
 class AccountApiController extends Controller
 {
+
+    /**
+
+     * Get the middleware that should be assigned to the controller.
+
+     */
+
     /**
      * Display a listing of the resource.
      *
@@ -20,13 +31,13 @@ class AccountApiController extends Controller
      */
     public function index()
     {
-        abort_if(Gate::denies('account_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
-        return AccountResource::collection(Account::with(['users', 'roles'])->advancedFilter()->paginate(request('rowsPerPage', 20)));
+        abort_unless(Gate::allows('account_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        return AccountResource::collection(Account::with(['users'])->advancedFilter()->paginate(request('rowsPerPage', 20)));
     }
 
     public function toggle(Account $account)
     {
-        abort_if(Gate::denies('account_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('account_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $account->status = !$account->status;
         $account->save();
         return response(null, Response::HTTP_NO_CONTENT);
@@ -56,7 +67,7 @@ class AccountApiController extends Controller
         $account->status  = 1;
 
         if ($account->save()) {
-            $account->users()->create($request->validated()+ ['role_id' =>  2]);
+            $account->users()->create($request->validated() + ['role_id' =>  2]);
             return response(null, Response::HTTP_CREATED);
         }
     }
@@ -69,7 +80,7 @@ class AccountApiController extends Controller
      */
     public function show(Account $account)
     {
-        abort_if(Gate::denies('account_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('account_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         return response([
             'data' => new AccountResource($account),
@@ -85,7 +96,7 @@ class AccountApiController extends Controller
      */
     public function edit(Account $account)
     {
-        abort_if(Gate::denies('account_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('account_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         return response([
             'data' => $account,

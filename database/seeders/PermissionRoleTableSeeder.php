@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Moawiaab\LaravelTheme\Models\Permission;
-use Moawiaab\LaravelTheme\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class PermissionRoleTableSeeder extends Seeder
 {

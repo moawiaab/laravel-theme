@@ -18,14 +18,14 @@ class PrivateLockerApiController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('private_locker_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('private_locker_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return  PrivateLockerResource::collection(PrivateLocker::where('account_id', request('account',auth()->user()->account_id))->advancedFilter()->paginate(request('limit', 10)));
     }
 
     public function store(StorePrivateLockerRequest $request)
     {
-        abort_if(Gate::denies('private_locker_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('private_locker_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $safe = new PrivateLocker();
         $safe->amount = $request->amount ?? 0;
         $safe->on_open = $request->amount ?? 0;
@@ -42,7 +42,7 @@ class PrivateLockerApiController extends Controller
 
     public function create()
     {
-        // abort_if(Gate::denies('private_locker_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_unless(Gate::allows('private_locker_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return response([
             'meta' => [
@@ -53,7 +53,7 @@ class PrivateLockerApiController extends Controller
 
     public function show(PrivateLocker $privateLocker)
     {
-        // abort_if(Gate::denies('safe_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_unless(Gate::allows('safe_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         // $items =  new AmountResources(OpenDay::with(['user', 'admin'])->advancedFilter()->locker($privateLocker->id));
         return [
             'data' => new PrivateLockerResource($privateLocker->load(['user'])),
@@ -74,7 +74,7 @@ class PrivateLockerApiController extends Controller
 
     public function edit(PrivateLocker $privateLocker)
     {
-        abort_if(Gate::denies('private_locker_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('private_locker_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return response([
             'data' => new PrivateLockerResource($privateLocker),
@@ -85,7 +85,7 @@ class PrivateLockerApiController extends Controller
     public function destroy(PrivateLocker $privateLocker)
     {
         // throw new Exception('PrivateLocker is not available');
-        abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('role_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         if ($privateLocker->amount != 0) {
             throw new Exception('لم يمكنك حذف هذه الخزنة لأن بها مبلغ من المال');
         }

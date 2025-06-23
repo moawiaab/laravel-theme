@@ -16,7 +16,7 @@ class StageApiController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('stage_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('stage_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return  StageResource::collection(auth()->user()->account->stages()->get());
     }
 
@@ -30,7 +30,7 @@ class StageApiController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('stage_create'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('stage_create'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return response([
             'meta' => [
                 'user' => User::get(['id', 'name']),
@@ -41,7 +41,7 @@ class StageApiController extends Controller
 
     public function show(Stage $stage)
     {
-        abort_if(Gate::denies('stage_show'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('stage_show'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return new StageResource($stage->load(['user', 'sh']));
     }
 
@@ -55,7 +55,7 @@ class StageApiController extends Controller
 
     public function edit(Stage $stage)
     {
-        abort_if(Gate::denies('stage_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('stage_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return response([
             'data' => new StageResource($stage),
             'meta' => [
@@ -66,14 +66,14 @@ class StageApiController extends Controller
 
     public function destroy(Stage $stage)
     {
-        abort_if(Gate::denies('stage_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('stage_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $stage->delete();
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
     public function toggle(Stage $stage)
     {
-        abort_if(Gate::denies('stage_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('stage_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $stage->status = !$stage->status;
         $stage->save();
         return response(null, Response::HTTP_NO_CONTENT);

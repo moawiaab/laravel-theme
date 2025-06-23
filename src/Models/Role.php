@@ -11,7 +11,7 @@ use Moawiaab\LaravelTheme\Support\HasAdvancedFilter;
 
 class Role extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
     use HasFactory;
     use HasAdvancedFilter;
 

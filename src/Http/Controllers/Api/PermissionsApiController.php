@@ -19,7 +19,7 @@ class PermissionsApiController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('permission_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('permission_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         return PermissionResource::collection(Permission::advancedFilter()
             ->filter(FacadesRequest::only('trashed'))
@@ -42,7 +42,7 @@ class PermissionsApiController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('permission_create'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('permission_create'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         return response([
             'meta' => [],
@@ -51,7 +51,7 @@ class PermissionsApiController extends Controller
 
     public function show(Permission $permission)
     {
-        abort_if(Gate::denies('permission_show'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('permission_show'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         return new PermissionResource($permission);
     }
@@ -67,7 +67,7 @@ class PermissionsApiController extends Controller
 
     public function edit(Permission $permission)
     {
-        abort_if(Gate::denies('permission_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('permission_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         return response([
             'data' => new PermissionResource($permission),
@@ -77,7 +77,7 @@ class PermissionsApiController extends Controller
 
     public function destroy(Permission $permission)
     {
-        abort_if(Gate::denies('permission_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('permission_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         $permission->delete();
 
@@ -87,7 +87,7 @@ class PermissionsApiController extends Controller
 
     public function destroyAll(Request $request)
     {
-        abort_if(Gate::denies('permission_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('permission_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         Permission::whereIn('id', $request->items)->delete();
 
@@ -108,14 +108,14 @@ class PermissionsApiController extends Controller
 
     public function deleteRestore(Permission $item)
     {
-        abort_if(Gate::denies('permission_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('permission_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $item->forceDelete();
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
     public function restore(Permission $item)
     {
-        abort_if(Gate::denies('permission_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('permission_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $item->restore();
         return response(null, Response::HTTP_NO_CONTENT);
     }

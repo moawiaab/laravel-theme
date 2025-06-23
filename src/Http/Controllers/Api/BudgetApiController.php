@@ -20,7 +20,7 @@ class BudgetApiController extends Controller
      */
     public function index()
     {
-        abort_if(Gate::denies('budget_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('budget_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return BudgetResource::collection(Budget::advancedFilter()->filter(Request::only('trashed'))->paginate(request('limit', 10)));
     }
 
@@ -29,7 +29,7 @@ class BudgetApiController extends Controller
      */
     public function create()
     {
-        abort_if(Gate::denies('budget_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('budget_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $stage = $this->createStage();
         return response([
             'meta' => [
@@ -50,7 +50,7 @@ class BudgetApiController extends Controller
      */
     public function store(StoreBudgetRequest $request)
     {
-        abort_if(Gate::denies('budget_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('budget_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $stage = $this->createStage();
         // if (!$stage) {
         //     $stage = new Stage();
@@ -111,7 +111,7 @@ class BudgetApiController extends Controller
      */
     public function destroy(Budget $budget)
     {
-        abort_if(Gate::denies('budget_name_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('budget_name_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         if ($budget->expanses->count() > 0) {
             return response([
                 'message' => 'لا يمكنك حذف اسم الموازنة لان تم استخدامه'
@@ -129,7 +129,7 @@ class BudgetApiController extends Controller
 
     public function restore(Budget $budget)
     {
-        abort_if(Gate::denies('budget_name_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('budget_name_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $budget->restore();
         return response(null, Response::HTTP_NO_CONTENT);
     }
@@ -159,7 +159,7 @@ class BudgetApiController extends Controller
 
     public function toggle(Budget $budget)
     {
-        abort_if(Gate::denies('budget_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('budget_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $budget->status = !$budget->status;
         $budget->save();
         return response(null, Response::HTTP_NO_CONTENT);

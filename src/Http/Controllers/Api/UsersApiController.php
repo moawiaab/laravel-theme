@@ -23,7 +23,7 @@ class UsersApiController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        // abort_unless(Gate::allows('user_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return UserResource::collection(
             User::advancedFilter()
                 ->when(auth()->user()->account_id != 1, function ($i) {
@@ -46,7 +46,7 @@ class UsersApiController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        // abort_unless(Gate::allows('user_create'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         return response([
             'meta' => [
@@ -61,7 +61,7 @@ class UsersApiController extends Controller
 
     public function show(User $user)
     {
-        abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('user_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         return response([
             'data' => new UserResource($user->load(['role', 'account'])),
@@ -78,7 +78,7 @@ class UsersApiController extends Controller
 
     public function edit(User $user)
     {
-        abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('user_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         return response([
             'data' => new UserResource($user),
@@ -93,7 +93,7 @@ class UsersApiController extends Controller
 
     public function destroy(User $user)
     {
-        abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('user_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         if ($user->id == 1 && $user->id == auth()->id()) {
             throw ValidationException::withMessages([
@@ -112,7 +112,7 @@ class UsersApiController extends Controller
 
     public function toggle(User $user)
     {
-        abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('user_edit'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $user->status = !$user->status;
         if (auth()->id() == $user->id)
             throw new Exception('لا يمكنك قفل حسابك');
@@ -145,7 +145,7 @@ class UsersApiController extends Controller
 
     public function destroyAll(Request $request)
     {
-        abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('user_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         User::whereIn('id', $request->items)->onlyTrashed()->forceDelete();
         User::whereIn('id', $request->items)->delete();
 
@@ -167,7 +167,7 @@ class UsersApiController extends Controller
     }
     public function restore(User $item)
     {
-        abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('user_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $item->restore();
         return response(null, Response::HTTP_NO_CONTENT);
     }
@@ -190,7 +190,7 @@ class UsersApiController extends Controller
 
     public function locker(Request $request, User $user)
     {
-        abort_if(Gate::denies('private_locker_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_unless(Gate::allows('private_locker_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $safe = new PrivateLocker();
         $safe->amount = $request->amount ?? 0;
         $safe->on_open = $request->amount ?? 0;

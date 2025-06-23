@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->string('title')->nullable();
-            $table->integer('account_id')->nullable()->index();
-            $table->tinyInteger('status')->default(1);
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('permissions', function (Blueprint $table) {
+            $table->string('description')->nullable();
+        });
+        Schema::table('roles', function (Blueprint $table) {
+            $table->string('description')->nullable();
         });
     }
 
@@ -26,6 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::table('permissions_tables', function (Blueprint $table) {
+            //
+        });
     }
 };
