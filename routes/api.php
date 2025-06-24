@@ -4,13 +4,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Moawiaab\LaravelTheme\Http\Controllers\Api', 'middleware' => ['auth:sanctum']], function () {
-    // Client controllers function
-    //client Route::resource('clients', 'ClientApiController');
-    //client Route::put('/clients/{client}/restore', 'ClientApiController@restore');
-    //client Route::put('/clients/{client}/toggle', 'ClientApiController@toggle');
-    //client Route::put('/clients/{client}/amount', 'ClientApiController@amount');
-    //client Route::get('/clients/{client}/amounts', 'ClientApiController@getAmount');
-
+  
     Route::get('abilities', 'AbilitiesController@index');
 
     Route::get('/development', 'DevelopmentApiController@index');
@@ -21,10 +15,6 @@ Route::group(['namespace' => 'Moawiaab\LaravelTheme\Http\Controllers\Api', 'midd
     Route::post('/development/storeModel', 'DevelopmentApiController@storeModel');
     Route::get('/development-tools', 'DevelopmentApiController@tools');
 
-    //! permission controller
-    Route::resource('permissions', 'PermissionsApiController');
-    Route::put('/permissions/{item}/restore', 'PermissionsApiController@restore');
-    Route::put('/permissions/{item}/delete-restore', 'PermissionsApiController@deleteRestore');
 
     Route::get('/dashboard', 'DashboardApiController@index')->name('dashboard');
     // ! account controller
@@ -55,9 +45,9 @@ Route::group(['namespace' => 'Moawiaab\LaravelTheme\Http\Controllers\Api', 'midd
     Route::put('/stages/{stage}/toggle', 'StageApiController@toggle');
 
     // ! expanses controller
-    //expanse Route::resource('expanses', 'ExpanseApiController');
-    //expanse Route::put('/expanses/{expanse}/toggle', 'ExpanseApiController@toggle');
-    //expanse Route::put('/expanses/{expanse}/done', 'ExpanseApiController@done');
+    Route::resource('expanses', 'ExpanseApiController');
+    Route::put('/expanses/{expanse}/toggle', 'ExpanseApiController@toggle');
+    Route::put('/expanses/{expanse}/done', 'ExpanseApiController@done');
 
     //! public treasured controller
     Route::resource('public-treasuries', 'PublicTreasuryApiController');
@@ -69,61 +59,20 @@ Route::group(['namespace' => 'Moawiaab\LaravelTheme\Http\Controllers\Api', 'midd
     Route::put('/private-lockers/{privateLocker}/amount', 'PrivateLockerApiController@amount');
 
     //! Budget Name controller
-    //expanse Route::resource('budget-names', 'BudgetNameApiController');
-    //expanse Route::put('/budget-names/{budgetName}/restore', 'BudgetNameApiController@restore');
-    //expanse Route::put('/budget-names/{budgetName}/toggle', 'BudgetNameApiController@toggle');
+    Route::resource('budget-names', 'BudgetNameApiController');
+    Route::put('/budget-names/{budgetName}/restore', 'BudgetNameApiController@restore');
+    Route::put('/budget-names/{budgetName}/toggle', 'BudgetNameApiController@toggle');
 
-    //expanse //! Budgets controller
-    //expanse Route::resource('budgets', 'BudgetApiController');
-    //expanse Route::put('/budgets/{budget}/restore', 'BudgetApiController@restore');
-    //expanse Route::put('/budgets/{budget}/toggle', 'BudgetApiController@toggle');
+    //! Budgets controller
+    Route::resource('budgets', 'BudgetApiController');
+    Route::put('/budgets/{budget}/restore', 'BudgetApiController@restore');
+    Route::put('/budgets/{budget}/toggle', 'BudgetApiController@toggle');
 
-
-
-    // Supplier controllers function
-    //supplier Route::resource('suppliers', 'SupplierApiController');
-    //supplier // Route::post('/suppliers/delete-all', 'SupplierApiController@destroyAll');
-    //supplier // Route::post('/suppliers/add-all', 'SupplierApiController@addAll');
-    //supplier Route::put('/suppliers/{supplier}/restore', 'SupplierApiController@restore');
-    //supplier Route::put('/suppliers/{supplier}/toggle', 'SupplierApiController@toggle');
-    //supplier Route::put('/suppliers/{supplier}/amount', 'SupplierApiController@amount');
-    //supplier Route::get('/suppliers/{supplier}/amounts', 'SupplierApiController@getAmount');
-
-    //product Route::resource('units', 'UnitApiController');
-    //product Route::resource('categories', 'CategoryApiController');
-    //product // Route::post('/categories/delete-all', 'CategoryApiController@destroyAll');
-    //product // Route::post('/categories/add-all', 'CategoryApiController@addAll');
-    //product Route::put('/categories/{item}/restore', 'CategoryApiController@restore');
-
-    //product Route::resource('products', 'ProductApiController');
-    //product // Route::post('/products/delete-all', 'ProductApiController@destroyAll');
-    //product // Route::post('/products/add-all', 'ProductApiController@addAll');
-    //product Route::put('/products/{item}/restore', 'ProductApiController@restore');
-    //product Route::post('/products/media', 'ProductApiController@storeMedia')->name('products.storeMedia');
-
-    //product Route::resource('stores', 'StoreApiController');
-    //product Route::put('/stores/{store}/toggle', 'StoreApiController@toggle');
-
-    //product // suppliers order controller function
-    //product Route::resource('supplier-orders', 'SupplierOrderApiController');
-    //product Route::put('supplier-orders/{supplierOrder}/done', 'SupplierOrderApiController@done');
-
-    //product // client order controller function
-    //product Route::resource('orders', 'OrderApiController');
-    //product Route::get('/order-backs', 'OrderApiController@getBack');
-    //product Route::put('/orders/{item}/back', 'OrderApiController@back');
-    //product Route::put('/orders/{back}/backDone', 'OrderApiController@backDone');
-    //product Route::put('/orders/{item}/done', 'OrderApiController@done');
-    //product Route::put('/orders/{order}/back-all', 'OrderApiController@backAll');
-
-    //check
-    Route::get('/checks', 'CheckApiController@index');
-    Route::put('/checks/{item}/done', 'CheckApiController@done');
 
     //reports
     Route::get('/reports', 'ReportsApiController@index');
     Route::get('/reports-show', 'ReportsApiController@show');
 });
 Route::group(['namespace' => 'App\Http\Controllers\Api', 'middleware' => ['auth:sanctum']], function () {
-   //don`t remove this lint
+    //don`t remove this lint
 });

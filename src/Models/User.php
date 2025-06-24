@@ -28,7 +28,7 @@ class User extends Authenticatable implements HasMedia
     use HasFactory;
     use HasApiTokens;
     use InteractsWithMedia;
-     use HasRoles;
+    //  use HasRoles;
 
     public $table = 'users';
 

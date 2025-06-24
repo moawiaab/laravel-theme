@@ -21,24 +21,20 @@ class AuthGates
             return $next($request);
         }
 
-        $roles            = Role::with('permissions')->get();
-        $permissionsArray = [];
+        // $roles            = Role::with('permissions')->get();
+        // $permissionsArray = [];
 
-        foreach ($roles as $role) {
-            foreach ($role->permissions as $permissions) {
-                $permissionsArray[$permissions->title][] = $role->id;
-            }
-        }
+        // foreach ($roles as $role) {
+        //     foreach ($role->permissions as $permissions) {
+        //         $permissionsArray[$permissions->title][] = $role->id;
+        //     }
+        // }
         if ($user->account->status == 0) {
-            $permissionsArray = ['account_locked', 'dashboard_access'];
+            return ['account_locked', 'dashboard_access'];
         } elseif ($user->status == 0) {
-            $permissionsArray = ['user_locked', 'dashboard_access'];
+            return ['user_locked', 'dashboard_access'];
         } else {
-            foreach ($permissionsArray as $title => $roles) {
-                Gate::define($title, function (User $user) use ($roles) {
-                    return in_array($user->role->id, $roles);
-                });
-            }
+            return  auth()->user()->getAllPermissions->pluck('name')->toArray();
         }
 
         return $next($request);

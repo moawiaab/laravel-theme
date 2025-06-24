@@ -23,7 +23,7 @@ class UsersApiController extends Controller
 {
     public function index()
     {
-        // abort_unless(Gate::allows('user_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
+        abort_unless(Gate::allows('user_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return UserResource::collection(
             User::advancedFilter()
                 ->when(auth()->user()->account_id != 1, function ($i) {

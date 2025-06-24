@@ -27,9 +27,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
                                                   {--dark : Indicate that dark mode support  be installed}
                                                   {--locker : Indicate that Treasury management mode support support be installed}
                                                   {--expanse : Indicate that expanse management mode support support be installed}
-                                                  {--client : Indicate that client management mode support  be installed}
-                                                  {--supplier : Indicate that supplier management mode support  be installed}
-                                                  {--product : Indicate that product management mode support  be installed}
                                                   {--lang : Make Arabic the default language}
                                                   {--composer=global : Absolute path to the Composer binary which should be used to install packages}';
 
@@ -58,9 +55,10 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
 
         // set Middleware classes
-        $this->installMiddleware(['\Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class']);
+        // $this->installMiddleware(['\Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class']);
         $this->installMiddleware([
-            '\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,\Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class',
+            '\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            \Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class',
         ], 'api');
         $this->installMiddleware([
             '\Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class',
@@ -117,70 +115,17 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
 
 
-        if ($this->option('locker')) {
-            if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
-                $this->replaceInFile('//locker', '', database_path('seeders/PermissionSeeder.php'));
-            } else {
-                $this->replaceInFile('//locker', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-            }
-            $this->replaceInFile('//locker', '', base_path('routes/api.php'));
+        // if ($this->option('expanse')) {
+        if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
+            $this->replaceInFile('//expanse', '', database_path('seeders/PermissionSeeder.php'));
+            $this->replaceInFile('//locker', '', database_path('seeders/PermissionSeeder.php'));
+        } else {
+            $this->replaceInFile('//expanse', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+            $this->replaceInFile('//locker', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
         }
-
-        if ($this->option('expanse')) {
-            if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
-                $this->replaceInFile('//expanse', '', database_path('seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//locker', '', database_path('seeders/PermissionSeeder.php'));
-            } else {
-                $this->replaceInFile('//expanse', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//locker', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-            }
-            $this->replaceInFile('//expanse', '', base_path('routes/api.php'));
-            $this->replaceInFile('//locker', '', base_path('routes/api.php'));
-        }
-
-        if ($this->option('client')) {
-            if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
-                $this->replaceInFile('//client', '', database_path('seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//locker', '', database_path('seeders/PermissionSeeder.php'));
-            } else {
-                $this->replaceInFile('//client', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//locker', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-            }
-            $this->replaceInFile('//client', '', base_path('routes/api.php'));
-            $this->replaceInFile('//locker', '', base_path('routes/api.php'));
-        }
-
-        if ($this->option('supplier')) {
-            if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
-                $this->replaceInFile('//supplier', '', database_path('seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//locker', '', database_path('seeders/PermissionSeeder.php'));
-            } else {
-                $this->replaceInFile('//supplier', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//locker', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-            }
-            $this->replaceInFile('//supplier', '', base_path('routes/api.php'));
-            $this->replaceInFile('//locker', '', base_path('routes/api.php'));
-        }
-
-        if ($this->option('product')) {
-            if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
-                $this->replaceInFile('//client', '', database_path('seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//supplier', '', database_path('seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//locker', '', database_path('seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//product', '', database_path('seeders/PermissionSeeder.php'));
-            } else {
-                $this->replaceInFile('//client', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//supplier', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//locker', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-                $this->replaceInFile('//product', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-            }
-            $this->replaceInFile('//client', '', base_path('routes/api.php'));
-            $this->replaceInFile('//locker', '', base_path('routes/api.php'));
-            $this->replaceInFile('//supplier', '', base_path('routes/api.php'));
-            $this->replaceInFile('//product', '', base_path('routes/api.php'));
-        }
-
-
+        $this->replaceInFile('//expanse', '', base_path('routes/api.php'));
+        $this->replaceInFile('//locker', '', base_path('routes/api.php'));
+        // }
 
         // Install Stack...
         if ($this->argument('stack') === 'vuetify') {
@@ -382,9 +327,9 @@ class InstallCommand extends Command implements PromptsForMissingInput
         $bootstrapApp = file_get_contents(base_path('bootstrap/app.php'));
 
         $names = collect(Arr::wrap($names))
-            ->filter(fn ($name) => !Str::contains($bootstrapApp, $name))
+            ->filter(fn($name) => !Str::contains($bootstrapApp, $name))
             ->whenNotEmpty(function ($names) use ($bootstrapApp, $group, $modifier) {
-                $names = $names->map(fn ($name) => "$name")->implode(',' . PHP_EOL . '            ');
+                $names = $names->map(fn($name) => "$name")->implode(',' . PHP_EOL . '            ');
 
                 $bootstrapApp = str_replace(
                     '->withMiddleware(function (Middleware $middleware) {',
@@ -403,7 +348,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
     protected function promptForMissingArgumentsUsing()
     {
         return [
-            'stack' => fn () => select(
+            'stack' => fn() => select(
                 label: 'Which laravel-theme theme would you like to install?',
                 options: [
                     'quasar' => 'quasar',
@@ -428,17 +373,14 @@ class InstallCommand extends Command implements PromptsForMissingInput
             options: collect([
                 'locker' => 'Treasury management',
                 'expanse' => 'Expenses and budget',
-                'client' => 'Customer management',
-                'supplier' => 'Supplier management',
-                'product' => 'Product management',
             ])->when(
                 $input->getArgument('stack') === 'vuetify',
-                fn ($options) => $options->put('dark', 'Dark mode')
+                fn($options) => $options->put('dark', 'Dark mode')
             )->when(
                 $input->getArgument('stack') === 'quasar',
-                fn ($options) => $options->put('lang', 'Select Arabic language')
+                fn($options) => $options->put('lang', 'Select Arabic language')
             )->sort()->sort()->all(),
-        ))->each(fn ($option) => $input->setOption($option, true));
+        ))->each(fn($option) => $input->setOption($option, true));
     }
 
     // public static function delTree($dir) {
