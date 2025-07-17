@@ -3,8 +3,8 @@
 namespace Moawiaab\LaravelTheme\Services;
 
 use Illuminate\Support\Facades\Artisan;
-use Moawiaab\LaravelTheme\Models\Permission;
-use Moawiaab\LaravelTheme\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class ModelService
 {
@@ -25,7 +25,7 @@ class ModelService
                 }
             }
             unlink($model);
-        }else {
+        } else {
             self::setPermission(strtolower(DefaultText::$small_name));
         }
 
@@ -49,22 +49,21 @@ class ModelService
         FileService::replaceInFile('$table->string("name");', DefaultText::$filedTable, $migrate);
 
         Artisan::call('migrate');
-
     }
 
     private static function setPermission($name)
     {
 
         $data = [
-            ['details' => " access " .   $name, 'title' => $name . "_access"],
-            ['details' => " create " .  $name, 'title' => $name . "_create"],
-            ['details' => " edit " .  $name, 'title' => $name . "_edit"],
-            ['details' => " delete " .    $name, 'title' => $name . "_delete"]
+            ['description' => " access " .   $name, 'name' => $name . "_access", "guard_name" => "web"],
+            ['description' => " create " .  $name, 'name' => $name . "_create", "guard_name" => "web"],
+            ['description' => " edit " .  $name, 'name' => $name . "_edit", "guard_name" => "web"],
+            ['description' => " delete " .    $name, 'name' => $name . "_delete", "guard_name" => "web"]
         ];
         $role = Role::find(1);
         $permission = Permission::insert($data);
         if ($permission) {
-            $permissions = Permission::orderBy('id', 'desc')->take(4)->get(['id', 'title']);
+            $permissions = Permission::orderBy('id', 'desc')->take(4)->get(['id', 'name']);
             foreach ($permissions as $key) {
                 $role->permissions()->syncWithoutDetaching($key->id);
             }

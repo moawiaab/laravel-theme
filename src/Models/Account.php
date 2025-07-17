@@ -67,4 +67,10 @@ class Account extends Model
     {
         return $this->hasOne(Setting::class)->first();
     }
+
+        public function locker()
+    {
+        return $this->hasOne(PublicTreasury::class);
+    }
+
 }

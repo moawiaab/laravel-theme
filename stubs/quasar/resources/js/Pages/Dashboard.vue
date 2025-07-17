@@ -49,50 +49,6 @@
         <div class="" v-if="data">
             <charts-bar :chartData="data.barChart" v-if="data.barChart" />
         </div>
-
-        <print-page
-            :display="false"
-            title="ok"
-            :rows="rows"
-            :columns="columns"
-            bodyStyle="padding:50px; "
-        >
-            <template #head> </template>
-            <!-- <template #body>
-                <tr v-for="(i, id) in rows" :key="id" style="width: 100%">
-                    <td style="border: 1px solid #ccc; border-top: none">
-                        {{ i.id }}
-                    </td>
-                    <td style="border: 1px solid #ccc; border-top: none">
-                        {{ i.title }}
-                    </td>
-                    <td style="border: 1px solid #ccc; border-top: none">
-                        {{ i.age }}
-                    </td>
-                    <td style="border: 1px solid #ccc; border-top: none">
-                        {{ i.num }}
-                    </td>
-                    <td
-                        style="
-                            border: 1px solid #ccc;
-                            border-top: none;
-                            text-align: center;
-                        "
-                    >
-                        {{ i.amount }}
-                    </td>
-                </tr>
-            </template> -->
-        </print-page>
-        <button
-            id="myBtnPrint"
-            type="button"
-            style="display: none"
-            @click="$htmlToPaper('printMe', null, () => {})"
-        >
-            print
-        </button>
-        <q-btn @click="print">print pdf</q-btn>
     </q-page>
 </template>
 
@@ -107,34 +63,12 @@ import { onMounted, ref } from "vue";
 
 import { useI18n } from "vue-i18n";
 
-const data = ref();
+const data = ref(null);
 onMounted(async () => {
     await axios.get("/dashboard").then((res) => {
-        data.value = res.data;
+        //data.value = res.data;
     });
 });
-
-const columns = [
-    { name: "id", label: "الكود", field: "id" },
-    { name: "title", label: "الاسم", field: "title" },
-    { name: "age", label: "العمر", field: "age" },
-    { name: "num", label: "العمر", field: "num" },
-    { name: "amount", label: "العمر", field: "amount" },
-];
-const rows = ref([
-    { id: 1, title: "test title", age: 15, num: 65, amount: 5648 },
-    { id: 2, title: "test title", age: 15, num: 65, amount: 5648 },
-    { id: 3, title: "test title", age: 15, num: 65, amount: 5648 },
-    { id: 4, title: "test title", age: 15, num: 65, amount: 5648 },
-    { id: 5, title: "test title", age: 15, num: 65, amount: 5648 },
-    { id: 6, title: "test title", age: 15, num: 65, amount: 5648 },
-    { id: 7, title: "test title", age: 15, num: 65, amount: 5648 },
-    { id: 8, title: "test title", age: 15, num: 65, amount: 5648 },
-]);
-
-const print = () => {
-    document.getElementById("myBtnPrint")?.click();
-};
 </script>
 <style scoped>
 .q-img__content > div {

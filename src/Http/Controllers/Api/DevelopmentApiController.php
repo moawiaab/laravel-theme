@@ -3,14 +3,9 @@
 namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Basic;
-use App\Models\User;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-use Moawiaab\LaravelTheme\Models\Permission;
-use Moawiaab\LaravelTheme\Models\Role;
 use Moawiaab\LaravelTheme\Services\DefaultText;
 use Moawiaab\LaravelTheme\Services\DevelopmentService;
 use Moawiaab\LaravelTheme\Services\FileService;
@@ -105,10 +100,11 @@ class DevelopmentApiController extends Controller
 
     public function store(Request $request)
     {
+
         FileService::makeDefaultFolder($request->controller);
         // set model
         ModelService::createIsNotExist($request->items);
-
+        
         $view = resource_path('js/Pages/' . DefaultText::$url_page);
         $store = resource_path('js/stores/' . DefaultText::$url_page);
         // set controller

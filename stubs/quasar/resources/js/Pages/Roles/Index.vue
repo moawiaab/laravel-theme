@@ -24,11 +24,11 @@
                                     text-color="red"
                                     square
                                     class="col-auto glossy"
-                                    v-for="{ id, details } in props.row
+                                    v-for="{ id, name } in props.row
                                         .permissions"
                                     :key="id"
                                 >
-                                    {{ details }}</q-chip
+                                    {{ name }}</q-chip
                                 >
                             </div>
                         </div>

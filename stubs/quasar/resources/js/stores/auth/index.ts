@@ -13,6 +13,7 @@ export const useAuth = defineStore("auth-store", {
         entry: <LoginType>{},
         userData: <User | null>null,
         can: [],
+        accounts : [],
         loading: false,
         splitterModel: 50,
         errors: {

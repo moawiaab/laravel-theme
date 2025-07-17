@@ -8,8 +8,10 @@ use Moawiaab\LaravelTheme\Http\Requests\UpdateStageRequest;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
+use Moawiaab\LaravelTheme\Http\Resources\Admin\FiscalYearResource;
 use Moawiaab\LaravelTheme\Http\Resources\Admin\StageResource;
 use Moawiaab\LaravelTheme\Models\Account;
+use Moawiaab\LaravelTheme\Models\FiscalYear;
 use Moawiaab\LaravelTheme\Models\Stage;
 
 class StageApiController extends Controller
@@ -17,7 +19,7 @@ class StageApiController extends Controller
     public function index()
     {
         abort_unless(Gate::allows('stage_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
-        return  StageResource::collection(auth()->user()->account->stages()->get());
+        return  FiscalYearResource::collection(FiscalYear::orderBy("id", 'desc')->paginate(request('limit', 10)));
     }
 
     public function store(StoreStageRequest $request)

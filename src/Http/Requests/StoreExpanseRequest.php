@@ -19,7 +19,7 @@ class StoreExpanseRequest extends FormRequest
         return [
             'amount'  => ['required', 'numeric'],
             'details' => ['required', 'string', 'max:255'],
-            'beneficiary' => ['required', 'string', 'max:255'],
+            'beneficiary' => ['nullable', 'string', 'max:255'],
             'text_amount' => ['nullable', 'string', 'max:255'],
             'budget_id'  => ['required', 'exists:budgets,id',],
         ];

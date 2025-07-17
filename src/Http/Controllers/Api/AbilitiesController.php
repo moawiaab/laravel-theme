@@ -5,6 +5,7 @@ namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Moawiaab\LaravelTheme\Http\Resources\Admin\AbilityResource;
 use Moawiaab\LaravelTheme\Http\Resources\Admin\UserDataResource;
+use Moawiaab\LaravelTheme\Models\Account;
 use Moawiaab\LaravelTheme\Models\Setting;
 
 class AbilitiesController extends Controller
@@ -28,9 +29,14 @@ class AbilitiesController extends Controller
         if (auth()->user()->account->status == 0) {
             $permissions = ['account_locked', 'dashboard_access'];
         }
+
+        if(env('APP_ENV') === 'local'){
+            array_push($permissions ,'development_access');
+        }
         return [
             'user' => new UserDataResource(auth()->user()),
             'data' => new AbilityResource($permissions),
+            'accounts' => Account::get(['id', 'name'])
         ];
     }
 }

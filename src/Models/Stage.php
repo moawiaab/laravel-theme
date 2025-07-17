@@ -51,6 +51,7 @@ class Stage extends Model
         'end_date',
         'status',
         'user_id',
+        'fiscal_year_id',
         'account_id',
         'created_at',
         'updated_at',
@@ -72,6 +73,15 @@ class Stage extends Model
     {
         return $this->belongsTo(Account::class);
     }
+
+    public function getItemAttribute($id)
+    {
+        return $id;
+        // dd($id);
+        // return $this->hasMany(ProductStore::class, "store_id");
+    }
+
+
 
     protected function serializeDate(DateTimeInterface $date)
     {

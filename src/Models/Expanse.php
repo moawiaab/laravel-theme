@@ -103,8 +103,4 @@ class Expanse extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    public function items()
-    {
-        return $this->hasMany(ExpanseItem::class, 'expanse_id')->orderBy('id', 'desc');
-    }
 }

@@ -31,6 +31,7 @@ class AccountApiController extends Controller
      */
     public function index()
     {
+        
         abort_unless(Gate::allows('account_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return AccountResource::collection(Account::with(['users'])->advancedFilter()->paginate(request('rowsPerPage', 20)));
     }

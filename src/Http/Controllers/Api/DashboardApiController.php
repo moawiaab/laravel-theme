@@ -3,11 +3,18 @@
 namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Moawiaab\LaravelTheme\Services\FiscalYearService;
 
 class DashboardApiController extends Controller
 {
+
+      public function __construct()
+    {
+
+    }
     public function index()
     {
+         FiscalYearService::checkStage();
         $bar5 = [
             'labels' => [
                 'January',
@@ -37,6 +44,7 @@ class DashboardApiController extends Controller
             ]
         ];
 
+        // $permissions = auth()->user()->getAllPermissions()->pluck('name')->toArray();
 
         $dataNum = [
             'user' => 20, //auth()->user()->account->users()->count(),
@@ -44,11 +52,13 @@ class DashboardApiController extends Controller
             'product' => 98 , //auth()->user()->account->products()->count(),
             'store' => 5 //auth()->user()->account->stores()->count(),
         ];
+
         return [
             'bar'      => $bar5,
             'barChart' => null ,// Order::count() >  0 ? $bar : null,
             'num'      => $dataNum,
             'line'     => null, //Order::count() >  0 ? $line4 : null
+            // 'permissions'  =>  $permissions
         ];
     }
 }

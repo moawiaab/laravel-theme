@@ -20,7 +20,7 @@
                     <q-input
                         clearable
                         filled
-                        v-model="role.entry.title"
+                        v-model="role.entry.name"
                         :label="$t('input.role.name')"
                         lazy-rules
                         :rules="[(val) => !!val || $t('v.required')]"

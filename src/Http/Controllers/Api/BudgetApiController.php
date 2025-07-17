@@ -52,16 +52,7 @@ class BudgetApiController extends Controller
     {
         abort_unless(Gate::allows('budget_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $stage = $this->createStage();
-        // if (!$stage) {
-        //     $stage = new Stage();
-        //     $stage->name = " السنة المالية للعام " . date("Y");
-        //     $stage->status = 1;
-        //     $stage->start_date = date("Y-m-d");
-        //     $stage->end_date = date("Y-m-d");
-        //     $stage->account_id = auth()->user()->account_id;
-        //     $stage->user_id = auth()->id();
-        //     $stage->save();
-        // }
+
         $data = [
             'expense_amount' => 0,
             'status'         => 1,

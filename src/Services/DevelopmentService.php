@@ -4,8 +4,8 @@ namespace Moawiaab\LaravelTheme\Services;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
-use Moawiaab\LaravelTheme\Models\Permission;
-use Moawiaab\LaravelTheme\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class DevelopmentService
 {
@@ -52,13 +52,14 @@ class DevelopmentService
             $permission = Permission::where('title', 'like', "%$v%")->get();
             if ($permission->count() == 0) {
                 $data = [
-                    ['details' => " access " .   $v, 'title' => $v . "_access"],
-                    ['details' => " create " .  $v, 'title' => $v . "_create"],
-                    ['details' => " edit " .  $v, 'title' => $v . "_edit"],
-                    ['details' => " delete " .    $v, 'title' => $v . "_delete"]
+                    ['description' => " access " .   $v, 'name' => $v . "_access", "guard_name" => "web"],
+                    ['description' => " create " .  $v, 'name' => $v . "_create", "guard_name" => "web"],
+                    ['description' => " edit " .  $v, 'name' => $v . "_edit", "guard_name" => "web"],
+                    ['description' => " delete " .    $v, 'name' => $v . "_delete", "guard_name" => "web"]
                 ];
                 $role = Role::find(1);
-                $permission = Permission::insert($data);
+                $permission = Permission::insert($data)->only('id');
+
                 if ($permission) {
                     $permissions = Permission::orderBy('id', 'desc')->take(4)->get(['id', 'title']);
                     foreach ($permissions as $key) {
@@ -73,7 +74,7 @@ class DevelopmentService
     {
         self::setRole($name);
         foreach (self::$pram as $v) {
-            Permission::where('title', 'like', "%$v%")->delete();
+            Permission::where('name', 'like', "%$v%")->delete();
         }
     }
 

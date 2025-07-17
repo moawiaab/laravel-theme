@@ -1,7 +1,4 @@
-import {
-    detailsText,
-    formatNumber,
-} from "../formats";
+import { detailsText, formatNumber } from "../formats";
 
 export const Users = [
     {
@@ -93,7 +90,7 @@ export const Roles = [
         required: true,
         label: "input.role.name",
         align: "left",
-        field: "title",
+        field: "name",
         format: (val: any) => `${val}`,
         sortable: true,
     },
@@ -118,6 +115,7 @@ export const Roles = [
         align: "left",
         sortable: true,
     },
+    { name: "options", label: "g.options", field: "options" },
 ];
 
 export const Permissions = [
@@ -206,29 +204,29 @@ export const Budgets = [
         align: "left",
         label: "input.budget.amount",
         field: "amount",
-        format: (val: number) => formatNumber(val),
+        format: (val: any) => formatNumber(val),
     },
     {
         name: "expense",
         align: "left",
         label: "input.budget.expense",
         field: "expense",
-        format: (val: number) => formatNumber(val),
+        format: (val: any) => formatNumber(val),
     },
     {
         name: "new_amount",
         align: "left",
         label: "المبلغ المتبقي",
         field: "new_amount",
-        format: (val: number) => formatNumber(val),
+        format: (val: any) => formatNumber(val),
     },
-    { name: "knob", align: "center", label: "%", field: "knob" },
-    { name: "num", align: "center", label: "input.budget.num", field: "num" },
+    { name: "optionsItem", label: "", field: "optionsItem", align: "center" },
+    { name: "num", align: "left", label: "input.budget.num", field: "num" },
     {
         name: "created_at",
         label: "g.created_at",
         field: "created_at",
-        align: "left",
+        align: "center",
         sortable: true,
     },
     { name: "options", label: "g.options", field: "options" },
@@ -1001,4 +999,25 @@ export const Checks = [
         sortable: true,
     },
     { name: "options", label: "g.options", field: "options" },
+];
+
+export const Stages = [
+    { name: "id", label: "g.id", field: "id", align: "left" },
+    {
+        name: "name",
+        required: true,
+        label: "السنة المالية",
+        align: "left",
+        field: "name",
+        format: (val: any) => `${val}`,
+        sortable: true,
+    },
+    // { name: "productCount", label: "input.store.num", field: "productCount", align: "left", },
+    {
+        name: "created_at",
+        label: "g.created_at",
+        field: "created_at",
+        align: "left",
+    },
+    // { name: "options", label: "g.options", field: "options" }
 ];

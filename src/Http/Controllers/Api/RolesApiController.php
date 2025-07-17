@@ -10,9 +10,8 @@ use Illuminate\Support\Facades\Request as FacadesRequest;
 use Moawiaab\LaravelTheme\Http\Requests\StoreRoleRequest;
 use Moawiaab\LaravelTheme\Http\Requests\UpdateRoleRequest;
 use Moawiaab\LaravelTheme\Http\Resources\Admin\RoleResource;
-use Moawiaab\LaravelTheme\Models\Permission;
 use Moawiaab\LaravelTheme\Models\Role;
-use Spatie\Permission\Models\Permission as ModelsPermission;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role as ModelsRole;
 
 class RolesApiController extends Controller
@@ -22,8 +21,7 @@ class RolesApiController extends Controller
         abort_unless(Gate::allows('role_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
 
         return  RoleResource::collection(
-            ModelsRole::with(['permissions'])
-                ->paginate(request('rowsPerPage', 10))
+            ModelsRole::paginate(request('rowsPerPage', 10))
         );
     }
 
@@ -44,9 +42,7 @@ class RolesApiController extends Controller
 
         return response([
             'meta' => [
-                'permissions' => Permission::where('id', '>', 1)->when(auth()->user()->account_id != 1, function ($q) {
-                    $q->where('status', 1);
-                })->get(['id as value', 'details as label']),
+                'permissions' => Permission::where('id', '>', 1)->get(['id as value', 'description as label']),
             ],
         ]);
     }
@@ -90,7 +86,7 @@ class RolesApiController extends Controller
         return response([
             'data' => new RoleResource($role),
             'meta' => [
-                'permissions' => ModelsPermission::get(['id as value', 'details as label']),
+                'permissions' => Permission::get(['id as value', 'description as label']),
                 'roles' => $role->permissions->transform(fn ($role) => $role->id),
             ],
         ]);

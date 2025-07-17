@@ -2,9 +2,6 @@
     <q-page>
         <q-table
             class="my-sticky-column-table"
-            :class="`${f.optionTypeLast ? 'lastItemTrue' : ''} ${
-                f.optionTypeFirst ? 'firstItemTrue' : ''
-            }`"
             flat
             :style="`height : ${$q.screen.height - 120}px`"
             :title="title"
@@ -24,17 +21,35 @@
                 <loader v-if="table.loading" />
             </template>
             <template v-slot:top-right>
-                <slot name="filter" />
-                <q-input
+                <q-select
+                    v-if="branch && auth.user.account == 1"
+                    v-model="account"
+                    :label="$t('input.all.account')"
                     dense
                     outlined
                     class="q-ma-xs"
+                    options-dense
+                    emit-value
+                    map-options
+                    :options="auth.accounts"
+                    option-value="id"
+                    option-label="name"
+                    options-cover
+                    style="min-width: 160px"
+                />
+                <q-input
+                    outlined
+                    class="q-ma-xs"
+                    dense
                     debounce="300"
                     v-model="filter"
                     :placeholder="$t('g.search')"
                 >
                     <template #prepend>
                         <q-icon name="search" />
+                    </template>
+                    <template v-slot:after>
+                        <slot name="filter" />
                     </template>
                 </q-input>
 
@@ -56,10 +71,10 @@
                 />
 
                 <q-select
-                    outlined
-                    class="q-ma-xs"
                     v-model="filters"
                     dense
+                    outlined
+                    class="q-ma-xs"
                     options-dense
                     emit-value
                     map-options
@@ -85,19 +100,18 @@
             <!-- start expand -->
 
             <template #header="props" v-if="expand">
-                <q-tr :props="props">
-                    <q-th auto-width />
-                    <q-th
-                        v-for="col in props.cols"
-                        :key="col.name"
-                        :props="props"
-                    >
-                        {{ $t(col.label) }}
-                    </q-th>
-                    <!-- <q-th
-                        auto-width
-                        :class="f.optionType ? 'lastItemTrue' : ''"
-                    /> -->
+                <q-tr :props="props" class="text-left">
+                    <q-th />
+                    <template v-for="col in props.cols" :key="col.name">
+
+                        <q-th v-if="col.name == 'optionsItem'" class="text-center">  </q-th>
+                        <q-th v-if="col.name == 'options'" class="text-right">
+                            {{ $t(col.label) }}
+                        </q-th>
+                        <q-th v-else>
+                            {{ $t(col.label) }}
+                        </q-th>
+                    </template>
                 </q-tr>
             </template>
             <template #header="props" v-else>
@@ -127,6 +141,14 @@
                     </q-td>
 
                     <template v-for="col in props.cols">
+                        <q-td
+                            auto-width
+                            v-if="col.name == 'optionsItem'"
+                            :key="col.name"
+                            :props="props"
+                        >
+                            <slot name="optionsItem" :props="props.row" />
+                        </q-td>
                         <q-td
                             v-if="col.name != 'options'"
                             :key="col.name"
@@ -235,7 +257,6 @@
                 <q-td
                     v-if="props.row.deleted_at"
                     class="deletedItem text-right"
-                    :class="f.optionType ? 'lastItemTrue' : ''"
                 >
                     <q-btn
                         glossy
@@ -272,12 +293,7 @@
                         v-if="deletable && auth.can.includes(`${role}_delete`)"
                     />
                 </q-td>
-                <q-td
-                    :items="props.row"
-                    class="text-right"
-                    :class="f.optionType ? 'lastItemTrue' : ''"
-                    v-else
-                >
+                <q-td :items="props.row" class="text-right" v-else>
                     <!-- {{ props.row.name }} -->
                     <slot name="options" :props="props.row" />
 
@@ -388,9 +404,6 @@ import { watch, computed, onMounted, ref } from "vue";
 import exportFile from "quasar/src/utils/export-file/export-file.js";
 import { useAuth } from "@/stores/auth/index";
 import { useI18n } from "vue-i18n";
-import { useFormats } from "../../stores/formats";
-
-const f = useFormats();
 const { t } = useI18n();
 
 const table = useTables();
@@ -409,14 +422,21 @@ const props = defineProps({
     newRow: { type: Boolean, default: false },
     toggle: { type: Boolean, default: false },
     creatable: { type: Boolean, default: false },
+    branch: { type: Boolean, default: true },
 });
 
 const tableRef = ref();
 const filter = ref("");
 const filters = ref("");
+const account = ref("");
 
 watch(filters, (e) => {
     table.filters.trashed = e;
+    table.getData();
+});
+
+watch(account, (e) => {
+    table.filters.account = e;
     table.getData();
 });
 
@@ -430,7 +450,6 @@ function onRequest(props, col) {
 
 onMounted(() => {
     table.setRouter(props.router);
-    table.pagination.rowsPerPage = f.rowNum || 15;
     // get initial data from server (1st page)
     table.visibleColumns = props.columns.map((e) => e.name);
     tableRef.value.requestServerInteraction();
@@ -544,26 +563,21 @@ tr:has(td.deletedItem) {
   td:last-child,
   td:first-child
     background-color: #ffffff
-.firstItemTrue
-    th:first-child,
-    td:first-child
-        position: sticky
-        left: 0
-        z-index: 1
-.lastItemTrue
-    th:last-child,
-    td:last-child
-        position: sticky
-        right: 0
-    z-index: 0
+
+//   th:first-child,
+//   td:first-child
+//     position: sticky
+//     left: 0
+//     z-index: 1
+//   th:last-child,
+//   td:last-child
+//     position: sticky
+//     right: 0
+//     z-index: 0
 tr:has(td.deletedItem)
   td
-    background: #ffb3b190 !important
-
-tr:has(td.stk1)
-  td
     background: #ffb3bc80 !important
-tr:has(td.stk2)
-    td
-      background: #ffb3bc80 !important
+tr:has(td.stockItem)
+  td
+    background: #ffff8f80 !important
 </style>

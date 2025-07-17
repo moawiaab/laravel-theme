@@ -104,6 +104,7 @@ const accessData = () => {
             // ability.update([{ action: res.data.data, subject: "all" }]);
             auth.can = res.data.data;
             auth.userData = res.data.user;
+            auth.accounts = res.data.accounts;
             location.reload();
         })
         .catch((err) => {

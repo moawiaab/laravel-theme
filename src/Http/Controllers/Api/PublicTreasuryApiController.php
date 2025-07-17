@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Request as FacadesRequest;
 use Moawiaab\LaravelTheme\Http\Resources\Admin\ExpanseItemsResources;
 use Moawiaab\LaravelTheme\Http\Resources\Admin\OpenDaysResources;
 use Moawiaab\LaravelTheme\Http\Resources\Admin\PublicTreasuryResource;
+use Moawiaab\LaravelTheme\Models\Expanse;
 use Moawiaab\LaravelTheme\Models\ExpanseItem;
 use Moawiaab\LaravelTheme\Models\OpenDay;
 use Moawiaab\LaravelTheme\Models\PrivateLocker;
@@ -62,7 +63,7 @@ class PublicTreasuryApiController extends Controller
         }
         return [
             'pub' => new PublicTreasuryResource(auth()->user()->account->locker),
-            'expanses'  => ExpanseItemsResources::collection(ExpanseItem::where('status', 1)->get()),
+            'expanses'  => ExpanseItemsResources::collection(Expanse::where('status', 1)->get()),
             'pubItems' => OpenDaysResources::collection(OpenDay::onlyTrashed()->get()),
         ];
     }

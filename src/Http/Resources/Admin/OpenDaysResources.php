@@ -20,10 +20,10 @@ class OpenDaysResources extends JsonResource
             'user'    => $this->user ? $this->user->name : '' ?? '',
             'admin'   => $this->admin ? $this->admin->name : '' ?? '',
             'amount'  => $this->amount ?? '',
-            'status'  => $this->status,
+            'status'  => (int)$this->status,
             'problem' => $this->problem ?? '',
             'on_open' => $this->on_open ?? '',
-            'newItem' => $this->status,
+            'newItem' => (int)$this->status,
             'created_at' => $this->created_at ? $this->created_at->format('d-m-Y :h:i:s') : '',
             'updated_at' => $this->updated_at ? $this->updated_at->format('d-m-Y :h:i:s') : '',
             'deleted_at' => $this->deleted_at ?? ''

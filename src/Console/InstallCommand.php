@@ -44,7 +44,8 @@ class InstallCommand extends Command implements PromptsForMissingInput
      */
     public function handle()
     {
-        if (!in_array($this->argument('stack'), ['quasar', 'vuetify', 'api'])) {
+        //, 'vuetify', 'api'
+        if (!in_array($this->argument('stack'), ['quasar'])) {
             $this->components->error('Invalid stack. Supported stacks are [quasar] , [vuetify] and [api].');
 
             return 1;
@@ -55,41 +56,40 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
 
         // set Middleware classes
-        // $this->installMiddleware(['\Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class']);
+        $this->installMiddleware(['\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class']);
         $this->installMiddleware([
-            '\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            \Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class',
+            '\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class',
         ], 'api');
-        $this->installMiddleware([
-            '\Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class',
-        ], 'api');
+        // $this->installMiddleware([
+        //     '\Moawiaab\LaravelTheme\Http\Middleware\AuthGates::class',
+        // ], 'api');
 
         if ($this->argument('stack') === 'vuetify' || $this->argument('stack') === 'quasar') {
             $this->runCommands(['php artisan ui vue --auth ', 'php artisan install:api', 'artisan config:publish cors']);
             $this->updateNodePackages(function ($packages) {
                 return [
-                    "@types/node" => "^20.12.12",
-                    "@vitejs/plugin-vue" => "^4.2.0",
-                    "@vue/tsconfig" => "^0.5.1",
-                    "typescript" => "^5.4.5",
-                    "vue-tsc" => "^2.0.19",
-                    "autoprefixer" => "^10.4.19",
-                    'sass' => "^1.66.1",
-                    'vue'  => '^3.4.29',
-                    "vite" => "^5.3.1",
+                    "@types/node" => "*",
+                    "@vitejs/plugin-vue" => "*",
+                    "@vue/tsconfig" => "*",
+                    "typescript" => "*",
+                    "vue-tsc" => "*",
+                    "autoprefixer" => "*",
+                    'sass' => "*",
+                    'vue'  => '*',
+                    "vite" => "*",
                 ] + $packages;
             });
 
             $this->updateNodePackages(function ($packages) {
                 return [
-                    "pinia" => "^2.1.7",
-                    "pinia-plugin-persistedstate" => "^3.2.1",
-                    "vue-chartjs" => "^5.3.1",
-                    "nanoid" => "^5.0.7",
-                    "chart.js" => "^4.4.3",
-                    "lodash" => "^4.17.21",
-                    "vue-router" => "^4.3.2",
-                    "vue-i18n" => "^9.13.1"
+                    "pinia" => "*",
+                    "pinia-plugin-persistedstate" => "*",
+                    "vue-chartjs" => "*",
+                    "nanoid" => "*",
+                    "chart.js" => "*",
+                    "lodash" => "^*",
+                    "vue-router" => "*",
+                    "vue-i18n" => "*"
                 ] + $packages;
             }, false);
 
@@ -116,13 +116,13 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
 
         // if ($this->option('expanse')) {
-        if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
-            $this->replaceInFile('//expanse', '', database_path('seeders/PermissionSeeder.php'));
-            $this->replaceInFile('//locker', '', database_path('seeders/PermissionSeeder.php'));
-        } else {
-            $this->replaceInFile('//expanse', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-            $this->replaceInFile('//locker', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
-        }
+        // if (file_exists(database_path('seeders/PermissionSeeder.php'))) {
+        //     $this->replaceInFile('//expanse', '', database_path('seeders/PermissionSeeder.php'));
+        //     $this->replaceInFile('//locker', '', database_path('seeders/PermissionSeeder.php'));
+        // } else {
+        //     $this->replaceInFile('//expanse', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+        //     $this->replaceInFile('//locker', '', database_path(__DIR__ . '/../../database/seeders/PermissionSeeder.php'));
+        // }
         $this->replaceInFile('//expanse', '', base_path('routes/api.php'));
         $this->replaceInFile('//locker', '', base_path('routes/api.php'));
         // }
@@ -223,15 +223,15 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
         $this->updateNodePackages(function ($packages) {
             return [
-                "@quasar/vite-plugin" => "^1.7.0",
-                "postcss-rtlcss" => "^5.2.0"
+                "@quasar/vite-plugin" => "*",
+                "postcss-rtlcss" => "*"
             ] + $packages;
         });
 
         $this->updateNodePackages(function ($packages) {
             return [
-                "@quasar/extras" => "^1.16.11",
-                "quasar" => "^2.16.4",
+                "@quasar/extras" => "*",
+                "quasar" => "*",
             ] + $packages;
         }, false);
 
