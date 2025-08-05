@@ -12,9 +12,15 @@ use Moawiaab\LaravelTheme\Http\Resources\BudgetResource;
 use Moawiaab\LaravelTheme\Models\Budget;
 use Moawiaab\LaravelTheme\Models\BudgetName;
 use Moawiaab\LaravelTheme\Models\Stage;
+use Moawiaab\LaravelTheme\Services\FiscalYearService;
 
 class BudgetApiController extends Controller
 {
+
+        public function __construct()
+    {
+        FiscalYearService::checkStage();
+    }
     /**
      * Display a listing of the resource.
      */
@@ -30,12 +36,11 @@ class BudgetApiController extends Controller
     public function create()
     {
         abort_unless(Gate::allows('budget_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $stage = $this->createStage();
         return response([
             'meta' => [
                 'budgets' => BudgetName::where('status', 1)->whereNotIn(
                     'id',
-                    Budget::where('account_id', request('account',auth()->user()->account_id))->where('stage_id', $stage->id)
+                    Budget::where('account_id', request('account',auth()->user()->account_id))->where('stage_id', FiscalYearService::$stageId)
                         ->pluck('budget_id')
                 )->where(function ($q) {
                     $q->where('type', 1)->orWhere('account_id', request('account',auth()->user()->account_id));
@@ -51,14 +56,13 @@ class BudgetApiController extends Controller
     public function store(StoreBudgetRequest $request)
     {
         abort_unless(Gate::allows('budget_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $stage = $this->createStage();
 
         $data = [
             'expense_amount' => 0,
             'status'         => 1,
             'account_id'     => auth()->user()->account_id,
             'user_id'        => auth()->id(),
-            'stage_id'       => $stage->id
+            'stage_id'       => FiscalYearService::$stageId
         ];
         $budget = Budget::create($request->validated() + $data);
         return (new BudgetResource($budget))
@@ -123,29 +127,6 @@ class BudgetApiController extends Controller
         abort_unless(Gate::allows('budget_name_delete'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         $budget->restore();
         return response(null, Response::HTTP_NO_CONTENT);
-    }
-
-    private function createStage()
-    {
-        $stage = Stage::whereYear('start_date', date('Y'))->where('account_id', request('account',auth()->user()->account_id))->first();
-        if (!$stage) {
-            $years = Stage::where('account_id', request('account',auth()->user()->account_id))->get();
-            foreach ($years as $y) {
-                $y->status = 0;
-                $y->save();
-            }
-            $newData =  date('Y', strtotime(date("Y-m-d") . ' + 1 years'));
-            $stage = new Stage();
-            $stage->name = " السنة المالية للعام " . date("Y");
-            $stage->status = 1;
-            $stage->start_date = date("Y-m-d");
-            $stage->end_date = $newData . "-12-31";
-            $stage->account_id = auth()->user()->account_id;
-            $stage->user_id = auth()->id();
-            $stage->save();
-        }
-
-        return $stage;
     }
 
     public function toggle(Budget $budget)

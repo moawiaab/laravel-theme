@@ -24,10 +24,11 @@ class ExpanseApiController extends Controller
     }
     public function index()
     {
+        // FiscalYearService::checkStage();
         abort_unless(Gate::allows('expanse_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return ExpanseResource::collection(
             Expanse::advancedFilter()
-                ->where('account_id', request('account', auth()->user()->account_id))
+                ->where('account_id', request('account', auth()->user() ? auth()->user()->account_id : null))
                 ->filter(FacadesRequest::only('trashed'))
                 ->paginate(request('limit', 10))
         );
@@ -35,6 +36,9 @@ class ExpanseApiController extends Controller
 
     public function store(StoreExpanseRequest $request)
     {
+
+        // dd(auth()->user());
+        // FiscalYearService::checkStage();
         // $ser = new LockService();
         if (LockerService::check()) {
             return response([
@@ -44,7 +48,8 @@ class ExpanseApiController extends Controller
         $data = [
             'user_id'  => auth()->id(),
             'stage_id' => FiscalYearService::$stageId,
-            'beneficiary' => auth()->user()->name
+            'beneficiary' => auth()->user()->name,
+            'account_id'  => auth()->user()->account_id,
         ];
         $bug = Budget::find($request->budget_id);
         if (auth()->user()->account->setting()->exp_roof == 0) {
@@ -62,7 +67,7 @@ class ExpanseApiController extends Controller
             $bug->expense_amount  += $request->amount;
             auth()->user()->locker->amount -= $request->amount;
         }
-        $expanse = auth()->user()->account->expanses()->create($request->validated() + $data + $status);
+        $expanse = Expanse::create($request->validated() + $data + $status);
         if ($expanse) {
             auth()->user()->locker->save();
             $bug->save();
@@ -132,7 +137,6 @@ class ExpanseApiController extends Controller
         $expanse->user->locker->amount -= $expanse->amount;
 
         $expanse->status = 0;
-        $expanse->administrative_id = auth()->id();
 
         if ($expanse->save()) {
             $expanse->user->locker->save();

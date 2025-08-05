@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("name");
             $table->tinyInteger('status')->default(1);
-            $table->bigInteger('account_id')->references('id')->on('accounts');
+            $table->bigInteger('account_id')->nullable()->references('id')->on('accounts');
             $table->timestamps();
         });
     }

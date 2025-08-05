@@ -17,14 +17,12 @@ class FiscalYearService
 
     public static function checkYear()
     {
-
         $y = FiscalYear::where('name', date("Y"))->first();
         if (!$y) {
             self::stopYear();
             $i = new FiscalYear();
             $i->name       = date("Y");
             $i->status     = 1;
-            $i->account_id = auth()->user()->account_id;
             if ($i->save()) {
                 $data = [
                     [
@@ -33,8 +31,6 @@ class FiscalYearService
                         'end_date'    => date("y") . "-03-31",
                         'status'      => 1,
                         "fiscal_year_id"        => $i->id,
-                        'user_id'     => auth()->id(),
-                        'account_id'  => auth()->user()->account_id,
                         'created_at'  => now(),
                         'updated_at'  => now(),
                     ],
@@ -44,8 +40,6 @@ class FiscalYearService
                         'end_date'    => date("y") . "-06-30",
                         'status'      => 2,
                         "fiscal_year_id"        => $i->id,
-                        'user_id'     => auth()->id(),
-                        'account_id'  => auth()->user()->account_id,
                         'created_at'  => now(),
                         'updated_at'  => now(),
                     ],
@@ -55,8 +49,6 @@ class FiscalYearService
                         'end_date'    => date("y") . "-09-30",
                         'status'      => 2,
                         "fiscal_year_id"        => $i->id,
-                        'user_id'     => auth()->id(),
-                        'account_id'  => auth()->user()->account_id,
                         'created_at'  => now(),
                         'updated_at'  => now(),
                     ],
@@ -66,8 +58,6 @@ class FiscalYearService
                         'end_date'    => date("y") . "-12-31",
                         'status'      => 2,
                         "fiscal_year_id"        => $i->id,
-                        'user_id'     => auth()->id(),
-                        'account_id'  => auth()->user()->account_id,
                         'created_at'  => now(),
                         'updated_at'  => now(),
                     ]
@@ -112,6 +102,14 @@ class FiscalYearService
         }
     }
 
+    public static function getStage()
+    {
+        $y = FiscalYear::where('name', date("Y"))->first();
+        $stage = $y->stages->where("status", 1)->first();
+        self::$stageId  = $stage->id ?? 0;
+
+        // dd(self::$stageId);
+    }
     public static function stopYear()
     {
         $ids  = FiscalYear::pluck("id");
