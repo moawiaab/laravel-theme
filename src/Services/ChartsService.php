@@ -6,35 +6,43 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Database\Eloquent\JsonEncodingException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use JsonSerializable;
 
 class ChartsService implements Arrayable, Jsonable, JsonSerializable
 {
+    protected $options;
+
+    protected $attributes;
+
+    protected $type;
+
+    protected $model;
+
+    protected $group_by_field;
+
+    protected $group_by_period;
+
+    protected $filter_by_field;
+
+    protected $filter_by_period;
+
+    protected $usedColors = [];
+
+    protected $colorSet;
+
+    protected $aggregate_function;
+
+    protected $aggregate_field;
+
     public const GROUP_PERIODS = [
         'day'   => 'Y-m-d',
         'week'  => 'Y-W',
         'month' => 'Y-m',
         'year'  => 'Y',
     ];
-    protected $options;
-    protected $attributes;
-
-    protected $type;
-    protected $model;
-
-    protected $group_by_field;
-    protected $group_by_period;
-
-    protected $filter_by_field;
-    protected $filter_by_period;
-
-    protected $usedColors = [];
-    protected $colorSet;
-
-    protected $aggregate_function;
-    protected $aggregate_field;
 
     public function __construct(array $options)
     {
@@ -56,37 +64,6 @@ class ChartsService implements Arrayable, Jsonable, JsonSerializable
         $this->aggregate_field    = data_get($this->options, 'aggregate_field', null);
 
         $this->make();
-    }
-
-    public function setAttr(string $key, $value)
-    {
-        data_set($this->attributes, $key, $value);
-    }
-
-    public function toArray()
-    {
-        return array_merge($this->attributesToArray());
-    }
-
-    public function attributesToArray()
-    {
-        return $this->attributes;
-    }
-
-    public function toJson($options = 0)
-    {
-        $json = json_encode($this->jsonSerialize(), $options);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw JsonEncodingException::forModel($this, json_last_error_msg());
-        }
-
-        return $json;
-    }
-
-    public function jsonSerialize()
-    {
-        return $this->toArray();
     }
 
     protected function validate(array $options)
@@ -200,7 +177,7 @@ class ChartsService implements Arrayable, Jsonable, JsonSerializable
         $dataset    = [];
         $collection = $this->getQuery()->get();
 
-        if (!$collection->count()) {
+        if (! $collection->count()) {
             return;
         }
 
@@ -231,17 +208,17 @@ class ChartsService implements Arrayable, Jsonable, JsonSerializable
                     }
 
                     return $item->{$this->group_by_field}->format($this->getGroupByPeriod());
-                }
-                if ($this->isNestedColumn($this->group_by_field)) {
+                } elseif ($this->isNestedColumn($this->group_by_field)) {
                     [$relation, $column] = explode('.', $this->group_by_field);
 
                     return $item->{$relation}->{$column};
-                }
-                if (is_null($item->{$this->group_by_field})) {
-                    return 'NULL';
-                }
+                } else {
+                    if (is_null($item->{$this->group_by_field})) {
+                        return 'NULL';
+                    }
 
-                return $item->{$this->group_by_field};
+                    return $item->{$this->group_by_field};
+                }
             });
     }
 
@@ -258,7 +235,7 @@ class ChartsService implements Arrayable, Jsonable, JsonSerializable
         } elseif ($this->type === 'line') {
             $this->setAttr('datasets', [[
                 'label'       => $this->getLegend(),
-                'fill'        => false,
+                'fill'        => true,
                 'borderColor' => $this->getColor($this->options['title']),
                 'data'        => $dataset['series'],
             ]]);
@@ -280,8 +257,7 @@ class ChartsService implements Arrayable, Jsonable, JsonSerializable
     {
         if (isset($this->options['chartjs_options'])) {
             return $this->options['chartjs_options'];
-        }
-        if (in_array($this->type, ['line', 'bar'], true)) {
+        } elseif (in_array($this->type, ['line', 'bar'], true)) {
             return [
                 'height' => 300,
                 'scales' => [
@@ -292,13 +268,12 @@ class ChartsService implements Arrayable, Jsonable, JsonSerializable
                     ]],
                 ],
                 'responsive'          => true,
-                'maintainAspectRatio' => true,
+                'maintainAspectRatio' => false,
             ];
-        }
-        if ($this->type === 'pie') {
+        } elseif ($this->type === 'pie') {
             return [
                 'responsive'          => true,
-                'maintainAspectRatio' => true,
+                'maintainAspectRatio' => false,
             ];
         }
 
@@ -331,20 +306,15 @@ class ChartsService implements Arrayable, Jsonable, JsonSerializable
     {
         if (isset($this->options['chart_icon'])) {
             return $this->options['chart_icon'];
-        }
-        if ($this->type === 'bar') {
+        } elseif ($this->type === 'bar') {
             return 'bar_chart';
-        }
-        if ($this->type === 'line') {
+        } elseif ($this->type === 'line') {
             return 'multiline_chart';
-        }
-        if ($this->type === 'pie') {
+        } elseif ($this->type === 'pie') {
             return 'pie_chart';
-        }
-        if ($this->type === 'stats') {
+        } elseif ($this->type === 'stats') {
             return 'trending_up';
-        }
-        if ($this->type === 'latest') {
+        } elseif ($this->type === 'latest') {
             return 'table_chart';
         }
 
@@ -363,7 +333,7 @@ class ChartsService implements Arrayable, Jsonable, JsonSerializable
             '700' => ['#d32f2f', '#c2185b', '#7b1fa2', '#303f9f', '#1976d2', '#0097a7', '#00796b', '#388e3c', '#fbc02d', '#f57c00', '#5d4037', '#616161'],
         ];
 
-        if (!$this->colorSet) {
+        if (! $this->colorSet) {
             $this->colorSet = array_keys($allColors)[0];
         }
 
@@ -399,11 +369,9 @@ class ChartsService implements Arrayable, Jsonable, JsonSerializable
     {
         if ($this->filter_by_period === 'week') {
             return date('Y-m-d', strtotime('last Monday'));
-        }
-        if ($this->filter_by_period === 'month') {
+        } elseif ($this->filter_by_period === 'month') {
             return date('Y-m') . '-01';
-        }
-        if ($this->filter_by_period === 'year') {
+        } elseif ($this->filter_by_period === 'year') {
             return date('Y') . '-01-01';
         }
 
@@ -415,5 +383,36 @@ class ChartsService implements Arrayable, Jsonable, JsonSerializable
         $date_fields = $this->model->getDates();
 
         return in_array($this->group_by_field, $date_fields, true);
+    }
+
+    public function setAttr(string $key, $value)
+    {
+        data_set($this->attributes, $key, $value);
+    }
+
+    public function toArray()
+    {
+        return array_merge($this->attributesToArray());
+    }
+
+    public function attributesToArray()
+    {
+        return $this->attributes;
+    }
+
+    public function toJson($options = 0)
+    {
+        $json = json_encode($this->jsonSerialize(), $options);
+
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            throw JsonEncodingException::forModel($this, json_last_error_msg());
+        }
+
+        return $json;
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

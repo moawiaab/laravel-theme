@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('beneficiary')->nullable();;
             $table->longText('details');
             $table->longText('feeding')->nullable();
+            $table->integer('account_id')->index()->nullable();
 
             $table->integer('budget_id')->index()->references('id')->on('budgets');
             $table->integer('stage_id')->index()->references('id')->on('stages');

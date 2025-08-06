@@ -56,7 +56,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
 
         // set Middleware classes
-        $this->installMiddleware(['\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class']);
+        // $this->installMiddleware(['\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class']);
         $this->installMiddleware([
             '\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class',
         ], 'api');
@@ -321,13 +321,12 @@ class InstallCommand extends Command implements PromptsForMissingInput
             $this->output->write('    ' . $line);
         });
     }
-
     protected function installMiddleware($names, $group = 'web', $modifier = 'append')
     {
         $bootstrapApp = file_get_contents(base_path('bootstrap/app.php'));
 
         $names = collect(Arr::wrap($names))
-            ->filter(fn($name) => !Str::contains($bootstrapApp, $name))
+            ->filter(fn($name) => ! Str::contains($bootstrapApp, $name))
             ->whenNotEmpty(function ($names) use ($bootstrapApp, $group, $modifier) {
                 $names = $names->map(fn($name) => "$name")->implode(',' . PHP_EOL . '            ');
 
@@ -344,6 +343,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
                 file_put_contents(base_path('bootstrap/app.php'), $bootstrapApp);
             });
     }
+
 
     protected function promptForMissingArgumentsUsing()
     {
