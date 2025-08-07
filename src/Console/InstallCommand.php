@@ -45,7 +45,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
     public function handle()
     {
         //, 'vuetify', 'api'
-        if (!in_array($this->argument('stack'), ['quasar'])) {
+        if (!in_array($this->argument('stack'), ['quasar', 'vuetify', 'api'])) {
             $this->components->error('Invalid stack. Supported stacks are [quasar] , [vuetify] and [api].');
 
             return 1;
@@ -191,7 +191,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         } elseif (file_exists(base_path('yarn.lock'))) {
             $this->runCommands(['yarn install', 'yarn run build']);
         } else {
-            $this->runCommands(['npm install --force', 'npm run build']);
+            $this->runCommands(['npm install --force', 'npm update --force', 'npm run build']);
         }
 
         $this->line('');
@@ -246,7 +246,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         } elseif (file_exists(base_path('yarn.lock'))) {
             $this->runCommands(['yarn install', 'yarn run build']);
         } else {
-            $this->runCommands(['npm install --force', 'npm run build']);
+            $this->runCommands(['npm install --force','npm update --force', 'npm run build']);
         }
 
 
