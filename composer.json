@@ -26,6 +26,6 @@
         "laravel/ui": "^4.5",
         "spatie/laravel-medialibrary": "*",
         "spatie/laravel-permission"  : "*",
-        "laravel/breeze --dev" : "*"
+        "laravel/breeze" : "*"
     }
 }
