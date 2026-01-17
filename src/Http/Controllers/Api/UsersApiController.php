@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Moawiaab\LaravelTheme\Http\Resources\Admin\UserResource;
 use Moawiaab\LaravelTheme\Models\PrivateLocker;
 use Moawiaab\LaravelTheme\Services\DevelopmentService;
+use Spatie\Permission\Models\Role;
 
 class UsersApiController extends Controller
 {
@@ -50,11 +51,7 @@ class UsersApiController extends Controller
 
         return response([
             'meta' => [
-                'roles' =>
-                auth()
-                    ->user()
-                    ->account
-                    ->roles()->get(['id', 'title']),
+                'roles' => Role::get(['id', 'description as title']),
             ],
         ]);
     }

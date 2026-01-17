@@ -111,6 +111,10 @@ class InstallCommand extends Command implements PromptsForMissingInput
             // (new Filesystem)->copy(__DIR__ . '/../../stubs/public/Khalid-Art-Bold.ttf', base_path('public/Khalid-Art-Bold.ttf'));
             FileService::deleteAllFiles(resource_path('sass'));
             FileService::deleteAllFiles(resource_path('js'));
+        }elseif( $this->argument('stack') === 'api'){
+            $this->runCommands(['php artisan breeze:install api']);
+            copy(__DIR__ . '/../../routes/api.php', base_path('routes/api.php'));
+            // copy(__DIR__ . '/../../routes/web.php', base_path('routes/web.php'));
         }
 
 

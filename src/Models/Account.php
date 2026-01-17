@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Moawiaab\LaravelTheme\Support\HasAdvancedFilter;
+use Spatie\Permission\Models\Role;
 
 class Account extends Model
 {
@@ -45,10 +46,10 @@ class Account extends Model
         return $this->hasMany(User::class);
     }
 
-    // public function roles(): HasMany
-    // {
-    //     return $this->hasMany(Role::class);
-    // }
+    public function roles(): HasMany
+    {
+        return $this->hasMany(Role::class);
+    }
 
     public function budgets(): HasMany
     {
