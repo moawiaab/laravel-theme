@@ -65,7 +65,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         // ], 'api');
 
         if ($this->argument('stack') === 'vuetify' || $this->argument('stack') === 'quasar') {
-            $this->runCommands(['php artisan ui vue --auth ', 'php artisan install:api', 'artisan config:publish cors']);
+            $this->runCommands(['composer require laravel/ui','php artisan ui vue --auth ', 'php artisan install:api', 'artisan config:publish cors']);
             $this->updateNodePackages(function ($packages) {
                 return [
                     "@types/node" => "*",
