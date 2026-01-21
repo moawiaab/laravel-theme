@@ -65,7 +65,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         // ], 'api');
 
         if ($this->argument('stack') === 'vuetify' || $this->argument('stack') === 'quasar') {
-            $this->runCommands(['php artisan ui vue --auth ', 'php artisan install:api', 'artisan config:publish cors']);
+            $this->runCommands(['composer require laravel/ui','php artisan ui vue --auth ', 'php artisan install:api', 'artisan config:publish cors']);
             $this->updateNodePackages(function ($packages) {
                 return [
                     "@types/node" => "*",
@@ -112,7 +112,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
             FileService::deleteAllFiles(resource_path('sass'));
             FileService::deleteAllFiles(resource_path('js'));
         }elseif( $this->argument('stack') === 'api'){
-            // $this->runCommands(['php artisan breeze:install api']);
+            $this->runCommands(['composer require laravel/breeze','php artisan breeze:install api']);
             copy(__DIR__ . '/../../routes/api.php', base_path('routes/api.php'));
             // copy(__DIR__ . '/../../routes/web.php', base_path('routes/web.php'));
         }
