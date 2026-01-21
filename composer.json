@@ -25,7 +25,6 @@
     "require": {
         "spatie/laravel-medialibrary": "*",
         "spatie/laravel-permission"  : "*",
-        "laravel/breeze": "*",
-        "laravel/ui" : "*"
+        "laravel/ui" : "^4.5"
     }
 }
