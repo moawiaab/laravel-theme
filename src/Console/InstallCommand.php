@@ -112,7 +112,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
             FileService::deleteAllFiles(resource_path('sass'));
             FileService::deleteAllFiles(resource_path('js'));
         }elseif( $this->argument('stack') === 'api'){
-            $this->runCommands(['composer require laravel/breeze','php artisan breeze:install api']);
+            $this->runCommands(['composer require laravel/breeze --dev','php artisan breeze:install api']);
             copy(__DIR__ . '/../../routes/api.php', base_path('routes/api.php'));
             // copy(__DIR__ . '/../../routes/web.php', base_path('routes/web.php'));
         }
