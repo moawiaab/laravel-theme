@@ -56,6 +56,8 @@ import ItemLabel from "@/Components/item/label.vue"
 import Loader from "@/Components/loader.vue"
 import WidgetsShowCard from "@/Components/Widgets/ShowCard.vue"
 import VueHtmlToPaper from "@/services/vueHtmlToPaper";
+import mDialog from "@/Components/dialog.vue";
+import formData from "@/Components/form/FormData.vue";
 
 
 
@@ -126,6 +128,9 @@ myApp.component("widgets-bar", WidgetsBar)
 myApp.component("widgets-show-card", WidgetsShowCard)
 myApp.component("item-label", ItemLabel)
 myApp.component("loader", Loader)
+myApp.component("input-text", InputText)
+myApp.component("m-dialog", mDialog)
+myApp.component("form-data", formData)
 myApp.mount('#app')
 
 

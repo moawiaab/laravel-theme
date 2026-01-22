@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'stack' => 'vuetify',
+    'stack' => 'quasar',
     'middleware' => ['web'],
     // 'features' => [Features::accountDeletion()],
 ];
