@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { UseDraggable as Draggable } from "@vueuse/components";
-import { isClient, useDraggable } from "@vueuse/core";
-import { h, shallowRef, useTemplateRef } from "vue";
+import { isClient } from "@vueuse/core";
+import { shallowRef, useTemplateRef } from "vue";
 import { useSettings } from "@/stores/settings";
 // import { Expanse } from "@/types";
 const settings = useSettings();
@@ -16,7 +16,7 @@ defineProps({
     title: { type: String, default: "title" },
     icon: { type: String, default: "edit" },
     w: { type: Number, default: 50 },
-    mh: { type: Number, default: null },
+    mh: { type: Number, default: 200 },
 });
 </script>
 <template>
@@ -31,7 +31,7 @@ defineProps({
             p="x-4 y-2"
             shadow="~ hover:lg"
             class="fixed select-none w100%"
-            :initial-value="{ x: innerWidth / 3.6, y: 200 }"
+            :initial-value="{ x: innerWidth / 3.6, y: mh }"
             :prevent-default="true"
             :handle="handle"
             :disabled="disabled"

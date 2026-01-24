@@ -236,13 +236,14 @@ class InstallCommand extends Command implements PromptsForMissingInput
             return [
                 "@quasar/extras" => "*",
                 "quasar" => "*",
+                "@vueuse/components" => "^14.1.0",
             ] + $packages;
         }, false);
 
 
         if ($this->option('lang')) {
             $this->replaceInFile('"en-US";', '"ar";', resource_path('js/app.ts'));
-            $this->replaceInFile('rtl: false', 'rtl: true', resource_path('js/app.js'));
+            $this->replaceInFile('rtl: false', 'rtl: true', resource_path('js/app.ts'));
         }
 
         if (file_exists(base_path('pnpm-lock.yaml'))) {

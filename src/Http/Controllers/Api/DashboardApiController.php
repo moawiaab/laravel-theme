@@ -2,6 +2,7 @@
 
 namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
+use App\Events\HelloWorld;
 use App\Http\Controllers\Controller;
 use Moawiaab\LaravelTheme\Services\ChartsService;
 use Moawiaab\LaravelTheme\Services\FiscalYearService;
@@ -61,6 +62,8 @@ class DashboardApiController extends Controller
             'product' => 8,
             'store' => 2,
         ];
+
+       
         return [
             'barChart'  => $bar,
             'lineChart'  => $line,

@@ -2,6 +2,7 @@
 
 namespace Moawiaab\LaravelTheme\Http\Controllers\Api;
 
+use App\Events\HelloWorld;
 use App\Http\Controllers\Controller;
 use Moawiaab\LaravelTheme\Http\Requests\AccountRequest;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class AccountApiController extends Controller
      */
     public function index()
     {
-        
+         HelloWorld::dispatch();
         abort_unless(Gate::allows('account_access'), Response::HTTP_FORBIDDEN, 'ليس لديك الصلاحية الكافية لتنفيذ هذه العملية');
         return AccountResource::collection(Account::with(['users'])->advancedFilter()->paginate(request('rowsPerPage', 20)));
     }

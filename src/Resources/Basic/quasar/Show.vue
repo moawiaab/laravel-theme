@@ -1,19 +1,11 @@
 <template>
-  <q-dialog
+  <m-dialog
     v-model="table.showRow"
-    transition-show="scale"
-    transition-hide="scale"
-    :maximized="$q.platform.is.mobile? true: settings.maximizedToggle"
+    :title="$t('input.user.view') + ' : ' + (table.row.name || user.entry.name)"
+    :mh="100"
   >
-    <q-card style="min-width: 60vw">
+    <q-card>
       <widgets-bar />
-      <q-card-section>
-        <div class="text-h6">
-          {{ $t("input.user.view") }} :
-          {{ table.row.name || single.entry.name }}
-        </div>
-      </q-card-section>
-      <q-separator />
       <q-card-section class="q-pt-none">
         <q-splitter v-model="table.splitterModel" style="height: 100%">
           <template v-slot:before>
@@ -48,15 +40,13 @@
         <q-btn flat :label="$t('g.close')" v-close-popup color="negative" />
       </q-card-actions>
     </q-card>
-  </q-dialog>
+  </m-dialog>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useTables } from "@/stores/tables/index";
 import { useUsersIndex } from "@/stores/users/index";
 import { watch } from "@vue/runtime-core";
-import { useSettings } from "@/stores/settings";
-const settings = useSettings();
 
 const table = useTables();
 
