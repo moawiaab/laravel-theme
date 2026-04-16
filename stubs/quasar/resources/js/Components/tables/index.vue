@@ -257,6 +257,7 @@
                 <q-td
                     v-if="props.row.deleted_at"
                     class="deletedItem text-right"
+
                 >
                     <q-btn
                         glossy
@@ -559,10 +560,10 @@ tr:has(td.deletedItem) {
   thead tr:last-child th:last-child,
   thead tr:first-child th:first-child
     /* bg color is important for th; just specify one */
-    background-color: #ffffff
+    //background-color: #ffffff
   td:last-child,
   td:first-child
-    background-color: #ffffff
+    //background-color: #ffffff
 
 //   th:first-child,
 //   td:first-child

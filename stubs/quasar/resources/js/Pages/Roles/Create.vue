@@ -1,67 +1,36 @@
 <template>
-    <q-dialog
+    <m-dialog
         v-model="table.newRow"
-        persistent
-        transition-show="scale"
-        transition-hide="scale"
+        :title="$t('input.role.title_new')"
+        :w="60"
     >
-        <q-card style="width: 800px; max-width: 70vw">
-            <q-card-section>
-                <div class="text-h6">{{$t('input.role.title_new')}}</div>
-            </q-card-section>
-            <q-separator />
-            <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-                <q-card-section class="q-p-sm">
-                    <q-input
-                        clearable
-                        filled
-                        v-model="role.entry.name"
-                        :label="$t('input.role.name')"
-                        lazy-rules
-                        :rules="[(val) => !!val || $t('v.required')]"
-                    />
+        <one-form @submitted="onSubmit" @reset="onReset"   :loading="role.loading"
+                btnLabel="g.update">
+            <q-input
+                clearable
+                filled
+                v-model="role.entry.name"
+                :label="$t('input.role.name')"
+                lazy-rules
+                :rules="[(val) => !!val || $t('v.required')]"
+            />
 
-                    <q-select
-                        use-chips
-                        multiple
-                        clearable
-                        filled
-                        v-model="role.entry.permissions"
-                        :options="role.lists.permissions"
-                        :label="$t('item.role')"
-                        option-value="value"
-                        option-label="label"
-                        :rules="[(val) => (val != null) || $t('v.selected')]"
-                        emit-value
-                        map-options
-                    />
-                </q-card-section>
-                <q-separator />
-                <q-card-actions align="right" class="bg-white text-teal">
-                    <q-btn
-                        flat
-                        :label="$t('g.save')"
-                        type="submit"
-                        color="primary"
-                        :loading="role.loading"
-                    />
-                    <q-btn
-                        :label="$t('g.reset')"
-                        type="reset"
-                        color="warning"
-                        flat
-                        class="q-ml-sm"
-                    />
-                    <q-btn
-                        flat
-                        :label="$t('g.close')"
-                        v-close-popup
-                        color="negative"
-                    />
-                </q-card-actions>
-            </q-form>
-        </q-card>
-    </q-dialog>
+            <q-select
+                use-chips
+                multiple
+                clearable
+                filled
+                v-model="role.entry.permissions"
+                :options="role.lists.permissions"
+                :label="$t('item.role')"
+                option-value="value"
+                option-label="label"
+                :rules="[(val) => val != null || $t('v.selected')]"
+                emit-value
+                map-options
+            />
+        </one-form>
+    </m-dialog>
 </template>
 
 <script>

@@ -1,88 +1,57 @@
 <template>
-    <q-dialog
+    <m-dialog
         v-model="table.editRow"
-        persistent
-        transition-show="scale"
-        transition-hide="scale"
+        :title="
+            $t('input.user.title_edit') +
+            ' : ' +
+            (table.row.name || user.entry.name)
+        "
     >
-        <q-card style="width: 500px; max-width: 80vw">
-            <q-card-section>
-                <div class="text-h6">
-                    {{$t('input.user.title_edit')}} :
-                    {{ table.row.name || user.entry.name }}
-                </div>
-            </q-card-section>
-            <q-separator />
-            <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-                <q-card-section class="q-pt-none">
-                    <div class="q-pa-sm">
-                        <q-input
-                            clearable
-                            filled
-                            v-model="user.entry.name"
-                            :label="$t('g.user_name')"
-                            lazy-rules
-                            :rules="[(val) => !!val || $t('v.required')]"
-                        />
-                        <q-input
-                            clearable
-                            filled
-                            v-model="user.entry.email"
-                            :label="$t('g.login_email')"
-                            lazy-rules
-                            :rules="[(val) => !!val || $t('v.required')]"
-                            type="email"
-                        />
-                        <q-input
-                            clearable
-                            filled
-                            v-model="user.entry.phone"
-                            :label="$t('g.phone_number')"
-                            lazy-rules
-                            :rules="[(val) => !!val || $t('v.required')]"
-                            type="phone"
-                        />
+        <one-form @submitted="onSubmit" @reset="onReset"   :loading="user.loading"
+                btnLabel="g.update">
+            <div class="q-pa-sm">
+                <q-input
+                    clearable
+                    filled
+                    v-model="user.entry.name"
+                    :label="$t('g.user_name')"
+                    lazy-rules
+                    :rules="[(val) => !!val || $t('v.required')]"
+                />
+                <q-input
+                    clearable
+                    filled
+                    v-model="user.entry.email"
+                    :label="$t('g.login_email')"
+                    lazy-rules
+                    :rules="[(val) => !!val || $t('v.required')]"
+                    type="email"
+                />
+                <q-input
+                    clearable
+                    filled
+                    v-model="user.entry.phone"
+                    :label="$t('g.phone_number')"
+                    lazy-rules
+                    :rules="[(val) => !!val || $t('v.required')]"
+                    type="phone"
+                />
 
-                        <q-select
-                            clearable
-                            filled
-                            v-model="user.entry.role_id"
-                            :options="user.lists.roles"
-                            :label="$t('input.user.role')"
-                            option-value="id"
-                            option-label="title"
-                            :rules="[(val) => val != null || $t('v.selected')]"
-                            emit-value
-                            map-options
-                        />
-                    </div>
-                </q-card-section>
-                <q-separator />
-                <q-card-actions align="right" class="bg-white text-teal">
-                    <q-btn
-                        flat
-                        :label="$t('g.update')"
-                        type="submit"
-                        color="primary"
-                        :loading="user.loading"
-                    />
-                    <q-btn
-                        :label="$t('g.reset')"
-                        type="reset"
-                        color="warning"
-                        flat
-                        class="q-ml-sm"
-                    />
-                    <q-btn
-                        flat
-                        :label="$t('g.close')"
-                        v-close-popup
-                        color="negative"
-                    />
-                </q-card-actions>
-            </q-form>
-        </q-card>
-    </q-dialog>
+                <q-select
+                    clearable
+                    filled
+                    v-model="user.entry.role_id"
+                    :options="user.lists.roles"
+                    :label="$t('input.user.role')"
+                    option-value="id"
+                    option-label="title"
+                    :rules="[(val) => val != null || $t('v.selected')]"
+                    emit-value
+                    map-options
+                />
+            </div>
+        </one-form>
+    </m-dialog>
 </template>
 
 <script>

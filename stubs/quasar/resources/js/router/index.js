@@ -95,6 +95,17 @@ const routes = [
                 component: () => import("@/Pages/settings/index.vue"),
             },
 
+            {
+                path: "clients",
+                name: "العملاء",
+                component: () => import("@/Pages/clients/index.vue"),
+            },
+
+            {
+                path: "clients/:id/amounts/:name",
+                name: "توردات العميل",
+                component: () => import("@/Pages/clients/amountList.vue"),
+            },
 
             //don`t remove this lint
         ],

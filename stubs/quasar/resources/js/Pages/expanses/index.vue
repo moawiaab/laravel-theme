@@ -57,7 +57,7 @@ onMounted(() => {
         <q-dialog v-model="expanse.confirm" persistent>
             <q-card style="min-width: 350px">
                 <q-card-section>
-                    <div class="text-h6">{{ $t("g.d.t1") }}</div>
+                    <div class="text-h6">{{ $t("d.t1") }}</div>
                 </q-card-section>
 
                 <q-card-section class="q-pt-none">
@@ -77,7 +77,7 @@ onMounted(() => {
                     />
                     <q-btn
                         flat
-                        :label="$t('g.d.c')"
+                        :label="$t('d.c')"
                         color="red"
                         v-close-popup
                     />
@@ -88,23 +88,23 @@ onMounted(() => {
         <q-dialog v-model="expanse.alert">
             <q-card>
                 <q-card-section>
-                    <div class="text-h6">{{ $t("g.d.amount") }}</div>
+                    <div class="text-h6">{{ $t("d.amount") }}</div>
                 </q-card-section>
 
                 <q-card-section class="q-pt-none">
-                    {{ $t("g.d.t2") }}
+                    {{ $t("d.t2") }}
                 </q-card-section>
 
                 <q-card-actions>
                     <q-btn
                         flat
-                        :label="$t('g.d.ok')"
+                        :label="$t('d.ok')"
                         color="primary"
                         @click="expanse.setDone()"
                     />
                     <q-btn
                         flat
-                        :label="$t('g.d.c')"
+                        :label="$t('d.c')"
                         color="red"
                         v-close-popup
                     />

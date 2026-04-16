@@ -65,7 +65,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         // ], 'api');
 
         if ($this->argument('stack') === 'vuetify' || $this->argument('stack') === 'quasar') {
-            $this->runCommands(['composer require laravel/ui','php artisan ui vue --auth ', 'php artisan install:api', 'artisan config:publish cors']);
+            $this->runCommands(['php artisan fortify:install', 'php artisan install:api', 'artisan config:publish cors']);
             $this->updateNodePackages(function ($packages) {
                 return [
                     "@types/node" => "*",
@@ -195,7 +195,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         } elseif (file_exists(base_path('yarn.lock'))) {
             $this->runCommands(['yarn install', 'yarn run build']);
         } else {
-            $this->runCommands(['npm install --force', 'npm update --force', 'npm run build']);
+            $this->runCommands(['npx npm-check-updates -u, npm install --force', 'npm update --force', 'npm run build']);
         }
 
         $this->line('');
@@ -251,7 +251,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         } elseif (file_exists(base_path('yarn.lock'))) {
             $this->runCommands(['yarn install', 'yarn run build']);
         } else {
-            $this->runCommands(['npm install --force','npm update --force', 'npm run build']);
+            $this->runCommands(['npx npm-check-updates -u, npm install --force','npm update --force', 'npm run build']);
         }
 
 

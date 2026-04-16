@@ -1,19 +1,14 @@
 <template>
-    <q-dialog
+    <m-dialog
         v-model="table.showRow"
-        transition-show="scale"
-        transition-hide="scale"
-        :maximized="$q.platform.is.mobile ? true : settings.maximizedToggle"
+        :title="
+            'عرض بيانات اسم الموازنة  : ' +
+            (table.row.name || locker.entry.name)
+        "
+        :w="90"
+        :persistent="false"
     >
-        <q-card style="min-width: 80vw">
-            <widgets-bar />
-            <q-card-section>
-                <div class="text-h6">
-                    عرض بيانات اسم الموازنة :
-                    {{ table.row.name || locker.entry.name }}
-                </div>
-            </q-card-section>
-            <q-separator />
+        <q-card>
             <q-card-section class="q-pt-none">
                 <q-splitter
                     v-model="table.splitterModel"
@@ -83,7 +78,7 @@
                 />
             </q-card-actions>
         </q-card>
-    </q-dialog>
+    </m-dialog>
 </template>
 
 <script setup>
@@ -100,9 +95,9 @@ const locker = usePrivateLockersIndex();
 watch(table, (e) => {
     if (e.showRow) {
         locker.fetchShowData(table.row.id);
-        table.splitterModel = 35
-    }else {
-        table.splitterModel = 50
+        table.splitterModel = 35;
+    } else {
+        table.splitterModel = 50;
     }
 });
 

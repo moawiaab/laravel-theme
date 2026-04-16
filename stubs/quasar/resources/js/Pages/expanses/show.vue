@@ -1,19 +1,15 @@
 <template>
-    <q-dialog
+    <m-dialog
         v-model="table.showRow"
-        transition-show="scale"
-        transition-hide="scale"
-        :maximized="$q.platform.is.mobile? true: settings.maximizedToggle"
+        :title="
+            $t('input.expanse.view') +
+            ' : ' +
+            (table.row.name || single.entry.name)
+        "
+        :w="60"
+        :persistent="false"
     >
-        <q-card style="min-width: 60vw">
-            <widgets-bar />
-            <q-card-section>
-                <div class="text-h6">
-                       {{$t('input.expanse.view')}} :
-                    {{ table.row.name || single.entry.name }}
-                </div>
-            </q-card-section>
-            <q-separator />
+        <q-card>
             <q-card-section class="q-pt-none">
                 <q-splitter
                     v-model="table.splitterModel"
@@ -89,22 +85,17 @@
             </q-card-section>
             <q-separator />
             <q-card-actions align="right" class="bg-white text-teal">
-                <q-btn
-                    flat
-                    :label="$t('d.c')"
-                    v-close-popup
-                    color="negative"
-                />
+                <q-btn flat :label="$t('d.c')" v-close-popup color="negative" />
             </q-card-actions>
         </q-card>
-    </q-dialog>
+    </m-dialog>
 </template>
 
 <script setup>
 import { useTables } from "@/stores/tables/index";
 import { useExpansesIndex } from "@/stores/expanses/index";
 import { useSettings } from "@/stores/settings";
-import {watch} from "vue"
+import { watch } from "vue";
 const settings = useSettings();
 const table = useTables();
 

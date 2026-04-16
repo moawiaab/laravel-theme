@@ -1,22 +1,13 @@
 <template>
-    <q-dialog
+    <m-dialog
         v-model="table.newRow"
-        persistent
-        transition-show="scale"
-        transition-hide="scale"
+
+        :title="$t('input.user.title_new')"
     >
-        <q-card style="width: 800px; max-width: 80vw">
-            <q-card-section>
-                <div class="text-h6">{{ $t("input.user.title_new") }}</div>
-            </q-card-section>
-            <q-separator />
-            <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-                <q-card-section class="q-pt-none">
-                    <q-splitter
-                        v-model="table.splitterModel"
-                        style="height: 100%"
-                    >
-                        <template v-slot:before>
+            <form-data @submitted="onSubmit" @reset="onReset" class="q-gutter-md"   :loading="user.loading"
+                >
+
+                        <template #form1>
                             <div class="q-pa-sm">
                                 <q-input
                                     clearable
@@ -52,17 +43,7 @@
                                 />
                             </div>
                         </template>
-
-                        <template v-slot:separator>
-                            <q-avatar
-                                color="primary"
-                                text-color="white"
-                                size="20px"
-                                icon="drag_indicator"
-                            />
-                        </template>
-
-                        <template v-slot:after>
+                        <template #form2>
                             <div class="q-pa-sm">
                                 <q-input
                                     filled
@@ -105,34 +86,8 @@
                                 />
                             </div>
                         </template>
-                    </q-splitter>
-                </q-card-section>
-                <q-separator />
-                <q-card-actions align="right" class="bg-white text-teal">
-                    <q-btn
-                        flat
-                        :label="$t('g.save')"
-                        type="submit"
-                        color="primary"
-                        :loading="user.loading"
-                    />
-                    <q-btn
-                        :label="$t('g.reset')"
-                        type="reset"
-                        color="warning"
-                        flat
-                        class="q-ml-sm"
-                    />
-                    <q-btn
-                        flat
-                        :label="$t('g.close')"
-                        v-close-popup
-                        color="negative"
-                    />
-                </q-card-actions>
-            </q-form>
-        </q-card>
-    </q-dialog>
+            </form-data>
+    </m-dialog>
 </template>
 
 <script>

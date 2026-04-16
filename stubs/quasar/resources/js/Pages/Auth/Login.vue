@@ -83,6 +83,7 @@ const onSubmit = () => {
         })
         .then(async (res) => {
             // await auth.setRoles();
+        //    await location.reload();
             accessData();
         })
         .catch((err) => {
@@ -105,7 +106,10 @@ const accessData = () => {
             auth.can = res.data.data;
             auth.userData = res.data.user;
             auth.accounts = res.data.accounts;
-            location.reload();
+            location.replace("/");
+
+            // console.log(auth.userData);
+            // router.push({ path: "/" });
         })
         .catch((err) => {
             console.log(err);

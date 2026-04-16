@@ -1,78 +1,28 @@
 <template>
-    <q-dialog
+    <m-dialog
         v-model="table.newRow"
-        persistent
-        transition-show="scale"
-        transition-hide="scale"
-        :maximized="$q.platform.is.mobile? true: settings.maximizedToggle"
+        :title="$t('input.budget.title_new')"
+        :w="40"
     >
-        <q-card style="min-width: 60vw">
-            <widgets-bar />
-            <q-card-section>
-                <div class="text-h6">{{ $t("input.budget.title_new") }}</div>
-            </q-card-section>
-            <q-separator />
-            <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-                <q-card-section class="q-pt-none">
-                    <div class="q-pa-sm">
-                        <q-select
-                            filled
-                            clearable
-                            emit-value
-                            map-options
-                            v-model="budget.entry.budget_id"
-                            :options="budget.lists.budgets"
-                            :label="$t('input.budget.name')"
-                            :rules="[(val) => val != null || $t('v.selected')]"
-                            option-label="name"
-                            option-value="id"
-                        >
-                            <template #append>
-                                <q-icon name="mdi-source-branch" />
-                            </template>
-                        </q-select>
-                        <q-input
-                            filled
-                            clearable
-                            v-model="budget.entry.amount"
-                            :label="$t('input.budget.amount')"
-                            :rules="[(val) => !!val || $t('v.required')]"
-                            type="number"
-                            :error="budget.errors.amount ? true : false"
-                            :error-message="budget.errors.amount"
-                        >
-                            <template #append>
-                                <q-icon name="payments" />
-                            </template>
-                        </q-input>
-                    </div>
-                </q-card-section>
-                <q-separator />
-                <q-card-actions align="right" class="bg-white text-teal">
-                    <q-btn
-                        flat
-                        :label="$t('g.save')"
-                        type="submit"
-                        color="primary"
-                        :loading="budget.loading"
-                    />
-                    <q-btn
-                        :label="$t('g.reset')"
-                        type="reset"
-                        color="warning"
-                        flat
-                        class="q-ml-sm"
-                    />
-                    <q-btn
-                        flat
-                        :label="$t('g.close')"
-                        v-close-popup
-                        color="negative"
-                    />
-                </q-card-actions>
-            </q-form>
-        </q-card>
-    </q-dialog>
+        <one-form @submitted="onSubmit" @reset="onReset"   :loading="budget.loading"
+               >
+            <f-select
+                v-model="budget.entry.budget_id"
+                :options="budget.lists.budgets"
+                :label="$t('input.budget.name')"
+                :rules="[(val) => val != null || $t('v.selected')]"
+                icon="mdi-source-branch"
+            />
+            <m-input
+                v-model="budget.entry.amount"
+                :label="$t('input.budget.amount')"
+                :rules="[(val) => !!val || $t('v.required')]"
+                type="number"
+                :error="budget.errors.amount"
+                icon="payments"
+            />
+        </one-form>
+    </m-dialog>
 </template>
 
 <script setup>

@@ -8,7 +8,7 @@
         :content-inset-level="0.5"
         expand-separator
         :class="my_class"
-        @before-show="my_class = 'active-class'"
+        @before-show="my_class = $q.dark.isActive ? 'bg-grey-9' : 'bg-grey-4'"
         @after-hide="my_class = null"
     >
         <q-list separator>

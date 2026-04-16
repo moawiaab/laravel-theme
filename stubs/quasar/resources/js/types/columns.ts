@@ -120,18 +120,18 @@ export const Roles = [
 
 export const Permissions = [
     {
-        name: "details",
+        name: "description",
         required: true,
         label: "input.permission.name",
         align: "left",
-        field: "details",
+        field: "description",
         sortable: true,
     },
     {
-        name: "title",
+        name: "name",
         align: "left",
         label: "input.permission.url",
-        field: "title",
+        field: "name",
         sortable: true,
     },
     {
@@ -1020,4 +1020,40 @@ export const Stages = [
         align: "left",
     },
     // { name: "options", label: "g.options", field: "options" }
+];
+
+export const CliOrders = [
+    {
+        name: "name",
+        required: true,
+        label: "input.product.name",
+        align: "left",
+        field: "name",
+        format: (val: any) => `${val}`,
+        sortable: true,
+    },
+    { name: "num", label: "input.product.num", field: "num", align: "left" },
+    {
+        name: "price",
+        label: "input.product.price",
+        field: "price",
+        align: "left",
+        format: (val: any) => formatNumber(val),
+    },
+    {
+        name: "total",
+        label: "input.public.amount",
+        field: "total",
+        align: "left",
+        format: (val: any) => formatNumber(val),
+    },
+    { name: "user", label: "input.all.createBy", field: "user", align: "left" },
+    { name: "admin", label: "input.all.admin", field: "admin", align: "left" },
+    {
+        name: "updated_at",
+        label: "تاريخ الاستلام",
+        field: "updated_at",
+        align: "left",
+    },
+    { name: "options", label: "", field: "options" },
 ];

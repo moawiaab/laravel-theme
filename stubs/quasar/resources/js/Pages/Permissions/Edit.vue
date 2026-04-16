@@ -13,7 +13,7 @@
                 </div>
             </q-card-section>
             <q-separator />
-            <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+            <q-form @submitted="onSubmit" @reset="onReset" class="q-gutter-md">
                 <q-card-section class="q-p-sm">
                     <q-input
                         clearable

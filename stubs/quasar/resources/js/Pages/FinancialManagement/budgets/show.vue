@@ -1,19 +1,11 @@
 <template>
-    <q-dialog
+    <m-dialog
         v-model="table.showRow"
-        transition-show="scale"
-        transition-hide="scale"
-        :maximized="$q.platform.is.mobile ? true : settings.maximizedToggle"
+        :title="$t('input.budget.view') + ' : ' + (table.row.name || budget.entry.name)"
+        :w="70"
+        :persistent="false"
     >
-        <q-card style="min-width: 70vw">
-            <widgets-bar />
-            <q-card-section>
-                <div class="text-h6">
-                    {{ $t("input.budget.view") }} :
-                    {{ table.row.name || budget.entry.name }}
-                </div>
-            </q-card-section>
-            <q-separator />
+        <q-card>
             <q-card-section class="q-pt-none">
                 <q-splitter
                     v-model="table.splitterModel"
@@ -100,7 +92,7 @@
                 />
             </q-card-actions>
         </q-card>
-    </q-dialog>
+    </m-dialog>
 </template>
 
 <script setup>

@@ -36,7 +36,9 @@ export const useSettings = defineStore("settings-store", {
                     this.loading = false;
                 });
         },
-
+        setMaxiMizedToggle() {
+            this.maximizedToggle = !this.maximizedToggle;
+        }
     }
     // persist: true,
 });

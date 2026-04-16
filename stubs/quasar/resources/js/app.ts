@@ -58,6 +58,12 @@ import WidgetsShowCard from "@/Components/Widgets/ShowCard.vue"
 import VueHtmlToPaper from "@/services/vueHtmlToPaper";
 import mDialog from "@/Components/dialog.vue";
 import formData from "@/Components/form/FormData.vue";
+import oneForm from "@/Components/form/OneForm.vue";
+import { configureEcho } from '@laravel/echo-vue';
+
+configureEcho({
+    broadcaster: 'reverb',
+});
 
 
 
@@ -131,6 +137,7 @@ myApp.component("loader", Loader)
 myApp.component("input-text", InputText)
 myApp.component("m-dialog", mDialog)
 myApp.component("form-data", formData)
+myApp.component("one-form", oneForm)
 myApp.mount('#app')
 
 

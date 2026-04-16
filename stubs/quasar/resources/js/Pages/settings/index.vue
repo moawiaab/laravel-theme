@@ -19,7 +19,7 @@ const onSubmit = () => {
 
 <template>
     <q-page v-if="setting.entry">
-        <q-form @submit="onSubmit">
+        <q-form @submitted="onSubmit">
             <q-card class="my-card" flat>
                 <q-card-section>
                     <div class="text-h6">إعدادات النظام</div>

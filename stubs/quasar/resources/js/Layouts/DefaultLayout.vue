@@ -5,9 +5,14 @@
         container
         style="height: 100vh"
         class="bg-white"
+        :class="$q.dark.isActive ? 'bg-grey-10 ' : 'bg-grey-2'"
 
     >
-        <q-header class="bg-white text-primary" bordered>
+        <q-header
+            class="bg-white text-primary"
+            bordered
+            :class="$q.dark.isActive ? 'bg-grey-10 text-white' : 'bg-grey-2'"
+        >
             <q-toolbar>
                 <q-btn
                     flat
@@ -18,9 +23,19 @@
                     @click="drawerLeft = !drawerLeft"
                 />
 
-                <q-toolbar-title> {{$t('app_title')}} </q-toolbar-title>
+                <q-toolbar-title> {{ $t("app_title") }} </q-toolbar-title>
 
-                <q-btn flat icon="mdi-translate" dense fab-mini @click="auth.chingLang(); $i18n.locale = auth.quasarLang"/>
+                <q-btn
+                    flat
+                    icon="mdi-translate"
+                    dense
+                    fab-mini
+                    @click="
+                        auth.chingLang();
+                        $i18n.locale = auth.quasarLang;
+                    "
+                />
+                <q-btn flat icon="mdi-compare" dense fab-mini  @click="auth.setDark"/>
                 <q-btn flat icon="notifications" dense fab-mini />
 
                 <q-btn flat dense fab-mini round>
@@ -65,24 +80,32 @@
             bordered
             :width="260"
             v-if="auth.userData"
+            :class="$q.dark.isActive ? 'bg-grey-10' : 'bg-grey-2'"
         >
             <div
                 class="row justify-center q-px-md q-pt-md fixed-top"
                 style="background: #ecf8fe; z-index: 8; height: 192px"
+                :class="$q.dark.isActive ? 'bg-grey-10' : 'bg-grey-4'"
             >
                 <q-avatar size="100px" style="border: 2px solid #f0f0f0">
                     <q-img src="/img/logo.png" width="100px" height="100px" />
                 </q-avatar>
-                <q-item class="bg-light-blue-1 q-pt-sm" disable dense>
+                <q-item
+                    class="bg-light-blue-1 q-pt-sm"
+                    disable
+                    dense
+                    :class="$q.dark.isActive ? 'bg-grey-10 bg-black' : 'bg-grey-4'"
+                >
                     <q-item-section class="q-pa-sm">
                         <q-item-label>
-                            {{$t('g.email_greet')}} : {{ auth.userData.name }}</q-item-label
+                            {{ $t("g.email_greet") }} :
+                            {{ auth.userData.name }}</q-item-label
                         >
                         <q-item-label caption>
                             <q-item-section>
-                                {{$t('g.email')}} : {{ auth.userData.email }}
+                                {{ $t("g.email") }} : {{ auth.userData.email }}
                             </q-item-section>
-                            {{$t('g.phone')}} : {{ auth.userData.phone }}
+                            {{ $t("g.phone") }} : {{ auth.userData.phone }}
                         </q-item-label>
                     </q-item-section>
                 </q-item>
@@ -97,12 +120,13 @@
                 class="text-red footer bg-white full-width fixed-bottom"
                 clickable
                 @click="logout"
+                :class="$q.dark.isActive ? 'bg-grey-10' : 'bg-grey-2'"
             >
                 <q-item-section avatar>
                     <q-icon name="logout" />
                 </q-item-section>
 
-                <q-item-section> {{$t('g.logout')}}</q-item-section>
+                <q-item-section> {{ $t("g.logout") }}</q-item-section>
             </q-item>
         </q-drawer>
         <q-page-container>
@@ -133,9 +157,9 @@
     <!-- </div> -->
 </template>
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import axios from "axios";
-import { Platform, Screen } from "quasar";
+import { Platform, Screen, useQuasar } from "quasar";
 import ListMenu from "@/Components/menu/ListMenu.vue";
 import MenuIcon from "@/Components/menu/icon.vue";
 import SettingsPassword from "@/Components/settings/password.vue";
@@ -162,4 +186,8 @@ const logout = () => {
         .catch(() => {});
 };
 
+onMounted(() => {
+    const $q = useQuasar();
+    $q.dark.set(auth.dark);
+});
 </script>

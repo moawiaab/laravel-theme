@@ -1,19 +1,15 @@
 <template>
-    <q-dialog
+    <m-dialog
         v-model="table.showRow"
-        transition-show="scale"
-        transition-hide="scale"
-        :maximized="$q.platform.is.mobile? true: settings.maximizedToggle"
+        :title="
+            $t('input.budget_name.view') +
+            ' : ' +
+            (table.row.name || budget.entry.name)
+        "
+        :w="60"
+        :persistent="false"
     >
         <q-card style="min-width: 60vw">
-            <widgets-bar />
-            <q-card-section>
-                <div class="text-h6">
-                    {{$t('input.budget_name.view')}} :
-                    {{ table.row.name || budget.entry.name }}
-                </div>
-            </q-card-section>
-            <q-separator />
             <q-card-section class="q-pt-none">
                 <q-splitter
                     v-model="table.splitterModel"
@@ -69,14 +65,14 @@
                 />
             </q-card-actions>
         </q-card>
-    </q-dialog>
+    </m-dialog>
 </template>
 
 <script setup>
 import { useTables } from "@/stores/tables/index";
 import { useBudgetNameIndex } from "@/stores/budget-names/index";
 import { useSettings } from "@/stores/settings";
-import {watch} from "vue"
+import { watch } from "vue";
 const settings = useSettings();
 const table = useTables();
 

@@ -24,6 +24,7 @@
     "minimum-stability": "dev",
     "require": {
         "spatie/laravel-medialibrary": "*",
-        "spatie/laravel-permission"  : "*"
+        "spatie/laravel-permission"  : "*",
+        "laravel/fortify": "*"
     }
 }

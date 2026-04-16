@@ -12,17 +12,20 @@ const myModel = defineModel<boolean>();
 
 const disabled = shallowRef(false);
 
-defineProps({
+const prop = defineProps({
     title: { type: String, default: "title" },
     icon: { type: String, default: "edit" },
     w: { type: Number, default: 50 },
-    mh: { type: Number, default: 200 },
+    mh: { type: Number, default: 150 },
+    persistent: { type: Boolean, default: true },
 });
+const s = (100 - prop.w) / 100;
+const mw = (innerWidth * s) / 2;
 </script>
 <template>
     <q-dialog
         v-model="myModel"
-        persistent
+        :persistent="persistent"
         transition-show="scale"
         transition-hide="scale"
         :maximized="$q.platform.is.mobile ? true : settings.maximizedToggle"
@@ -31,7 +34,7 @@ defineProps({
             p="x-4 y-2"
             shadow="~ hover:lg"
             class="fixed select-none w100%"
-            :initial-value="{ x: innerWidth / 3.6, y: mh }"
+            :initial-value="{ x: mw, y: mh }"
             :prevent-default="true"
             :handle="handle"
             :disabled="disabled"
@@ -41,15 +44,31 @@ defineProps({
                 :style="{
                     minHeight: mh + 'px',
                     minWidth: w + 'vw',
-                    height : $q.platform.is.mobile || settings.maximizedToggle ? '100vh' : 'auto',
+                    height:
+                        $q.platform.is.mobile || settings.maximizedToggle
+                            ? '100vh'
+                            : 'auto',
                     maxWidth: '100vw',
-                    width : $q.platform.is.mobile || settings.maximizedToggle ? '100vw' : w + 'vw',
+                    width:
+                        $q.platform.is.mobile || settings.maximizedToggle
+                            ? '100vw'
+                            : w + 'vw',
                 }"
             >
                 <div ref="handle" class="cursor-move">
-                    <widgets-bar :title="title" :icon="icon" />
+                    <widgets-bar
+                        :title="title"
+                        :icon="icon"
+                        @dblclick="settings.setMaxiMizedToggle"
+                    />
                 </div>
-                <slot />
+
+                <div
+                    class="p-4 overflow-auto"
+                    :style="{ maxHeight: 'calc(100vh - 100px)' }"
+                >
+                    <slot />
+                </div>
             </div>
         </Draggable>
     </q-dialog>
@@ -63,6 +82,6 @@ defineProps({
     }
 }
 .cursor-move {
-  cursor: move;
+    cursor: move;
 }
 </style>

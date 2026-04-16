@@ -1,18 +1,9 @@
 <template>
-    <q-dialog
+    <m-dialog
         v-model="table.newRow"
-        persistent
-        transition-show="scale"
-        transition-hide="scale"
-        :maximized="$q.platform.is.mobile? true: settings.maximizedToggle"
+        :title="$t('input.budget.title_new')"
     >
-        <q-card style="min-width: 60vw">
-            <widgets-bar />
-            <q-card-section>
-                <div class="text-h6">{{$t('input.budget.title_new')}}</div>
-            </q-card-section>
-            <q-separator />
-            <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+            <one-form @submitted="onSubmit" @reset="onReset" :loading="budget.loading">
                 <q-card-section class="q-pt-none">
                     <div class="q-pa-sm">
                         <q-input
@@ -62,32 +53,9 @@
                         </q-select>
                     </div>
                 </q-card-section>
-                <q-separator />
-                <q-card-actions align="right" class="bg-white text-teal">
-                    <q-btn
-                        flat
-                        :label="$t('g.save')"
-                        type="submit"
-                        color="primary"
-                        :loading="budget.loading"
-                    />
-                    <q-btn
-                        :label="$t('g.reset')"
-                        type="reset"
-                        color="warning"
-                        flat
-                        class="q-ml-sm"
-                    />
-                    <q-btn
-                        flat
-                        :label="$t('g.close')"
-                        v-close-popup
-                        color="negative"
-                    />
-                </q-card-actions>
-            </q-form>
-        </q-card>
-    </q-dialog>
+
+            </one-form>
+    </m-dialog>
 </template>
 
 <script setup>
